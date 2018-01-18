@@ -33,9 +33,4 @@ bot.on('messageCreate', message => {
 		return countingChannels.get(message.channel.id).handleNewMessage(message);
 });
 
-bot.on('messageDelete', message => {
-  if (countingChannels.has(message.channel.id))
-    break;
-});
-
 bot.connect();
