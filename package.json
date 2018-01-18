@@ -1,5 +1,5 @@
 {
-	"name": "counting-bot",
+	"name": "Count-Bot",
 	"version": "1.0.0",
 	"description": "",
 	"main": "index.js",
@@ -8,19 +8,19 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/brussell98/counting-bot.git"
+		"url": "git+hhttps://github.com/all-discord-bots/Count-Bot.git"
 	},
 	"keywords": [
 		"discord",
 		"counting",
 		"bot"
 	],
-	"author": "Brussell",
+	"author": "BannerBomb",
 	"license": "MIT",
 	"bugs": {
-		"url": "https://github.com/brussell98/counting-bot/issues"
+		"url": "https://github.com/all-discord-bots/Count-Bot/issues"
 	},
-	"homepage": "https://github.com/brussell98/counting-bot#readme",
+	"homepage": "https://github.com/all-discord-bots/Count-Bot#readme",
 	"dependencies": {
 		"eris": "^0.7.2"
 	}
