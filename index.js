@@ -44,7 +44,7 @@ bot.on('messageCreate', message => {
 bot.on("message", message => {
   if (message.author.bot) return;
 if (message.content === ":num") {
-return countingChannels.get(message.channel.id).handleGetNum();
+return countingChannels.get(message.channel.id).handleGetNum(bot);
 }
 }
 
