@@ -46,7 +46,7 @@ bot.on("message", message => {
 if (message.content === ":num") {
 return countingChannels.get(message.channel.id).handleGetNum(bot);
 }
-}
+});
 
 bot.on('messageDelete', message => {
 //  if (countingChannels.has(message.channel.id)) {
