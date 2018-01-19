@@ -7,7 +7,10 @@ const config = require('./config.json'),
 
 let countingChannels = new Map();
 
-bot.on('ready', () => console.info('Counting bot connected'));
+bot.on('ready', () => {
+  console.info('Counting bot connected');
+  bot.editStatus("online", { name: "1 2 3...", type: 0 });
+});
 bot.on('disconnected', () => console.warn('Counting bot disconnected'));
 
 bot.once('ready', () => {
@@ -34,10 +37,12 @@ bot.on('messageCreate', message => {
 		  return countingChannels.get(message.channel.id).handleNewMessage(message);
 });
 
-bot.on('messageDelete', message => {
-  if (countingChannels.has(message.channel.id))
-  return countingChannels.get(message.channel.id).handleDelMessage(message);
+//bot.on('messageDelete', message => {
+//  if (countingChannels.has(message.channel.id)) {
+//    message.channel.guild.members.get(message.author.id).addRole("381975847977877524");
+//  }
+  //return countingChannels.get(message.channel.id).handleDelMessage(message);
     //bot.createMessage(message.channel.id, message.content);
-});
+//});
 
 bot.connect();
