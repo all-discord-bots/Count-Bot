@@ -79,6 +79,9 @@ class CountingChannelManager {
 			return message.delete();
 
 		this.lastNumber = number;
+		if (message.content == ":num") {
+		  bot.createMessage(message.channel.id, this.lastNumber);
+		}
 	}
 	
 	//handleDelMessage(message) {
