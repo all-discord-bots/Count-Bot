@@ -80,6 +80,12 @@ class CountingChannelManager {
 
 		this.lastNumber = number;
 	}
+	
+	handleDelMessage(message) {
+	  if(message.content == this.lastNumber) {
+	    message.reply(message.content);
+	  }
+	}
 
 	parseNumber(message) {
 		if (this.by % 1 !== 0)
