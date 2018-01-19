@@ -80,9 +80,9 @@ class CountingChannelManager {
 		this.lastNumber = number;
 	}
 
-handleGetNum(bot) {
-bot.createMessage("403773197461487616", this.lastNumber);
-}
+//handleGetNum(bot) {
+//bot.createMessage("403773197461487616", this.lastNumber);
+//}
 	
 	//handleDelMessage(message) {
 	  //message.channel.guild.members.get(message.author.id).addRole("381975847977877524"); //.addRole({name: role});
