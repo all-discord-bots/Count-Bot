@@ -30,7 +30,14 @@ bot.on('channelCreate', channel => {
 
 bot.on('messageCreate', message => {
 	if (countingChannels.has(message.channel.id))
-		return countingChannels.get(message.channel.id).handleNewMessage(message);
+	  if (message.author.bot) return; // dont do anything if message is from bot
+		  return countingChannels.get(message.channel.id).handleNewMessage(message);
+});
+
+bot.on('messageDelete', message => {
+  if (countingChannels.has(message.channel.id))
+  return countingChannels.get(message.channel.id).handleDelMessage(message);
+    //bot.createMessage(message.channel.id, message.content);
 });
 
 bot.connect();
