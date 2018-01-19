@@ -1,105 +1,59 @@
-const baseMap = {
-	'binary': 2,
-	'ternary': 3,
-	'quaternary': 4,
-	'pental': 5,
-	'quinary': 5,
-	'heximal': 6,
-	'senary': 6,
-	'oct': 8,
-	'octal': 8,
-	'dozenal': 12,
-	'duodecimal': 12,
-	'hex': 16,
-	'hexadecimal': 16,
-	'vigesimal': 20,
-	'sexagesimal': 60
-};
+const config = require('./config.json'),
+	Eris = require('eris'),
+	bot = new Eris(config.token, {
+		messageLimit: 0
+	}),
+	CountingChannelManager = require('./CountingChannelManager');
 
-class CountingChannelManager {
-	constructor(channel) {
-		this.channel = channel;
-		this.base = null;
-		this.by = null;
-		this.lastNumber = null;
+let countingChannels = new Map();
+
+bot.on('ready', () => {
+  console.info('Counting bot connected');
+  bot.editStatus("online", { name: "1 2 3...", type: 0 });
+});
+
+bot.on('disconnected', () => {
+  console.warn('Counting bot disconnected');
+});
+
+bot.once('ready', () => {
+	return bot.guilds.forEach(g => {
+		return g.channels.filter(c => c.name.startsWith('counting')).forEach(c => {
+			let manager = new CountingChannelManager(c);
+			manager.init();
+			return countingChannels.set(c.id, manager);
+		});
+	});
+});
+
+bot.on('channelCreate', channel => {
+	if (channel.name.startsWith('counting')) {
+		let manager = new CountingChannelManager(channel);
+		manager.init();
+		return countingChannels.set(channel.id, manager);
 	}
+});
 
-	async init() {
-		let [, base] = this.channel.name.match(/-in-([^-]+)/i) || [];
-		if (!base)
-			this.base = 10;
-		else if (baseMap[base] !== undefined)
-			this.base = baseMap[base];
-		else if (!isNaN(base))
-			this.base = parseInt(base, 10);
-		else {
-			console.error('Error: Invalid base for counting channel ', this.channel.name);
-			return false;
-		}
+bot.on('messageCreate', message => {
+	if (countingChannels.has(message.channel.id))
+//	if (message.channel.id !== "381974306693054476") return;
+	  if (message.author.bot) return; // dont do anything if message is from bot
+		  return countingChannels.get(message.channel.id).handleNewMessage(message);
+});
 
-		let [, by] = this.channel.name.match(/-by-(-?\d+(?:\.\d+)?)/i) || [];
-		if (!by)
-			this.by = 1;
-		else if (!isNaN(by)) {
-			if (by.includes('.')) {
-				if (this.base === 10)
-					this.by = parseFloat(by);
-				else {
-					console.error('Error: Can only count in decimals for base 10. Channel: ', this.channel.name);
-					return false;
-				}
-			} else
-				this.by = parseInt(by, 10);
-		} else {
-			console.error('Error: Invalid by for counting channel ', this.channel.name);
-			return false;
-		}
+//bot.on("message", message => {
+//  if (message.author.bot) return;
+//if (message.content === ":num") {
+//return countingChannels.get(message.channel.id).handleGetNum(bot);
+//}
+//});
 
-		let lastMessage = (await this.channel.getMessages(50) || []).find(m => this.parseNumber(m) > 0);
+//bot.on('messageDelete', message => {
+//  if (countingChannels.has(message.channel.id)) {
+//    message.channel.guild.members.get(message.author.id).addRole("381975847977877524");
+//  }
+  //return countingChannels.get(message.channel.id).handleDelMessage(message);
+//    bot.createMessage("403757067225006101", `<@${message.author.id}>: **${message.content}**`);
+//});
 
-		if (!lastMessage)
-			this.lastNumber = 0;
-		else
-			this.lastNumber = this.parseNumber(lastMessage);
-
-		return true;
-	}
-
-	destroy() {
-
-	}
-
-	handleNewMessage(message) {
-		let number = this.parseNumber(message);
-
-		if (!number)
-			return message.delete();
-
-		if (!this.isNextInSequence(number))
-			return message.delete();
-
-		this.lastNumber = number;
-		if (message.content == ":num") {
-		  bot.createMessage(message.channel.id, this.lastNumber);
-		}
-	}
-	
-	//handleDelMessage(message) {
-	  //message.channel.guild.members.get(message.author.id).addRole("381975847977877524"); //.addRole({name: role});
-	//}
-
-	parseNumber(message) {
-		if (this.by % 1 !== 0)
-			return parseFloat(message.content);
-
-		if (message.content.search(/^\d+\.[1-9]/) !== -1)
-			return NaN;
-		return parseInt(message.content.replace(/ .*/, ''), this.base);
-	}
-
-	isNextInSequence(number) {
-		return number === this.lastNumber + this.by;
-	}
-}
-
-module.exports = CountingChannelManager;
+bot.connect();
