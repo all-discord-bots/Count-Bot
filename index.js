@@ -48,12 +48,12 @@ bot.on('messageCreate', message => {
 //}
 //});
 
-bot.on('messageDelete', message => {
+//bot.on('messageDelete', message => {
 //  if (countingChannels.has(message.channel.id)) {
 //    message.channel.guild.members.get(message.author.id).addRole("381975847977877524");
 //  }
   //return countingChannels.get(message.channel.id).handleDelMessage(message);
-    bot.createMessage("403757067225006101", `<@${message.author.id}>: **${message.content}**`);
-});
+//    bot.createMessage("403757067225006101", `<@${message.author.id}>: **${message.content}**`);
+//});
 
 bot.connect();
