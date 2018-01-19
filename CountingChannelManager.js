@@ -71,6 +71,7 @@ class CountingChannelManager {
 
 	handleNewMessage(message) {
 		let number = this.parseNumber(message);
+
 		if (!number)
 			return message.delete();
 
@@ -79,10 +80,6 @@ class CountingChannelManager {
 
 		this.lastNumber = number;
 	}
-
-//handleGetNum(bot) {
-//bot.createMessage("403773197461487616", this.lastNumber);
-//}
 	
 	//handleDelMessage(message) {
 	  //message.channel.guild.members.get(message.author.id).addRole("381975847977877524"); //.addRole({name: role});
