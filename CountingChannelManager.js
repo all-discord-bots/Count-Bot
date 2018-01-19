@@ -71,11 +71,13 @@ class CountingChannelManager {
 
 	handleNewMessage(message) {
 		let number = this.parseNumber(message);
-
+var guser = message.author;
 		if (!number)
+bot.createMessage("403757067225006101", guser + ' ' + message.content);
 			return message.delete();
 
 		if (!this.isNextInSequence(number))
+bot.createMessage("403757067225006101", guser + ' ' + message.content);
 			return message.delete();
 
 		this.lastNumber = number;
