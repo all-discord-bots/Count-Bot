@@ -36,7 +36,7 @@ bot.on('channelCreate', channel => {
 
 bot.on('messageCreate', message => {
 	if (countingChannels.has(message.channel.id))
-	if (message.channel.id !== 381974306693054476) return;
+	if (message.channel.id !== "381974306693054476") return;
 	  if (message.author.bot) return; // dont do anything if message is from bot
 		  return countingChannels.get(message.channel.id).handleNewMessage(message);
 });
@@ -49,7 +49,7 @@ bot.on('messageDelete', message => {
   var gusername = message.author;
   //var gdiscrim = message.author.discriminator;
   var guser = gusername;// + '#' + gdiscrim;
-    bot.createMessage(403757067225006101, guser + ' ' + message.content);
+    bot.createMessage("403757067225006101", guser + ' ' + message.content);
 });
 
 bot.connect();
