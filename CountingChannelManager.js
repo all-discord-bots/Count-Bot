@@ -83,7 +83,7 @@ class CountingChannelManager {
 	
 	handleDelMessage(message) {
 	  if(message.content == this.lastNumber) {
-	    message.reply(message.content);
+	    console.log(this.lastNumber);
 	  }
 	}
 
