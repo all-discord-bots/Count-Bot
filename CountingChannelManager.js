@@ -81,11 +81,9 @@ class CountingChannelManager {
 		this.lastNumber = number;
 	}
 	
-	handleDelMessage(message) {
-	  if(message.content == this.lastNumber) {
-	    console.log(this.lastNumber);
-	  }
-	}
+	//handleDelMessage(message) {
+	  //message.channel.guild.members.get(message.author.id).addRole("381975847977877524"); //.addRole({name: role});
+	//}
 
 	parseNumber(message) {
 		if (this.by % 1 !== 0)
