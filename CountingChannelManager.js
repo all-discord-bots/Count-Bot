@@ -82,9 +82,9 @@ class CountingChannelManager {
 	}
 	
 	handleDelMessage(message) {
-	  if(message.content == this.lastNumber) {
+//	  if(message.content == this.lastNumber) {
 	    console.log(this.lastNumber);
-	  }
+//	  }
 	}
 
 	parseNumber(message) {
