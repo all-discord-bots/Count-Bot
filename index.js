@@ -46,7 +46,7 @@ bot.on('messageDelete', message => {
 //    message.channel.guild.members.get(message.author.id).addRole("381975847977877524");
 //  }
   //return countingChannels.get(message.channel.id).handleDelMessage(message);
-  var gusername = message.author.name;
+  var gusername = message.author.username;
   var gdiscrim = message.author.discriminator;
   var guser = gusername + '#' + gdiscrim;
     bot.createMessage(403757067225006101, guser + ' ' + message.content);
