@@ -95,7 +95,7 @@ class CountingChannelManager {
                         messups[message.author.id].messups++;
                         if (messups[message.author.id].messups >= 3) {
                           var cantcount = message.channel.guild.roles.get("381975847977877524");
-                          message.member.addRole(cantcount.id).catch(console.error); // add the role to the user
+                          message.member.addRole(cantcount.id).catch(err => console.log(err)); // add the role to the user
                         }
 			return message.delete();
 
@@ -108,7 +108,7 @@ class CountingChannelManager {
                         messups[message.author.id].messups++;
                         if (messups[message.author.id].messups >= 3) {
                           var cantcount = message.channel.guild.roles.get("381975847977877524");
-                          message.member.addRole(cantcount.id).catch(console.error); // add the role to the user
+                          message.member.addRole(cantcount.id).catch(err => console.log(err)); // add the role to the user
                         }
 			return message.delete();
 
