@@ -90,7 +90,7 @@ class CountingChannelManager {
                         //getMessups.auth
                 //        getMessups.set(auth, messup);
                 //        if (messup > 2) {
-                            message.channel.guild.members.get(message.author.id).addRole("381975847977877524");
+                //            message.channel.guild.members.get(message.author.id).addRole("381975847977877524");
                 //        }
                         messups[message.author.id].messups++;
                         if (messups[message.author.id].messups >= 3) {
@@ -103,7 +103,7 @@ class CountingChannelManager {
                 //        messup++;
                 //        getMessups.set(auth, messup);
                 //        if (messup > 2) {
-                          message.channel.guild.member.get(message.author.id).addRole("381975847977877524");
+                //          message.channel.guild.member.get(message.author.id).addRole("381975847977877524");
                 //        }
                         messups[message.author.id].messups++;
                         if (messups[message.author.id].messups >= 3) {
