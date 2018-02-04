@@ -1,5 +1,6 @@
 const fs = require("fs");
 let messups = JSON.parse(fs.readFileSync("./messups.json", "utf8"));
+let numOfMessups = 3;
 
 const baseMap = {
 	'binary': 2,
@@ -63,7 +64,7 @@ class CountingChannelManager {
                 //if (perms.readMessages && perms.readMessageHistory) { // Not using this perm checker because I lock the channel sometimes during updates and keep it locked so I can test it
                 try { // If you uncomment the permission checker comment this line
                   lastMessage = (await this.channel.getMessages(50) || []).find(m => this.parseNumber(m) > 0);
-                } catch (e) { // if you uncomment the permission checker change this like to } else {
+                } catch (e) { // if you uncomment the permission checker change this line to } else {
                   lastMessage = null;
                 }
 
@@ -81,8 +82,12 @@ class CountingChannelManager {
 
 	handleNewMessage(message) {
 		let number = this.parseNumber(message);
+                console.info("Number:", number);
+                console.info("LastNumber:", this.lastNumber);
+                console.info("isNextInSequence:", this.isNextInSequence(number));
+                console.info("Users Message:", message.content);
                 if (!messups[message.author.id]) { messups[message.author.id] = {messups: 0} }
-                if (message.content !== this.lastNumber + 1) {
+                if (number !== this.isNextInSequence(number)) {
                   //message.guild.members.fetch(message.author).then(member => {
                     //member.addRole("381975847977877524");
                   //});
