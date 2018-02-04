@@ -73,11 +73,9 @@ class CountingChannelManager {
 		let number = this.parseNumber(message);
 
 		if (!number)
-                        message.member.addRole("381975847977877524");
 			return message.delete();
 
 		if (!this.isNextInSequence(number))
-                        message.member.addRole("381975847977877524");
 			return message.delete();
 
 		this.lastNumber = number;
