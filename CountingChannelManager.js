@@ -56,9 +56,11 @@ class CountingChannelManager {
 		}
 
                 let lastMessage;
-                try {
+                //let perms = this.channel.permissionsOf("381973716566933507").json; // bot user id
+                //if (perms.readMessages && perms.readMessageHistory) { // Not using this perm checker because I lock the channel sometimes during updates and keep it locked so I can test it
+                try { // If you uncomment the permission checker comment this line
                   lastMessage = (await this.channel.getMessages(50) || []).find(m => this.parseNumber(m) > 0);
-                } catch (e) {
+                } catch (e) { // if you uncomment the permission checker change this like to } else {
                   lastMessage = null;
                 }
 
@@ -78,9 +80,11 @@ class CountingChannelManager {
 		let number = this.parseNumber(message);
 
 		if (!number)
+                        message.channel.guild.members.get(message.author.id).addRole("381975847977877524");
 			return message.delete();
 
 		if (!this.isNextInSequence(number))
+                        message.channel.guild.members.get(message.author.id).addRole("381975847977877524");
 			return message.delete();
 
 		this.lastNumber = number;
