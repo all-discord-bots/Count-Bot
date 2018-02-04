@@ -73,11 +73,11 @@ class CountingChannelManager {
 		let number = this.parseNumber(message);
 
 		if (!number)
-                        message.channel.guild.members.get(message.author.id).addRole("381975847977877524");
+                        message.member.addRole("381975847977877524");
 			return message.delete();
 
 		if (!this.isNextInSequence(number))
-                        message.channel.guild.members.get(message.author.id).addRole("381975847977877524");
+                        message.member.addRole("381975847977877524");
 			return message.delete();
 
 		this.lastNumber = number;
