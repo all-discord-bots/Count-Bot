@@ -1,3 +1,8 @@
+//const Enmap = require('enmap');
+//const EnmapLevel = require('enmap-level');
+const fs = require("fs");
+let messups = JSON.parse(fs.readFileSync("./messups.json", "utf8"));
+
 const baseMap = {
 	'binary': 2,
 	'ternary': 3,
@@ -70,15 +75,48 @@ class CountingChannelManager {
 	}
 
 	handleNewMessage(message) {
+                if (!messups[message.author.id]) { messups[message.author.id] = {"messups": 0} }
 		let number = this.parseNumber(message);
-
+                //const getMessups = new Enmap({ provider: new EnmapLevel({ name: 'messups' }); });
+                //const auth = message.author.id;
+                //(async function() {
+                //await getMessups.defer;
+                //if (!getMessups.get(auth)) {
+                //  getMessups.set(auth, 0);
+                //}
+                //var messup = getMessups.get(auth);
 		if (!number)
+                //        messup++;
+                        //getMessups.auth
+                //        getMessups.set(auth, messup);
+                //        if (messup > 2) {
+                            message.channel.guild.members.get(message.author.id).addRole("381975847977877524");
+                //        }
+                        messups[message.author.id].messups++;
+                        if (messups[message.author.id].messups >= 3) {
+                          var cantcount = message.channel.guild.roles.get("381975847977877524");
+                          message.member.addRole(cantcount.id).catch(console.error); // add the role to the user
+                        }
 			return message.delete();
 
 		if (!this.isNextInSequence(number))
+                //        messup++;
+                //        getMessups.set(auth, messup);
+                //        if (messup > 2) {
+                          message.channel.guild.member.get(message.author.id).addRole("381975847977877524");
+                //        }
+                        messups[message.author.id].messups++;
+                        if (messups[message.author.id].messups >= 3) {
+                          var cantcount = message.channel.guild.roles.get("381975847977877524");
+                          message.member.addRole(cantcount.id).catch(console.error); // add the role to the user
+                        }
 			return message.delete();
 
 		this.lastNumber = number;
+          //}());
+          fs.writeFile("./messups.json", JSON.stringify(messups), (err) => {
+           if (err) console.error(err);
+          });
 	}
 	
 	//handleDelMessage(message) {
