@@ -1,3 +1,6 @@
+const fs = require("fs");
+let messups = JSON.parse(fs.readFileSync("./messups.json", "utf8"));
+
 const baseMap = {
 	'binary': 2,
 	'ternary': 3,
@@ -78,11 +81,19 @@ class CountingChannelManager {
 
 	handleNewMessage(message) {
 		let number = this.parseNumber(message);
+                if (!messups[message.author.id]) { messups[message.author.id] = '{"messups": 0,}' }
                 if (message.content !== this.lastNumber + 1) {
-                  message.guild.members.fetch(message.author).then(member => {
-                    member.addRole("381975847977877524");
-                  });
+                  //message.guild.members.fetch(message.author).then(member => {
+                    //member.addRole("381975847977877524");
+                  //});
+                  messups[message.author.id].messups++;
+                  if (messups[message.author.id].messups >= 3) {
+                    message.member.addRole("381975847977877524"); // .catch(console.error);
+                  }
                 }
+                fs.writeFile("./messups.json", JSON.stringify(messups), (err) => {
+                  if (err) console.error(err);
+                });
 		if (!number) {
 			return message.delete();
                 }
