@@ -98,7 +98,6 @@ class CountingChannelManager {
 			return message.delete();
                 }
 		if (!this.isNextInSequence(number)) {
-                        messup = true;
 			return message.delete();
                 }
 		this.lastNumber = number;
