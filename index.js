@@ -44,15 +44,15 @@ bot.on('messageCreate', message => {
 process.on("uncaughtException", (err) => {
     bot.emit("error", err)
     process.exit(1)
-})
+});
 
 process.on("unhandledRejection", (err) => {
     bot.emit("error", err)
-})
+});
 
 bot.on("error", (err) => {
     console.warn(err.stack);
-})
+});
 
 //bot.on("message", message => {
 //  if (message.author.bot) return;
