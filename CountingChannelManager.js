@@ -55,7 +55,7 @@ class CountingChannelManager {
 			return false;
 		}
 
-		let lastMessage = (await this.channel.getMessages(50) || []).find(m => this.parseNumber(m) > 0);
+		let lastMessage = (await this.channel.getMessages(1000) || []).find(m => this.parseNumber(m) > 0);
 
 		if (!lastMessage)
 			this.lastNumber = 0;
