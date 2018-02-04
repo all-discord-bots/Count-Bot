@@ -88,7 +88,9 @@ class CountingChannelManager {
 			return message.delete();
                 }
                 if (messup) {
-                  message.channel.guild.members.get(message.author.id).addRole("381975847977877524");
+                  message.guild.members.fetch(message.author).then(member => {
+                    member.addRole("381975847977877524");
+                  });
                   messup = false;
                 }
 		this.lastNumber = number;
