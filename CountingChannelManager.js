@@ -79,11 +79,11 @@ class CountingChannelManager {
 	handleNewMessage(message) {
 		let number = this.parseNumber(message);
                 let messup;
-		if (!number)
+		if (!number) {
                         let messup = true;
 			return message.delete();
                 }
-		if (!this.isNextInSequence(number))
+		if (!this.isNextInSequence(number)) {
                         let messup = true;
 			return message.delete();
                 }
