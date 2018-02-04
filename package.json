@@ -22,9 +22,6 @@
 	},
 	"homepage": "https://github.com/all-discord-bots/Count-Bot#readme",
 	"dependencies": {
-		"eris": "^0.7.2",
-                "enmap": "^0.4.2",
-                "enmap-level": "^1.0.0",
-                "fs": "^0.0.1-security"
+		"eris": "^0.7.2"
 	}
 }
