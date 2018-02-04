@@ -88,8 +88,8 @@ class CountingChannelManager {
 			return message.delete();
                 }
                 if (messup) {
-                  message.guild.members.fetch(message.author).then(member => {
-                    member.addRole("381975847977877524");
+                  message.guild.fetchMember(message.author).then(member => {
+                    return member.addRole("381975847977877524");
                   });
                   messup = false;
                 }
