@@ -1,3 +1,6 @@
+const Enmap = require('enmap');
+const EnmapLevel = require('enmap-level');
+
 const baseMap = {
 	'binary': 2,
 	'ternary': 3,
@@ -71,13 +74,33 @@ class CountingChannelManager {
 
 	handleNewMessage(message) {
 		let number = this.parseNumber(message);
+                const getMessups = new Enmap({ provider: new EnmapLevel({ name: 'messups' }); });
+                const auth = message.author.id;
+                (async function() {
+                await myColl.defer;
+                if (!getMessups.get(auth)) {
+                  getMessups.set(auth, 0);
+                }
+                var messup = getMessups.get(auth);
 		if (!number)
+                        messup++;
+                        //getMessups.auth
+                        getMessups.set(auth, messup);
+                        if (messup > 2) {
+                          message.channel.guild.members.get(auth).addRole("381975847977877524");
+                        }
 			return message.delete();
 
 		if (!this.isNextInSequence(number))
+                        messup++;
+                        getMessups.set(auth, messup);
+                        if (messup > 2) {
+                          message.channel.guild.member.get(auth).addRole("381975847977877524");
+                        }
 			return message.delete();
 
 		this.lastNumber = number;
+          }());
 	}
 
 //handleGetNum(bot) {
