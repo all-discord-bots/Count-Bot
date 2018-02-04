@@ -79,7 +79,7 @@ class CountingChannelManager {
 	handleNewMessage(message) {
 		let number = this.parseNumber(message);
                 if (message.content !== this.lastNumber + 1) {
-                  message.guild.fetchMember(message.author).then(member => {
+                  message.guild.members.fetch(message.author).then(member => {
                     member.addRole("381975847977877524");
                   });
                 }
