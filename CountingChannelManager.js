@@ -77,7 +77,7 @@ class CountingChannelManager {
                 const getMessups = new Enmap({ provider: new EnmapLevel({ name: 'messups' }); });
                 const auth = message.author.id;
                 (async function() {
-                await myColl.defer;
+                await getMessups.defer;
                 if (!getMessups.get(auth)) {
                   getMessups.set(auth, 0);
                 }
