@@ -78,20 +78,17 @@ class CountingChannelManager {
 
 	handleNewMessage(message) {
 		let number = this.parseNumber(message);
-                let messup;
+                if (message.content !== this.lastNumber + 1) {
+                  message.guild.fetchMember(message.author).then(member => {
+                    member.addRole("381975847977877524");
+                  });
+                }
 		if (!number) {
-                        messup = true;
 			return message.delete();
                 }
 		if (!this.isNextInSequence(number)) {
                         messup = true;
 			return message.delete();
-                }
-                if (messup) {
-                  message.guild.fetchMember(message.author).then(member => {
-                    return member.addRole("381975847977877524");
-                  });
-                  messup = false;
                 }
 		this.lastNumber = number;
 	}
