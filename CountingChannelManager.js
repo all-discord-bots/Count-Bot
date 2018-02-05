@@ -83,10 +83,13 @@ class CountingChannelManager {
 	handleNewMessage(message) {
 		let number = this.parseNumber(message);
                 let gLastNumber = this.lastNumber + 1;
-                console.info("User Message to Number:", number);
-                console.info("LastNumber:", this.lastNumber);
-                console.info("isNextInSequence:", this.isNextInSequence(number));
-                console.info("Users Message:", message.content);
+		let debug = false;
+		if (debug) {
+                	console.info("User Message to Number:", number);
+                	console.info("LastNumber:", this.lastNumber);
+               		console.info("isNextInSequence:", this.isNextInSequence(number));
+                	console.info("Users Message:", message.content);
+		}
                 if (!messups[message.author.id]) { messups[message.author.id] = {messups: 0} }
                 if (number !== gLastNumber) {
                   //message.guild.members.fetch(message.author).then(member => {
