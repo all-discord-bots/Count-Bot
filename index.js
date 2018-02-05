@@ -9,8 +9,8 @@ let countingChannels = new Map();
 
 bot.on('ready', () => {
   console.info('Counting bot connected');
-  //var channel = bot.channels.get('410125427777077248'); // counting_bot_status_log channel
-  //channel.sendMessage("Bot Online!"); // change to embed with time and date as footer text
+  var channelone = bot.channels.get('410125427777077248'); // counting_bot_status_log channel
+  channelone.send("Bot Online!"); // change to embed with time and date as footer text
   bot.editStatus("online", { name: "1 2 3...", type: 0 });
 });
 
