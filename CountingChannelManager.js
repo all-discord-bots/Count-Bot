@@ -91,7 +91,7 @@ class CountingChannelManager {
                 	console.info("Users Message:", message.content);
 		}
                 if (!messups[message.author.id]) { messups[message.author.id] = {messups: 0} }
-                if (number !== gLastNumber) {
+                if (number !== gLastNumber || message.content.includes(" ") || message.content.includes("-") || message.content.includes("+") || message.content.includes("=") || message.content.includes("_") || message.content.includes("`") || message.content.includes("~") || message.content.includes("!") || message.content.includes("@") || message.content.includes("#") || message.content.includes("$") || message.content.includes("%") || message.content.includes("^") || message.content.includes("&") || message.content.includes("*") || message.content.includes("(") || message.content.includes(")") || message.content.includes("\\") || message.content.includes("|") || message.content.includes("]") || message.content.includes("[") || message.content.includes("{") || message.content.includes("}") || message.content.includes("'") || message.content.includes("\"") || message.content.includes(";") || message.content.includes(":") || message.content.includes("?") || message.content.includes("/") || message.content.includes(".") || message.content.includes(",") || message.content.includes("<") || message.content.includes(">")) {
                   //message.guild.members.fetch(message.author).then(member => {
                     //member.addRole("381975847977877524");
                   //});
