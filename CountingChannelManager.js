@@ -99,6 +99,7 @@ class CountingChannelManager {
                   if (messups[message.author.id].messups >= numOfMessups) {
                     message.member.addRole("381975847977877524"); // .catch(console.error);
                   }
+                  return message.delete();
                 }
                 fs.writeFile("./messups.json", JSON.stringify(messups), (err) => {
                   if (err) console.error(err);
