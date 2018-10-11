@@ -44,6 +44,14 @@ bot.on('messageCreate', (message) => {
 	}
 });
 
+bot.on('messageUpdate', (message, oldMessage) => {
+	if (message.author.bot) return; // dont do anything if message is from bot
+	if (message.channel.id == "410125427777077248") return;
+	if (countingChannels.has(message.channel.id)) {
+		return countingChannels.get(message.channel.id).handleNewMessage(message);
+	}
+});
+
 process.on("uncaughtException", (err) => {
 	bot.emit("error", err)
 	process.exit(1)
