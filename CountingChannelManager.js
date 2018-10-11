@@ -59,14 +59,14 @@ class CountingChannelManager {
 			return false;
 		}
 
-                let lastMessage;
-                //let perms = this.channel.permissionsOf("381973716566933507").json; // bot user id
-                //if (perms.readMessages && perms.readMessageHistory) { // Not using this perm checker because I lock the channel sometimes during updates and keep it locked so I can test it
-                try { // If you uncomment the permission checker comment this line
-                  lastMessage = (await this.channel.getMessages(50) || []).find(m => this.parseNumber(m) > 0);
-                } catch (e) { // if you uncomment the permission checker change this line to } else {
-                  lastMessage = null;
-                }
+		let lastMessage;
+		//let perms = this.channel.permissionsOf("381973716566933507").json; // bot user id
+		//if (perms.readMessages && perms.readMessageHistory) { // Not using this perm checker because I lock the channel sometimes during updates and keep it locked so I can test it
+		try { // If you uncomment the permission checker comment this line
+			lastMessage = (await this.channel.getMessages(50) || []).find(m => this.parseNumber(m) > 0);
+		} catch (e) { // if you uncomment the permission checker change this line to } else {
+			lastMessage = null;
+		}
 
 		if (!lastMessage)
 			this.lastNumber = 0;
@@ -77,44 +77,48 @@ class CountingChannelManager {
 	}
 
 	destroy() {
-
+		
 	}
 
 	handleNewMessage(message) {
 		let number = this.parseNumber(message);
-                let gLastNumber = this.lastNumber + 1;
+		let gLastNumber = this.lastNumber + 1;
 		let debug = false;
 		if (debug) {
-                	console.info("User Message to Number:", number);
-                	console.info("LastNumber:", this.lastNumber);
-               		console.info("isNextInSequence:", this.isNextInSequence(number));
-                	console.info("Users Message:", message.content);
+			console.info("User Message to Number:", number);
+			console.info("LastNumber:", this.lastNumber);
+			console.info("isNextInSequence:", this.isNextInSequence(number));
+			console.info("Users Message:", message.content);
 		}
-                if (!messups[message.author.id]) { messups[message.author.id] = {messups: 0} }
-                if (number !== gLastNumber || message.content.includes(" ") || message.content.includes("-") || message.content.includes("+") || message.content.includes("=") || message.content.includes("_") || message.content.includes("`") || message.content.includes("~") || message.content.includes("!") || message.content.includes("@") || message.content.includes("#") || message.content.includes("$") || message.content.includes("%") || message.content.includes("^") || message.content.includes("&") || message.content.includes("*") || message.content.includes("(") || message.content.includes(")") || message.content.includes("\\") || message.content.includes("|") || message.content.includes("]") || message.content.includes("[") || message.content.includes("{") || message.content.includes("}") || message.content.includes("'") || message.content.includes("\"") || message.content.includes(";") || message.content.includes(":") || message.content.includes("?") || message.content.includes("/") || message.content.includes(".") || message.content.includes(",") || message.content.includes("<") || message.content.includes(">")) {
-                  //message.guild.members.fetch(message.author).then(member => {
-                    //member.addRole("381975847977877524");
-                  //});
-                  messups[message.author.id].messups++;
-                  if (messups[message.author.id].messups >= numOfMessups) {
-                    message.member.addRole("381975847977877524"); // .catch(console.error);
-                  }
-                  return message.delete();
-                }
-                fs.writeFile("./messups.json", JSON.stringify(messups), (err) => {
-                  if (err) console.error(err);
-                });
+		if (!messups[message.guild.id][message.author.id]) { messups[message.guild.id][message.author.id] = {messups: 0} }
+		if (number !== gLastNumber || message.content.includes(" ") || message.content.includes("-") || message.content.includes("+") || message.content.includes("=") || message.content.includes("_") || message.content.includes("`") || message.content.includes("~") || message.content.includes("!") || message.content.includes("@") || message.content.includes("#") || message.content.includes("$") || message.content.includes("%") || message.content.includes("^") || message.content.includes("&") || message.content.includes("*") || message.content.includes("(") || message.content.includes(")") || message.content.includes("\\") || message.content.includes("|") || message.content.includes("]") || message.content.includes("[") || message.content.includes("{") || message.content.includes("}") || message.content.includes("'") || message.content.includes("\"") || message.content.includes(";") || message.content.includes(":") || message.content.includes("?") || message.content.includes("/") || message.content.includes(".") || message.content.includes(",") || message.content.includes("<") || message.content.includes(">")) {
+			//message.guild.members.fetch(message.author).then(member => {
+				//member.addRole("381975847977877524");
+			//});
+			messups[message.guild.id][message.author.id].messups++;
+			if (messups[message.guild.id][message.author.id].messups >= numOfMessups) {
+				message.guild.roles.map((role) => role.id).forEach((value,index) => {
+					if (message.guild.roles.get(`${value}`).name === "can't count") {
+						message.member.addRole(`${value.id}`); // "381975847977877524"
+					}
+				});
+			}
+			return message.delete();
+		}
+		fs.writeFile("./messups.json", JSON.stringify(messups), (err) => {
+			if (err) console.error(err);
+		});
 		if (!number) {
 			return message.delete();
-                }
+		}
 		if (!this.isNextInSequence(number)) {
 			return message.delete();
-                }
+		}
 		this.lastNumber = number;
 	}
-	
+
 	//handleDelMessage(message) {
-	  //message.channel.guild.members.get(message.author.id).addRole("381975847977877524"); //.addRole({name: role});
+		//message.channel.guild.members.get(message.author.id).addRole("381975847977877524"); //.addRole({name: role});
 	//}
 
 	parseNumber(message) {
