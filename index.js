@@ -52,14 +52,14 @@ bot.on('messageUpdate', (message, oldMessage) => {
 	});
 });
 
-bot.on('messageDelete', (message) => {
+/*bot.on('messageDelete', (message) => {
 	if (message.author.bot) return;
 	message.channel.guild.roles.map((role) => role.id).forEach((value,index) => {
 		if (message.channel.guild.roles.get(`${value}`).name === "can't count") {
 			message.member.addRole(`${value}`); // "381975847977877524"
 		}
 	});
-});
+});*/
 
 process.on("uncaughtException", (err) => {
 	bot.emit("error", err)
