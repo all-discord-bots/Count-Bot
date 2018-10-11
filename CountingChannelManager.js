@@ -90,7 +90,14 @@ class CountingChannelManager {
 			console.info("isNextInSequence:", this.isNextInSequence(number));
 			console.info("Users Message:", message.content);
 		}
-		if (!messups[message.guild.id][message.author.id]) { messups[message.guild.id][message.author.id] = {messups: 0} }
+		if (!messups[message.guild.id]) {
+			messups[message.guild.id] = {}
+		}
+		if (messups[message.guild.id] && !messups[message.guild.id][message.author.id]) {
+			messups[message.guild.id][message.author.id] = {
+				messups: 0
+			}
+		}
 		if (number !== gLastNumber || message.content.includes(" ") || message.content.includes("-") || message.content.includes("+") || message.content.includes("=") || message.content.includes("_") || message.content.includes("`") || message.content.includes("~") || message.content.includes("!") || message.content.includes("@") || message.content.includes("#") || message.content.includes("$") || message.content.includes("%") || message.content.includes("^") || message.content.includes("&") || message.content.includes("*") || message.content.includes("(") || message.content.includes(")") || message.content.includes("\\") || message.content.includes("|") || message.content.includes("]") || message.content.includes("[") || message.content.includes("{") || message.content.includes("}") || message.content.includes("'") || message.content.includes("\"") || message.content.includes(";") || message.content.includes(":") || message.content.includes("?") || message.content.includes("/") || message.content.includes(".") || message.content.includes(",") || message.content.includes("<") || message.content.includes(">")) {
 			//message.guild.members.fetch(message.author).then(member => {
 				//member.addRole("381975847977877524");
