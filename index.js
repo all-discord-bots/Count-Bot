@@ -1,6 +1,6 @@
 const config = require('./config.json'),
 	Eris = require('eris'),
-	bot = new Eris(process.env.token, { // config.token
+	bot = new Eris(config.token, {
 		messageLimit: 0
 	}),
 	CountingChannelManager = require('./CountingChannelManager');
