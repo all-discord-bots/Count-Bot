@@ -106,7 +106,7 @@ class CountingChannelManager {
 			if (messups[message.channel.guild.id][message.author.id].messups >= numOfMessups) {
 				message.channel.guild.roles.map((role) => role.id).forEach((value,index) => {
 					if (message.channel.guild.roles.get(`${value}`).name === "can't count") {
-						message.member.addRole(`${value.id}`); // "381975847977877524"
+						message.member.addRole(`${value}`); // "381975847977877524"
 					}
 				});
 			}
