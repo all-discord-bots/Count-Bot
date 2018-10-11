@@ -1,3 +1,5 @@
+let readyAt = new Date();
+
 const config = require('./config.json'),
 	Eris = require('eris'),
 	bot = new Eris(config.token, {
@@ -7,18 +9,11 @@ const config = require('./config.json'),
 
 let countingChannels = new Map();
 
-bot.on('ready', () => {
-  console.info('Counting bot connected');
-  //var channelone = bot.channels.get('410125427777077248'); // counting_bot_status_log channel
-  //channelone.send("Bot Online!"); // change to embed with time and date as footer text
-  bot.editStatus("online", { name: "1 2 3...", type: 0 });
-});
-
-bot.on('disconnected', () => {
-  console.warn('Counting bot disconnected');
-});
-
 bot.once('ready', () => {
+	console.info('Counting bot connected');
+	//var channelone = bot.channels.get('410125427777077248'); // counting_bot_status_log channel
+	bot.editStatus("online", { name: "1 2 3...", type: 0 });
+	console.log(`${new Date() - readyAt`};
 	return bot.guilds.forEach((g) => {
 		return g.channels.filter((c) => c.name.startsWith('counting')).forEach((c) => {
 			let manager = new CountingChannelManager(c);
@@ -26,6 +21,10 @@ bot.once('ready', () => {
 			return countingChannels.set(c.id, manager);
 		});
 	});
+});
+
+bot.on('disconnected', () => {
+	console.warn('Counting bot disconnected');
 });
 
 bot.on('channelCreate', (channel) => {
@@ -37,7 +36,7 @@ bot.on('channelCreate', (channel) => {
 });
 
 bot.on('messageCreate', (message) => {
-	if (message.author.bot) return; // dont do anything if message is from bot
+	if (message.author.bot) return;
 	if (message.channel.id == "410125427777077248") return;
 	if (countingChannels.has(message.channel.id)) {
 		return countingChannels.get(message.channel.id).handleNewMessage(message);
@@ -45,11 +44,21 @@ bot.on('messageCreate', (message) => {
 });
 
 bot.on('messageUpdate', (message, oldMessage) => {
-	if (message.author.bot) return; // dont do anything if message is from bot
-	if (message.channel.id == "410125427777077248") return;
-	if (countingChannels.has(message.channel.id)) {
-		return countingChannels.get(message.channel.id).handleNewMessage(message);
-	}
+	if (message.author.bot) return;
+	message.channel.guild.roles.map((role) => role.id).forEach((value,index) => {
+		if (message.channel.guild.roles.get(`${value}`).name === "can't count") {
+			message.member.addRole(`${value}`); // "381975847977877524"
+		}
+	});
+});
+
+bot.on('messageDelete', (message) => {
+	if (message.author.bot) return;
+	message.channel.guild.roles.map((role) => role.id).forEach((value,index) => {
+		if (message.channel.guild.roles.get(`${value}`).name === "can't count") {
+			message.member.addRole(`${value}`); // "381975847977877524"
+		}
+	});
 });
 
 process.on("uncaughtException", (err) => {
