@@ -1,4 +1,4 @@
-let readyAt = new Date();
+// let readyAt = new Date();
 
 const config = require('./config.json'),
 	Eris = require('eris'),
@@ -13,7 +13,7 @@ bot.once('ready', () => {
 	console.info('Counting bot connected');
 	//var channelone = bot.channels.get('410125427777077248'); // counting_bot_status_log channel
 	bot.editStatus("online", { name: "1 2 3...", type: 0 });
-	console.log(`${new Date() - readyAt`};
+	// console.log(`${new Date() - readyAt`});
 	return bot.guilds.forEach((g) => {
 		return g.channels.filter((c) => c.name.startsWith('counting')).forEach((c) => {
 			let manager = new CountingChannelManager(c);
