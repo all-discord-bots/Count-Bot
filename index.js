@@ -65,6 +65,8 @@ bot.on('messageUpdate', (message, oldMessage) => {
 			return countingChannels.get(message.channel.id).recalculateNextNumber();
 			//return bot.createMessage(message.channel.id, `${countingChannels.get(message.channel.id).currentNumber()}`);
 		}
+		countingChannels.get(message.channel.id).setDeletedBy(message, "bot");
+		return message.delete();
 	}
 });
 
