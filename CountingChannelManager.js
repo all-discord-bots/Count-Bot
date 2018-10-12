@@ -158,7 +158,7 @@ class CountingChannelManager {
 				>eval var numbers = [1, 2, 3, 4];
 				Math.max(...numbers);
 			*/
-			lastMessage = (await message.channel.getMessages(50) || []).find((m) => Math.max(...this.parseNumber(m))); //> 0);
+			lastMessage = (await message.channel.getMessages(50) || []).find((m) => Math.max(this.parseNumber(m))); //> 0);
 		} catch (e) { // if you uncomment the permission checker change this line to } else {
 			lastMessage = null;
 		}
