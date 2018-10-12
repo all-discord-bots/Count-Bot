@@ -1,6 +1,7 @@
 const fs = require("fs");
 let messups = JSON.parse(fs.readFileSync("./messups.json", "utf8"));
-let numOfMessups = 3;
+
+const numOfMessups = 3;
 
 const baseMap = {
 	'binary': 2,
@@ -98,7 +99,7 @@ class CountingChannelManager {
 				messups: 0
 			}
 		}
-		if (message.content.length !== gLastNumber.toString().length || number !== gLastNumber || message.content.includes(" ") || message.content.includes("-") || message.content.includes("+") || message.content.includes("=") || message.content.includes("_") || message.content.includes("`") || message.content.includes("~") || message.content.includes("!") || message.content.includes("@") || message.content.includes("#") || message.content.includes("$") || message.content.includes("%") || message.content.includes("^") || message.content.includes("&") || message.content.includes("*") || message.content.includes("(") || message.content.includes(")") || message.content.includes("\\") || message.content.includes("|") || message.content.includes("]") || message.content.includes("[") || message.content.includes("{") || message.content.includes("}") || message.content.includes("'") || message.content.includes("\"") || message.content.includes(";") || message.content.includes(":") || message.content.includes("?") || message.content.includes("/") || message.content.includes(".") || message.content.includes(",") || message.content.includes("<") || message.content.includes(">")) {
+		if (number !== gLastNumber || message.content.includes(" ") || message.content.includes("-") || message.content.includes("+") || message.content.includes("=") || message.content.includes("_") || message.content.includes("`") || message.content.includes("~") || message.content.includes("!") || message.content.includes("@") || message.content.includes("#") || message.content.includes("$") || message.content.includes("%") || message.content.includes("^") || message.content.includes("&") || message.content.includes("*") || message.content.includes("(") || message.content.includes(")") || message.content.includes("\\") || message.content.includes("|") || message.content.includes("]") || message.content.includes("[") || message.content.includes("{") || message.content.includes("}") || message.content.includes("'") || message.content.includes("\"") || message.content.includes(";") || message.content.includes(":") || message.content.includes("?") || message.content.includes("/") || message.content.includes(".") || message.content.includes(",") || message.content.includes("<") || message.content.includes(">")) {
 			//message.channel.guild.members.fetch(message.author).then(member => {
 				//member.addRole("381975847977877524");
 			//});
@@ -106,7 +107,10 @@ class CountingChannelManager {
 			if (messups[message.channel.guild.id][message.author.id].messups >= numOfMessups) {
 				message.channel.guild.roles.map((role) => role.id).forEach((value,index) => {
 					if (message.channel.guild.roles.get(`${value}`).name === "can't count") {
-						message.member.addRole(`${value}`); // "381975847977877524"
+						message.member.addRole(`${value}`);
+						if (messups[message.channel.guild.id] && messups[message.channel.guild.id][message.author.id]) {
+							messups[message.channel.guild.id][message.author.id].messups = 0;
+						}
 					}
 				});
 			}
