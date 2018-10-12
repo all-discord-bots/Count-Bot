@@ -50,28 +50,44 @@ bot.on('messageCreate', (message) => {
 bot.once('messageUpdate', (message, oldMessage) => {
 	//if (message.channel.type !== 0) return;
 	//if (message.author.bot) return;
-	if (message.id === message.channel.lastMessageID) {
-		message.channel.guild.roles.map((role) => role.id).forEach((value,index) => {
-			if (message.channel.guild.roles.get(`${value}`).name === "can't count") {
-				message.member.addRole(`${value}`);
-				if (messups[message.channel.guild.id] && messups[message.channel.guild.id][message.author.id]) {
-					messups[message.channel.guild.id][message.author.id].messups = 0;
+	if (countingChannels.has(message.channel.id)) {
+		if (message.id === message.channel.lastMessageID) {
+			message.channel.guild.roles.map((role) => role.id).forEach((value,index) => {
+				if (message.channel.guild.roles.get(`${value}`).name === "can't count") {
+					message.member.addRole(`${value}`);
+					if (messups[message.channel.guild.id] && messups[message.channel.guild.id][message.author.id]) {
+						messups[message.channel.guild.id][message.author.id].messups = 0;
+					}
 				}
-			}
-		});
-		return message.delete();
+			});
+			countingChannels.get(message.channel.id).setDeletedBy(message, "bot");
+			message.delete();
+		}
+		return countingChannels.get(message.channel.id).recalculateNextNumber(message);
 	}
 });
 
-/*bot.once('messageDelete', (message) => {
-	if (message.channel.type !== 'text') return;
-	if (message.author.bot) return;
-	message.channel.guild.roles.map((role) => role.id).forEach((value,index) => {
-		if (message.channel.guild.roles.get(`${value}`).name === "can't count") {
-			message.member.addRole(`${value}`); // "381975847977877524"
+bot.once('messageDelete', (message) => {
+	//if (message.channel.type !== 'text') return;
+	//if (message.author.bot) return;
+	if (countingChannels.has(message.channel.id)) {
+		// const entry = await message.guild.getAuditLogs({actionType: 72}).then((audit) => audit.entries.first());
+		if (countingChannels.get(message.channel.id).getDeletedBy(message) === "not deleted") {
+			countingChannels.get(message.channel.id).setDeletedBy(message, "user");
 		}
-	});
-});*/
+		if (countingChannels.get(message.channel.id).getDeletedBy(message) === "user") {
+			message.channel.guild.roles.map((role) => role.id).forEach((value,index) => {
+				if (message.channel.guild.roles.get(`${value}`).name === "can't count") {
+					message.member.addRole(`${value}`); // "381975847977877524"
+					if (messups[message.channel.guild.id] && messups[message.channel.guild.id][message.author.id]) {
+						messups[message.channel.guild.id][message.author.id].messups = 0;
+					}
+				}
+			});
+			return countingChannels.get(message.channel.id).recalculateNextNumber(message);
+		}
+	}
+});
 
 process.on("uncaughtException", (err) => {
 	bot.emit("error", err)
