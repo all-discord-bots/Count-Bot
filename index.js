@@ -47,7 +47,7 @@ bot.on('messageCreate', (message) => {
 	}
 });
 
-bot.once('messageUpdate', (message, oldMessage) => {
+bot.on('messageUpdate', (message, oldMessage) => {
 	//if (message.channel.type !== 0) return;
 	//if (message.author.bot) return;
 	if (countingChannels.has(message.channel.id)) {
@@ -67,7 +67,7 @@ bot.once('messageUpdate', (message, oldMessage) => {
 	}
 });
 
-bot.once('messageDelete', (message) => {
+bot.on('messageDelete', (message) => {
 	//if (message.channel.type !== 'text') return;
 	//if (message.author.bot) return;
 	if (countingChannels.has(message.channel.id)) {
