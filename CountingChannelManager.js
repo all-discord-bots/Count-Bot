@@ -1,6 +1,8 @@
 const fs = require("fs");
 let messups = JSON.parse(fs.readFileSync("./messups.json", "utf8"));
 
+let thisMessage = new Map();
+
 const numOfMessups = 3;
 
 const baseMap = {
@@ -28,8 +30,6 @@ class CountingChannelManager {
 		this.by = null;
 		this.lastNumber = null;
 	}
-	
-	let thisMessage = new Map();
 
 	async init() {
 		let [, base] = this.channel.name.match(/-in-([^-]+)/i) || [];
