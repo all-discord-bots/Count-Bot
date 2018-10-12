@@ -62,9 +62,8 @@ bot.on('messageUpdate', (message, oldMessage) => {
 			});
 			countingChannels.get(message.channel.id).setDeletedBy(message, "bot");
 			message.delete();
-			setTimeout(() => {
-				return countingChannels.get(message.channel.id).recalculateNextNumber(oldMessage);
-			}, 500);
+			//return countingChannels.get(message.channel.id).recalculateNextNumber(oldMessage);
+			return message.channel.createMessage(message.channel.id, `Current number is: \`${countingChannels.get(message.channel.id).currentNumber()}\``);
 		}
 	}
 });
@@ -74,17 +73,18 @@ bot.on('messageDelete', (message) => {
 	//if (message.author.bot) return;
 	if (countingChannels.has(message.channel.id)) {
 		if (countingChannels.get(message.channel.id).getDeletedBy(message) !== "bot") {
-			/*message.channel.guild.roles.map((role) => role.id).forEach((value,index) => {
-				if (message.channel.guild.roles.get(`${value}`).name === "can't count") {
-					message.member.addRole(`${value}`); // "381975847977877524"
-					if (messups[message.channel.guild.id] && messups[message.channel.guild.id][message.author.id]) {
-						messups[message.channel.guild.id][message.author.id].messups = 0;
+			if (message.id === message.channel.lastMessageID) {
+				/*message.channel.guild.roles.map((role) => role.id).forEach((value,index) => {
+					if (message.channel.guild.roles.get(`${value}`).name === "can't count") {
+						message.member.addRole(`${value}`); // "381975847977877524"
+						if (messups[message.channel.guild.id] && messups[message.channel.guild.id][message.author.id]) {
+							messups[message.channel.guild.id][message.author.id].messups = 0;
+						}
 					}
-				}
-			});*/
-			setTimeout(() => {
-				return countingChannels.get(message.channel.id).recalculateNextNumber(message);
-			}, 500);
+				});*/
+				// return countingChannels.get(message.channel.id).recalculateNextNumber(message);
+				return message.channel.createMessage(message.channel.id, `Current number is: \`${countingChannels.get(message.channel.id).currentNumber()}\``);
+			}
 		}
 	}
 });
