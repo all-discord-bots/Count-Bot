@@ -152,7 +152,7 @@ class CountingChannelManager {
 	}
 	
 	currentNumber() {
-		return this.lastNumber + 1;
+		return this.lastNumber - 1;
 	}
 	
 	async recalculateNextNumber(message) {
