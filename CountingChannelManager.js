@@ -155,13 +155,10 @@ class CountingChannelManager {
 		return this.lastNumber - 1;
 	}
 	
-	async recalculateNextNumber(message) {
-		let lastMessage;
+	recalculateNextNumber() {
+		this.lastNumber = this.lastNumber - 1;
+		/*let lastMessage;
 		try { // If you uncomment the permission checker comment this line
-			/*
-				>eval var numbers = [1, 2, 3, 4];
-				Math.max(...numbers);
-			*/
 			lastMessage = (await message.channel.getMessages(50) || []).find((m) => this.parseNumber(m) > 0);
 		} catch (e) { // if you uncomment the permission checker change this line to } else {
 			lastMessage = null;
@@ -171,7 +168,7 @@ class CountingChannelManager {
 			this.lastNumber = 0;
 		} else {
 			this.lastNumber = this.parseNumber(lastMessage);
-		}
+		}*/
 	}
 	
 	setDeletedBy(message, userType) {
