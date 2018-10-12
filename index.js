@@ -72,14 +72,14 @@ bot.once('messageDelete', (message) => {
 	//if (message.author.bot) return;
 	if (countingChannels.has(message.channel.id)) {
 		if (countingChannels.get(message.channel.id).getDeletedBy(message) !== "bot") {
-			message.channel.guild.roles.map((role) => role.id).forEach((value,index) => {
+			/*message.channel.guild.roles.map((role) => role.id).forEach((value,index) => {
 				if (message.channel.guild.roles.get(`${value}`).name === "can't count") {
 					message.member.addRole(`${value}`); // "381975847977877524"
 					if (messups[message.channel.guild.id] && messups[message.channel.guild.id][message.author.id]) {
 						messups[message.channel.guild.id][message.author.id].messups = 0;
 					}
 				}
-			});
+			});*/
 			return countingChannels.get(message.channel.id).recalculateNextNumber(message);
 		}
 	}
