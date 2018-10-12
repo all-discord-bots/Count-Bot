@@ -154,7 +154,11 @@ class CountingChannelManager {
 	async recalculateNextNumber(message) {
 		let lastMessage;
 		try { // If you uncomment the permission checker comment this line
-			lastMessage = (await message.channel.getMessages(50) || []).find((m) => this.parseNumber(m) > 0);
+			/*
+				>eval var numbers = [1, 2, 3, 4];
+				Math.max(...numbers);
+			*/
+			lastMessage = (await message.channel.getMessages(50) || []).find((m) => Math.max(...this.parseNumber(m))); //> 0);
 		} catch (e) { // if you uncomment the permission checker change this line to } else {
 			lastMessage = null;
 		}
