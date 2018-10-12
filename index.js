@@ -3,7 +3,7 @@
 const config = require('./config.json'),
 	Eris = require('eris'),
 	bot = new Eris(config.token, {
-		messageLimit: 0
+		messageLimit: 100
 	}),
 	CountingChannelManager = require('./CountingChannelManager');
 
