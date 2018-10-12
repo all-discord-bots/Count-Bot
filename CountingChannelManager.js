@@ -28,6 +28,8 @@ class CountingChannelManager {
 		this.by = null;
 		this.lastNumber = null;
 	}
+	
+	let thisMessage = new Map();
 
 	async init() {
 		let [, base] = this.channel.name.match(/-in-([^-]+)/i) || [];
@@ -82,6 +84,7 @@ class CountingChannelManager {
 	}
 
 	handleNewMessage(message) {
+		this.setDeletedBy(message, "not deleted");
 		let number = this.parseNumber(message);
 		let gLastNumber = this.lastNumber + 1;
 		let debug = false;
@@ -114,15 +117,18 @@ class CountingChannelManager {
 					}
 				});
 			}
+			this.setDeletedBy(message, "bot");
 			return message.delete();
 		}
 		fs.writeFile("./messups.json", JSON.stringify(messups), (err) => {
 			if (err) console.error(err);
 		});
 		if (!number) {
+			this.setDeletedBy(message, "bot");
 			return message.delete();
 		}
 		if (!this.isNextInSequence(number)) {
+			this.setDeletedBy(message, "bot");
 			return message.delete();
 		}
 		this.lastNumber = number;
@@ -158,6 +164,14 @@ class CountingChannelManager {
 		} else {
 			this.lastNumber = this.parseNumber(lastMessage);
 		}
+	}
+	
+	setDeletedBy(message, userType) {
+		return thisMessage.set(message.id, userType);
+	}
+	
+	getDeletedBy(message) {
+		return thisMessage.get(message.id);
 	}
 	
 	/*giveRole(message) {
