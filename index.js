@@ -63,7 +63,7 @@ bot.on('messageUpdate', (message, oldMessage) => {
 			countingChannels.get(message.channel.id).setDeletedBy(message, "bot");
 			message.delete();
 			//return countingChannels.get(message.channel.id).recalculateNextNumber(oldMessage);
-			return message.channel.createMessage(message.channel.id, `Current number is: \`${countingChannels.get(message.channel.id).currentNumber()}\``);
+			return bot.createMessage(message.channel.id, `${countingChannels.get(message.channel.id).currentNumber()}`);
 		}
 	}
 });
@@ -83,7 +83,7 @@ bot.on('messageDelete', (message) => {
 					}
 				});*/
 				// return countingChannels.get(message.channel.id).recalculateNextNumber(message);
-				return message.channel.createMessage(message.channel.id, `Current number is: \`${countingChannels.get(message.channel.id).currentNumber()}\``);
+				return bot.createMessage(message.channel.id, `${countingChannels.get(message.channel.id).currentNumber()}`);
 			}
 		}
 	}
