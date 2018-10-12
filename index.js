@@ -62,7 +62,9 @@ bot.on('messageUpdate', (message, oldMessage) => {
 			});
 			countingChannels.get(message.channel.id).setDeletedBy(message, "bot");
 			message.delete();
-			return countingChannels.get(message.channel.id).recalculateNextNumber(message);
+			setTimeout(() => {
+				return countingChannels.get(message.channel.id).recalculateNextNumber(oldMessage);
+			}, 500);
 		}
 	}
 });
@@ -80,7 +82,9 @@ bot.on('messageDelete', (message) => {
 					}
 				}
 			});*/
-			return countingChannels.get(message.channel.id).recalculateNextNumber(message);
+			setTimeout(() => {
+				return countingChannels.get(message.channel.id).recalculateNextNumber(message);
+			}, 500);
 		}
 	}
 });
