@@ -72,8 +72,8 @@ bot.on('messageDelete', (message) => {
 	//if (message.channel.type !== 'text') return;
 	//if (message.author.bot) return;
 	if (countingChannels.has(message.channel.id)) {
-		if (message.id === message.channel.lastMessageID) {
-			console.log(countingChannels.get(message.channel.id).getDeletedBy(message));
+		if (message.id !== message.channel.lastMessageID) {
+			//console.log(countingChannels.get(message.channel.id).getDeletedBy(message));
 			if (countingChannels.get(message.channel.id).getDeletedBy(message) === "bot") return;
 			/*message.channel.guild.roles.map((role) => role.id).forEach((value,index) => {
 				if (message.channel.guild.roles.get(`${value}`).name === "can't count") {
