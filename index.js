@@ -9,6 +9,9 @@ const config = require('./config.json'),
 
 let countingChannels = new Map();
 
+const fs = require("fs");
+let messups = JSON.parse(fs.readFileSync("./messups.json", "utf8"));
+
 bot.once('ready', () => {
 	console.info('Counting bot connected');
 	//var channelone = bot.channels.get('410125427777077248'); // counting_bot_status_log channel
@@ -36,6 +39,7 @@ bot.on('channelCreate', (channel) => {
 });
 
 bot.on('messageCreate', (message) => {
+	if (message.channel.type !== 'text') return;
 	if (message.author.bot) return;
 	if (message.channel.id == "410125427777077248") return;
 	if (countingChannels.has(message.channel.id)) {
@@ -43,16 +47,24 @@ bot.on('messageCreate', (message) => {
 	}
 });
 
-bot.on('messageUpdate', (message, oldMessage) => {
-	if (message.author.bot) return;
-	message.channel.guild.roles.map((role) => role.id).forEach((value,index) => {
-		if (message.channel.guild.roles.get(`${value}`).name === "can't count") {
-			message.member.addRole(`${value}`); // "381975847977877524"
-		}
-	});
+bot.once('messageUpdate', (message, oldMessage) => {
+	if (message.channel.type !== 'text') return;
+	//if (message.author.bot) return;
+	if (message.id === message.channel.lastMessageID) {
+		message.channel.guild.roles.map((role) => role.id).forEach((value,index) => {
+			if (message.channel.guild.roles.get(`${value}`).name === "can't count") {
+				message.member.addRole(`${value}`);
+				if (messups[message.channel.guild.id] && messups[message.channel.guild.id][message.author.id]) {
+					messups[message.channel.guild.id][message.author.id].messups = 0;
+				}
+			}
+		});
+		return message.delete();
+	}
 });
 
-/*bot.on('messageDelete', (message) => {
+/*bot.once('messageDelete', (message) => {
+	if (message.channel.type !== 'text') return;
 	if (message.author.bot) return;
 	message.channel.guild.roles.map((role) => role.id).forEach((value,index) => {
 		if (message.channel.guild.roles.get(`${value}`).name === "can't count") {
