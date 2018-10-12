@@ -144,6 +144,32 @@ class CountingChannelManager {
 	isNextInSequence(number) {
 		return number === this.lastNumber + this.by;
 	}
+	
+	async recalculateNextNumber(message) {
+		let lastMessage;
+		try { // If you uncomment the permission checker comment this line
+			lastMessage = (await message.channel.getMessages(50) || []).find((m) => this.parseNumber(m) > 0);
+		} catch (e) { // if you uncomment the permission checker change this line to } else {
+			lastMessage = null;
+		}
+		
+		if (!lastMessage) {
+			this.lastNumber = 0;
+		} else {
+			this.lastNumber = this.parseNumber(lastMessage);
+		}
+	}
+	
+	/*giveRole(message) {
+		message.channel.guild.roles.map((role) => role.id).forEach((value,index) => {
+			if (message.channel.guild.roles.get(`${value}`).name === "can't count") {
+				message.member.addRole(`${value}`);
+				if (messups[message.channel.guild.id] && messups[message.channel.guild.id][message.author.id]) {
+					messups[message.channel.guild.id][message.author.id].messups = 0;
+				}
+			}
+		});
+	}*/
 }
 
 module.exports = CountingChannelManager;
