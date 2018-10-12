@@ -39,7 +39,7 @@ bot.on('channelCreate', (channel) => {
 });
 
 bot.on('messageCreate', (message) => {
-	if (message.channel.type !== 'text') return;
+	//if (message.channel.type !== 'text') return;
 	if (message.author.bot) return;
 	if (message.channel.id == "410125427777077248") return;
 	if (countingChannels.has(message.channel.id)) {
@@ -48,7 +48,7 @@ bot.on('messageCreate', (message) => {
 });
 
 bot.once('messageUpdate', (message, oldMessage) => {
-	if (message.channel.type !== 0) return;
+	//if (message.channel.type !== 0) return;
 	//if (message.author.bot) return;
 	if (message.id === message.channel.lastMessageID) {
 		message.channel.guild.roles.map((role) => role.id).forEach((value,index) => {
