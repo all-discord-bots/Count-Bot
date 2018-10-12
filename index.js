@@ -72,19 +72,19 @@ bot.on('messageDelete', (message) => {
 	//if (message.channel.type !== 'text') return;
 	//if (message.author.bot) return;
 	if (countingChannels.has(message.channel.id)) {
-		if (countingChannels.get(message.channel.id).getDeletedBy(message) !== "bot") {
-			if (message.id === message.channel.lastMessageID) {
-				/*message.channel.guild.roles.map((role) => role.id).forEach((value,index) => {
-					if (message.channel.guild.roles.get(`${value}`).name === "can't count") {
-						message.member.addRole(`${value}`); // "381975847977877524"
-						if (messups[message.channel.guild.id] && messups[message.channel.guild.id][message.author.id]) {
-							messups[message.channel.guild.id][message.author.id].messups = 0;
-						}
+		if (message.id === message.channel.lastMessageID) {
+			console.log(countingChannels.get(message.channel.id).getDeletedBy(message));
+			if (countingChannels.get(message.channel.id).getDeletedBy(message) === "bot") return;
+			/*message.channel.guild.roles.map((role) => role.id).forEach((value,index) => {
+				if (message.channel.guild.roles.get(`${value}`).name === "can't count") {
+					message.member.addRole(`${value}`); // "381975847977877524"
+					if (messups[message.channel.guild.id] && messups[message.channel.guild.id][message.author.id]) {
+						messups[message.channel.guild.id][message.author.id].messups = 0;
 					}
-				});*/
-				return countingChannels.get(message.channel.id).recalculateNextNumber();
-				//return bot.createMessage(message.channel.id, `${countingChannels.get(message.channel.id).currentNumber()}`);
-			}
+				}
+			});*/
+			return countingChannels.get(message.channel.id).recalculateNextNumber();
+			//return bot.createMessage(message.channel.id, `${countingChannels.get(message.channel.id).currentNumber()}`);
 		}
 	}
 });
