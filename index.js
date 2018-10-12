@@ -71,11 +71,7 @@ bot.once('messageDelete', (message) => {
 	//if (message.channel.type !== 'text') return;
 	//if (message.author.bot) return;
 	if (countingChannels.has(message.channel.id)) {
-		// const entry = await message.guild.getAuditLogs({actionType: 72}).then((audit) => audit.entries.first());
-		if (countingChannels.get(message.channel.id).getDeletedBy(message) === "not deleted") {
-			countingChannels.get(message.channel.id).setDeletedBy(message, "user");
-		}
-		if (countingChannels.get(message.channel.id).getDeletedBy(message) === "user") {
+		if (countingChannels.get(message.channel.id).getDeletedBy(message) !== "bot") {
 			message.channel.guild.roles.map((role) => role.id).forEach((value,index) => {
 				if (message.channel.guild.roles.get(`${value}`).name === "can't count") {
 					message.member.addRole(`${value}`); // "381975847977877524"
