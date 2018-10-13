@@ -157,9 +157,13 @@ class CountingChannelManager {
 	
 	recalculateNextNumber(message) {
 		//this.lastNumber = this.lastNumber - 1;
-		setTimeout(() => {
-			this.lastNumber = Math.max(...message.channel.messages.filter((m) => parseInt(m.content)).map((m) => parseInt(m.content)));
-		},500);
+		//setTimeout(() => {
+		//if (message_edited) {
+			this.lastNumber = Math.max(...message.channel.messages.filter((m) => m.id !== message.id && parseInt(m.content)).map((m) => parseInt(m.content)));
+		//} else {
+			//this.lastNumber = Math.max(...message.channel.messages.filter((m) => parseInt(m.content)).map((m) => parseInt(m.content)));
+		//}
+		//},500);
 		/*let lastMessage;
 		try { // If you uncomment the permission checker comment this line
 			lastMessage = (await message.channel.getMessages(50) || []).find((m) => this.parseNumber(m) > 0);
