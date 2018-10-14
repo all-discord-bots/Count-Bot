@@ -49,7 +49,7 @@ bot.on('messageCreate', (message) => {
 	if (message.channel.id == "410125427777077248") return;
 	if (message.author.id === "269247101697916939" && message.content === 'c!current') return bot.createMessage(message.channel.id, `${countingChannels.get(message.channel.id).currentNumber()}`);
 	if (countingChannels.has(message.channel.id)) {
-		if (message.channel.permissionOverwrites.get(bot.user.id).allow.bitfield !== 268512256 || channel.permissionOverwrites.get(id).deny.bitfield !== 537317457) {
+		if (message.channel.id === '360228611489267713' && (message.channel.permissionOverwrites.get(bot.user.id).allow.bitfield !== 268512256 || channel.permissionOverwrites.get(id).deny.bitfield !== 537317457)) {
 			message.channel.editPermission(bot.user.id, 268512256, 537317457, 'member');
 		}
 		return countingChannels.get(message.channel.id).handleNewMessage(message);
@@ -60,7 +60,7 @@ bot.on('messageUpdate', (message, oldMessage) => {
 	//if (message.channel.type !== 0) return;
 	//if (message.author.bot) return;
 	if (countingChannels.has(message.channel.id)) {
-		if (message.channel.permissionOverwrites.get(bot.user.id).allow.bitfield !== 268512256 || channel.permissionOverwrites.get(id).deny.bitfield !== 537317457) {
+		if (message.channel.id === '360228611489267713' && (message.channel.permissionOverwrites.get(bot.user.id).allow.bitfield !== 268512256 || channel.permissionOverwrites.get(id).deny.bitfield !== 537317457)) {
 			message.channel.editPermission(bot.user.id, 268512256, 537317457, 'member');
 		}
 		if (message.id === message.channel.lastMessageID) {
@@ -90,7 +90,7 @@ bot.on('messageDelete', (message) => {
 	//if (message.channel.type !== 'text') return;
 	//if (message.author.bot) return;
 	if (countingChannels.has(message.channel.id)) {
-		if (message.channel.permissionOverwrites.get(bot.user.id).allow.bitfield !== 268512256 || channel.permissionOverwrites.get(id).deny.bitfield !== 537317457) {
+		if (message.channel.id === '360228611489267713' && (message.channel.permissionOverwrites.get(bot.user.id).allow.bitfield !== 268512256 || channel.permissionOverwrites.get(id).deny.bitfield !== 537317457)) {
 			message.channel.editPermission(bot.user.id, 268512256, 537317457, 'member');
 		}
 		if (message.id === message.channel.lastMessageID) {
