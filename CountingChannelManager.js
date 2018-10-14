@@ -200,10 +200,11 @@ class CountingChannelManager {
 		return true;*/
 		if (channel.permissionOverwrites.get(bot.user.id).allow.bitfield !== allow || channel.permissionOverwrites.get(id).deny.bitfield !== deny) return this.editOverride(bot, channel, allow, deny, type);
 		//const permissions = msg.channel.permissionsOf(msg.author.id).json;
+		return;
 	}
 	
 	editOverride(bot, channel, allow, deny, type) {
-		channel.editPermission(bot.user.id, allow, deny, type);
+		return channel.editPermission(bot.user.id, allow, deny, type);
 		// Event Listener `channelUpdate(channel, oldChannel)`
 		// https://abal.moe/Eris/docs/GuildChannel#function-editPermission
 		// https://abal.moe/Eris/docs/Client#event-channelUpdate
