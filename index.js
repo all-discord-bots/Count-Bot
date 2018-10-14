@@ -38,6 +38,11 @@ bot.on('channelCreate', (channel) => {
 	}
 });
 
+/*
+These are for editPermission. These ones have `Send Messages` denied.
+Deny: 537319505
+Allow: 268510208
+*/
 bot.on('messageCreate', (message) => {
 	//if (message.channel.type !== 'text') return;
 	if (message.author.bot) return;
