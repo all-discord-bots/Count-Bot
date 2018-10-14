@@ -97,7 +97,7 @@ bot.on('messageDelete', (message) => {
 });
 
 bot.on('channelUpdate', (channel, oldChannel) => {
-	countingChannels.get(channel.id).hasPermission(bot, channel, 268512256, 537317457, 'member');
+	return countingChannels.get(channel.id).hasPermission(bot, channel, 268512256, 537317457, 'member');
 });
 
 process.on("uncaughtException", (err) => {
