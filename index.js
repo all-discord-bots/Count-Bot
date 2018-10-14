@@ -96,6 +96,10 @@ bot.on('messageDelete', (message) => {
 	}
 });
 
+bot.on('channelUpdate', (channel, oldChannel) => {
+	hasPermission(bot, channel, 268512256, 537317457, 'member');
+});
+
 process.on("uncaughtException", (err) => {
 	bot.emit("error", err)
 	process.exit(1)
