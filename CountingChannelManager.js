@@ -185,32 +185,7 @@ class CountingChannelManager {
 	getDeletedBy(message) {
 		return thisMessage.get(message.id);
 	}
-	
-	//hasPermissions(bot, message, ...perms) {
-	hasPermission(bot, channel, allow, deny, type) {
-		//const missing = message.channel.permissionsFor(bot.user).missing(perms);
-		//if (message.channel.permissionsFor(bot.user).missing(perms).length > 0) return false;
-		//return true;
-		/*if (neutral && !message.channel.permissionsOf(bot.user.id).has(perm)) {
-			return true;
-		} else if (!neutral && message.channel.permissionsOf(bot.user.id).has(perm)) {
-			return message.channel.permissionsOf(bot.user.id).json[perm];
-		}
-		if (!message.channel.permissionsOf(bot.user.id).json[perm]) return false;
-		return true;*/
-		if (channel.permissionOverwrites.get(bot.user.id).allow.bitfield !== allow || channel.permissionOverwrites.get(id).deny.bitfield !== deny) return this.editOverride(bot, channel, allow, deny, type);
-		//const permissions = msg.channel.permissionsOf(msg.author.id).json;
-		return;
-	}
-	
-	editOverride(bot, channel, allow, deny, type) {
-		return channel.editPermission(bot.user.id, allow, deny, type);
-		// Event Listener `channelUpdate(channel, oldChannel)`
-		// https://abal.moe/Eris/docs/GuildChannel#function-editPermission
-		// https://abal.moe/Eris/docs/Client#event-channelUpdate
-		// https://abal.moe/Eris/docs/reference
-	}
-	
+
 	/*giveRole(message) {
 		message.channel.guild.roles.map((role) => role.id).forEach((value,index) => {
 			if (message.channel.guild.roles.get(`${value}`).name === "can't count") {
