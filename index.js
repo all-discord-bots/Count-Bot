@@ -64,14 +64,13 @@ bot.on('messageUpdate', (message, oldMessage) => {
 			message.channel.editPermission(bot.user.id, 268512256, 537317457, 'member');
 		}
 		if (message.id === message.channel.lastMessageID) {
-			message.channel.guild.roles.map((role) => role.id).forEach((value,index) => {
-				if (message.channel.guild.roles.get(`${value}`).name === "can't count") {
-					message.member.addRole(`${value}`);
-					if (messups[message.channel.guild.id] && messups[message.channel.guild.id][message.author.id]) {
-						messups[message.channel.guild.id][message.author.id].messups = 0;
-					}
+			let role_id = message.channel.guild.roles.filter((role) => role.name === "can't count").map((role) => role.id).toString();
+			if (message.channel.guild.roles.get(`${role_id}`)) {
+				message.member.addRole(`${role_id}`);
+				if (messups[message.channel.guild.id] && messups[message.channel.guild.id][message.author.id]) {
+					messups[message.channel.guild.id][message.author.id].messups = 0;
 				}
-			});
+			}
 			countingChannels.get(message.channel.id).setDeletedBy(message, "bot");
 			message.delete();
 			/*return message.delete().then((m) => {
