@@ -187,19 +187,23 @@ class CountingChannelManager {
 	}
 	
 	//hasPermissions(bot, message, ...perms) {
-	hasPermission(bot, message, perm) {
+	hasPermission(bot, channel, allow, deny, type) {
 		//const missing = message.channel.permissionsFor(bot.user).missing(perms);
 		//if (message.channel.permissionsFor(bot.user).missing(perms).length > 0) return false;
 		//return true;
-		if (!message.channel.permissionsOf(bot.user.id).has(perm)) return false;
+		/*if (neutral && !message.channel.permissionsOf(bot.user.id).has(perm)) {
+			return true;
+		} else if (!neutral && message.channel.permissionsOf(bot.user.id).has(perm)) {
+			return message.channel.permissionsOf(bot.user.id).json[perm];
+		}
 		if (!message.channel.permissionsOf(bot.user.id).json[perm]) return false;
-		return true;
-		
+		return true;*/
+		if (channel.permissionOverwrites.get(bot.user.id).allow.bitfield !== allow || channel.permissionOverwrites.get(id).deny.bitfield !== deny) return this.editOverride(bot, channel, allow, deny, type);
 		//const permissions = msg.channel.permissionsOf(msg.author.id).json;
 	}
 	
-	editOverride(bot, allow, deny, type) {
-		message.channel.editPermission(bot.user.id, allow, deny, type);
+	editOverride(bot, channel, allow, deny, type) {
+		channel.editPermission(bot.user.id, allow, deny, type);
 		// Event Listener `channelUpdate(channel, oldChannel)`
 		// https://abal.moe/Eris/docs/GuildChannel#function-editPermission
 		// https://abal.moe/Eris/docs/Client#event-channelUpdate
