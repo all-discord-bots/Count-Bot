@@ -186,6 +186,26 @@ class CountingChannelManager {
 		return thisMessage.get(message.id);
 	}
 	
+	//hasPermissions(bot, message, ...perms) {
+	hasPermission(bot, message, perm) {
+		//const missing = message.channel.permissionsFor(bot.user).missing(perms);
+		//if (message.channel.permissionsFor(bot.user).missing(perms).length > 0) return false;
+		//return true;
+		if (!message.channel.permissionsOf(bot.user.id).has(perm)) return false;
+		if (!message.channel.permissionsOf(bot.user.id).json[perm]) return false;
+		return true;
+		
+		//const permissions = msg.channel.permissionsOf(msg.author.id).json;
+	}
+	
+	editOverride(bot, allow, deny, type) {
+		message.channel.editPermission(bot.user.id, allow, deny, type);
+		// Event Listener `channelUpdate(channel, oldChannel)`
+		// https://abal.moe/Eris/docs/GuildChannel#function-editPermission
+		// https://abal.moe/Eris/docs/Client#event-channelUpdate
+		// https://abal.moe/Eris/docs/reference
+	}
+	
 	/*giveRole(message) {
 		message.channel.guild.roles.map((role) => role.id).forEach((value,index) => {
 			if (message.channel.guild.roles.get(`${value}`).name === "can't count") {
