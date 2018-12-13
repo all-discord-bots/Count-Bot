@@ -23,6 +23,6 @@
 	"homepage": "https://github.com/all-discord-bots/Count-Bot#readme",
 	"dependencies": {
 		"discord.js": "github:discordjs/discord.js#master",
-                "fs": "^0.0.1-security"
+		"fs-extra": "^7.0.1"
 	}
 }
