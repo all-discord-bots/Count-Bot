@@ -1,29 +1,45 @@
 // let readyAt = new Date();
 
-const config = require('./config.json'),
-	Eris = require('eris'),
-	bot = new Eris(config.token, {
-		messageLimit: 10
-	}),
-	CountingChannelManager = require('./CountingChannelManager');
+const config = require('./config.json');
+//const fse = require('fs-extra');
+const { Client } = require('discord.js');
+const CountingChannelManager = require('./CountingChannelManager');
 
-let countingChannels = new Map();
+const client = new Client({
+	messageCacheMaxSize: 10
+});
 
-const fs = require("fs");
-let messups = JSON.parse(fs.readFileSync("./messups.json", "utf8"));
+client.login(process.env.TOKEN);
 
-bot.once('ready', () => {
+const countingChannels = new Map();
+const messups = global.messups = new Collection();//JSON.parse(fse.readJsonSync("./messups.json", "utf8"));
+
+bot.once('ready', async() => {
 	console.info('Counting bot connected');
-	//var channelone = bot.channels.get('410125427777077248'); // counting_bot_status_log channel
-	bot.editStatus("online", { name: "1 2 3...", type: 0 });
-	// console.log(`${new Date() - readyAt`});
-	return bot.guilds.forEach((g) => {
-		return g.channels.filter((c) => c.name.startsWith('counting')).forEach((c) => {
-			let manager = new CountingChannelManager(c);
-			manager.init();
-			return countingChannels.set(c.id, manager);
-		});
+	bot.user.setPresence({ activity: { name: `1 2 3...`, type: 0 }, status: 'online' }).then(() => {
+		console.log(`Successfully updated the bots presence.`);
+	}).catch((err) => {
+		console.error(err.toString());
 	});
+	await bot.channels.filter((channel) => channel.type === 'text' && channel.name.startsWith('counting')).map((channel) => bot.emit('setChannelManager', channel));
+});
+
+bot.on('setChannelManager', (channel) => {
+	const manager = new CountingChannelManager(channel);
+	manager.init();
+	return countingChannels.set(channel.id, manager);
+});
+
+bot.on('giveMemberCantCount', async (message, member) => {
+	const role = await message.guild.roles.filter((role) => role.name === "can't count").map((role) => role);
+	if (!role.length) return;
+	await member.roles.add(role[0], 'can\'t count');
+});
+
+bot.on('handleMessage', (message) => {
+	if (message.channel.type !== 'text') return;
+	if (message.author.bot) return;
+	if (countingChannels.has(message.channel.id)) return countingChannels.get(message.channel.id).handleNewMessage(message);
 });
 
 bot.on('disconnected', () => {
@@ -31,11 +47,7 @@ bot.on('disconnected', () => {
 });
 
 bot.on('channelCreate', (channel) => {
-	if (channel.name.startsWith('counting')) {
-		let manager = new CountingChannelManager(channel);
-		manager.init();
-		return countingChannels.set(channel.id, manager);
-	}
+	if (channel.name.startsWith('counting')) bot.emit('setChannelManager', channel);
 });
 
 /*
@@ -43,45 +55,45 @@ These are for editPermission. These ones have `Send Messages` denied.
 Deny: 537319505
 Allow: 268510208
 */
-bot.on('messageCreate', (message) => {
+bot.on('message', (message) => {
 	//if (message.channel.type !== 'text') return;
-	if (message.author.bot) return;
-	if (message.channel.id == "410125427777077248") return;
-	if (message.author.id === "269247101697916939" && message.content === 'c!current') return bot.createMessage(message.channel.id, `${countingChannels.get(message.channel.id).currentNumber()}`);
-	if (countingChannels.has(message.channel.id)) {
-		if (message.channel.id === '360228611489267713' && (message.channel.permissionOverwrites.get(bot.user.id).allow.bitfield !== 268512256 || channel.permissionOverwrites.get(id).deny.bitfield !== 537317457)) {
+	//if (message.author.bot) return;
+	//if (message.author.id === "269247101697916939" && message.content === 'c!current') return bot.createMessage(message.channel.id, `${countingChannels.get(message.channel.id).currentNumber()}`);
+	//if (countingChannels.has(message.channel.id)) {
+		/*if (message.channel.id === '360228611489267713' && (message.channel.permissionOverwrites.get(bot.user.id).allow.bitfield !== 268512256 || message.channel.permissionOverwrites.get(bot.user.id).deny.bitfield !== 537317457)) {
 			message.channel.editPermission(bot.user.id, 268512256, 537317457, 'member');
-		}
-		return countingChannels.get(message.channel.id).handleNewMessage(message);
-	}
+		}*/
+		//return countingChannels.get(message.channel.id).handleNewMessage(message);
+	//}
+	bot.emit('handleMessage', message);
 });
 
-bot.on('messageUpdate', (message, oldMessage) => {
+bot.on('messageUpdate', (newMessage, oldMessage) => {
 	//if (message.channel.type !== 0) return;
 	//if (message.author.bot) return;
-	if (countingChannels.has(message.channel.id)) {
-		if (message.channel.id === '360228611489267713' && (message.channel.permissionOverwrites.get(bot.user.id).allow.bitfield !== 268512256 || channel.permissionOverwrites.get(id).deny.bitfield !== 537317457)) {
+	if (countingChannels.has(newMessage.channel.id)) {
+		/*if (message.channel.id === '360228611489267713' && (message.channel.permissionOverwrites.get(bot.user.id).allow.bitfield !== 268512256 || message.channel.permissionOverwrites.get(bot.user.id).deny.bitfield !== 537317457)) {
 			message.channel.editPermission(bot.user.id, 268512256, 537317457, 'member');
-		}
-		if (message.id === message.channel.lastMessageID) {
-			let role_id = message.channel.guild.roles.filter((role) => role.name === "can't count").map((role) => role.id).toString();
-			if (message.channel.guild.roles.get(`${role_id}`)) {
-				message.member.addRole(`${role_id}`);
-				if (messups[message.channel.guild.id] && messups[message.channel.guild.id][message.author.id]) {
-					messups[message.channel.guild.id][message.author.id].messups = 0;
+		}*/
+		if (newMessage.id === newMessage.channel.lastMessageID) {
+			
+			if (newMessage.channel.guild.roles.get(`${role_id}`)) {
+				newMessage.member.addRole(`${role_id}`);
+				if (messups[newMessage.channel.guild.id] && messups[newMessage.channel.guild.id][newMessage.author.id]) {
+					messups[newMessage.channel.guild.id][newMessage.author.id].messups = 0;
 				}
 			}
-			countingChannels.get(message.channel.id).setDeletedBy(message, "bot");
-			message.delete();
+			countingChannels.get(newMessage.channel.id).setDeletedBy(newMessage, "bot");
+			newMessage.delete();
 			/*return message.delete().then((m) => {
 				//await countingChannels.get(message.channel.id).recalculateNextNumber(message);
 				countingChannels.get(m.channel.id).recalculateNextNumber(m);
 			});*/
 			//return bot.createMessage(message.channel.id, `${countingChannels.get(message.channel.id).currentNumber()}`);
-			return countingChannels.get(message.channel.id).recalculateNextNumber(message);
+			return countingChannels.get(newMessage.channel.id).recalculateNextNumber(newMessage);
 		}
-		countingChannels.get(message.channel.id).setDeletedBy(message, "bot");
-		return message.delete();
+		countingChannels.get(newMessage.channel.id).setDeletedBy(newMessage, "bot");
+		return newMessage.delete();
 	}
 });
 
