@@ -1,0 +1,140 @@
+// let readyAt = new Date();
+
+const config = require('./config.json'),
+	Eris = require('eris'),
+	bot = new Eris(config.token, {
+		messageLimit: 10
+	}),
+	CountingChannelManager = require('./CountingChannelManager');
+
+let countingChannels = new Map();
+
+const fs = require("fs");
+let messups = JSON.parse(fs.readFileSync("./messups.json", "utf8"));
+
+bot.once('ready', () => {
+	console.info('Counting bot connected');
+	//var channelone = bot.channels.get('410125427777077248'); // counting_bot_status_log channel
+	bot.editStatus("online", { name: "1 2 3...", type: 0 });
+	// console.log(`${new Date() - readyAt`});
+	return bot.guilds.forEach((g) => {
+		return g.channels.filter((c) => c.name.startsWith('counting')).forEach((c) => {
+			let manager = new CountingChannelManager(c);
+			manager.init();
+			return countingChannels.set(c.id, manager);
+		});
+	});
+});
+
+bot.on('disconnected', () => {
+	console.warn('Counting bot disconnected');
+});
+
+bot.on('channelCreate', (channel) => {
+	if (channel.name.startsWith('counting')) {
+		let manager = new CountingChannelManager(channel);
+		manager.init();
+		return countingChannels.set(channel.id, manager);
+	}
+});
+
+/*
+These are for editPermission. These ones have `Send Messages` denied.
+Deny: 537319505
+Allow: 268510208
+*/
+bot.on('messageCreate', (message) => {
+	//if (message.channel.type !== 'text') return;
+	if (message.author.bot) return;
+	if (message.channel.id == "410125427777077248") return;
+	if (message.author.id === "269247101697916939" && message.content === 'c!current') return bot.createMessage(message.channel.id, `${countingChannels.get(message.channel.id).currentNumber()}`);
+	if (countingChannels.has(message.channel.id)) {
+		if (message.channel.id === '360228611489267713' && (message.channel.permissionOverwrites.get(bot.user.id).allow.bitfield !== 268512256 || channel.permissionOverwrites.get(id).deny.bitfield !== 537317457)) {
+			message.channel.editPermission(bot.user.id, 268512256, 537317457, 'member');
+		}
+		return countingChannels.get(message.channel.id).handleNewMessage(message);
+	}
+});
+
+bot.on('messageUpdate', (message, oldMessage) => {
+	//if (message.channel.type !== 0) return;
+	//if (message.author.bot) return;
+	if (countingChannels.has(message.channel.id)) {
+		if (message.channel.id === '360228611489267713' && (message.channel.permissionOverwrites.get(bot.user.id).allow.bitfield !== 268512256 || channel.permissionOverwrites.get(id).deny.bitfield !== 537317457)) {
+			message.channel.editPermission(bot.user.id, 268512256, 537317457, 'member');
+		}
+		if (message.id === message.channel.lastMessageID) {
+			let role_id = message.channel.guild.roles.filter((role) => role.name === "can't count").map((role) => role.id).toString();
+			if (message.channel.guild.roles.get(`${role_id}`)) {
+				message.member.addRole(`${role_id}`);
+				if (messups[message.channel.guild.id] && messups[message.channel.guild.id][message.author.id]) {
+					messups[message.channel.guild.id][message.author.id].messups = 0;
+				}
+			}
+			countingChannels.get(message.channel.id).setDeletedBy(message, "bot");
+			message.delete();
+			/*return message.delete().then((m) => {
+				//await countingChannels.get(message.channel.id).recalculateNextNumber(message);
+				countingChannels.get(m.channel.id).recalculateNextNumber(m);
+			});*/
+			//return bot.createMessage(message.channel.id, `${countingChannels.get(message.channel.id).currentNumber()}`);
+			return countingChannels.get(message.channel.id).recalculateNextNumber(message);
+		}
+		countingChannels.get(message.channel.id).setDeletedBy(message, "bot");
+		return message.delete();
+	}
+});
+
+bot.on('messageDelete', (message) => {
+	//if (message.channel.type !== 'text') return;
+	//if (message.author.bot) return;
+	if (countingChannels.has(message.channel.id)) {
+		if (message.channel.id === '360228611489267713' && (message.channel.permissionOverwrites.get(bot.user.id).allow.bitfield !== 268512256 || channel.permissionOverwrites.get(id).deny.bitfield !== 537317457)) {
+			message.channel.editPermission(bot.user.id, 268512256, 537317457, 'member');
+		}
+		if (message.id === message.channel.lastMessageID) {
+			//console.log(countingChannels.get(message.channel.id).getDeletedBy(message));
+			if (countingChannels.get(message.channel.id).getDeletedBy(message) === "bot") return;
+			/*message.channel.guild.roles.map((role) => role.id).forEach((value,index) => {
+				if (message.channel.guild.roles.get(`${value}`).name === "can't count") {
+					message.member.addRole(`${value}`); // "381975847977877524"
+					if (messups[message.channel.guild.id] && messups[message.channel.guild.id][message.author.id]) {
+						messups[message.channel.guild.id][message.author.id].messups = 0;
+					}
+				}
+			});*/
+			return countingChannels.get(message.channel.id).recalculateNextNumber(message);
+			//return bot.createMessage(message.channel.id, `${countingChannels.get(message.channel.id).currentNumber()}`);
+		}
+	}
+});
+
+process.on("uncaughtException", (err) => {
+	bot.emit("error", err)
+	process.exit(1)
+});
+
+process.on("unhandledRejection", (err) => {
+	bot.emit("error", err)
+});
+
+bot.on("error", (err) => {
+	console.warn(err.stack);
+});
+
+//bot.on("message", message => {
+//  if (message.author.bot) return;
+//if (message.content === ":num") {
+//return countingChannels.get(message.channel.id).handleGetNum(bot);
+//}
+//});
+
+//bot.on('messageDelete', message => {
+//  if (countingChannels.has(message.channel.id)) {
+//    message.channel.guild.members.get(message.author.id).addRole("381975847977877524");
+//  }
+  //return countingChannels.get(message.channel.id).handleDelMessage(message);
+//    bot.createMessage("403757067225006101", `<@${message.author.id}>: **${message.content}**`);
+//});
+
+bot.connect();
