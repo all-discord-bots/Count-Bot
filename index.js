@@ -27,6 +27,7 @@ bot.baseMap = {
 	'senary': 6,
 	'oct': 8,
 	'octal': 8,
+	'decimal': 10,
 	'dozenal': 12,
 	'duodecimal': 12,
 	'hex': 16,
