@@ -3,7 +3,7 @@
 const config = require('./config.json');
 //const fse = require('fs-extra');
 const { Client, Collection } = require('discord.js');
-const CountingChannelManager = require('./CountingChannelManager_new');
+const CountingChannelManager = require('./CountingChannelManager');
 
 const bot = global.bot = new Client({
 	messageCacheMaxSize: 10
