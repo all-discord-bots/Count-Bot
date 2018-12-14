@@ -97,7 +97,7 @@ class CountingChannelManager {
 	}
 	
 	recalculateNextNumber(message) {
-		this.lastNumber = Math.max(...message.channel.messages.filter((msg) => msg !== message && parseInt(msg.content)).map((msg) => parseInt(msg.content)));
+		this.lastNumber = Math.max(...message.channel.messages.filter((msg) => msg.id !== message.id && parseInt(msg.content)).map((msg) => parseInt(msg.content)));
 	}
 }
 
