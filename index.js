@@ -13,6 +13,7 @@ const countingChannels = new Map();
 bot.messups = new Collection();
 bot.deleted_messages = new Collection();
 bot.data = {
+	debug: false,
 	last_number: 0,
 	allowed_messups: 3
 };
