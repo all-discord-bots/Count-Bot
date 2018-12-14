@@ -9,7 +9,7 @@ const bot = global.bot = new Client({
 	messageCacheMaxSize: 10
 });
 
-const countingChannels = new Map();
+const countingChannels = bot.countingChannels = new Map();
 bot.messups = new Collection();
 bot.deleted_messages = new Collection();
 bot.data = {
@@ -114,6 +114,9 @@ Deny: 537319505
 Allow: 268510208
 */
 bot.on('message', (message) => {
+	if (message.channel.type === 'dm') {
+		return console.log(`Author: ${message.author.tag}${message.content ? `\nContent: ${message.content}`}${message.attachments.size ? `\nAttachments: ${message.attachments.map((at) => at.url)}`}`);
+	}
 	if (!countingChannels.has(message.channel.id)) {
 		if (message.author.bot) return;
 		if (message.content.toLowerCase() === 'c!help') return message.channel.send({
