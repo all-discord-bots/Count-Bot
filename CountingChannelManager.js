@@ -1,10 +1,3 @@
-const fs = require("fs");
-let messups = JSON.parse(fs.readFileSync("./messups.json", "utf8"));
-
-let thisMessage = new Map();
-
-const numOfMessups = 3;
-
 const baseMap = {
 	'binary': 2,
 	'ternary': 3,
@@ -28,7 +21,7 @@ class CountingChannelManager {
 		this.channel = channel;
 		this.base = null;
 		this.by = null;
-		this.lastNumber = null;
+		this.lastNumber = global.bot.data.last_number;
 	}
 
 	async init() {
@@ -66,7 +59,7 @@ class CountingChannelManager {
 		//let perms = this.channel.permissionsOf("381973716566933507").json; // bot user id
 		//if (perms.readMessages && perms.readMessageHistory) { // Not using this perm checker because I lock the channel sometimes during updates and keep it locked so I can test it
 		try { // If you uncomment the permission checker comment this line
-			lastMessage = (await this.channel.getMessages(50) || []).find(m => this.parseNumber(m) > 0);
+			lastMessage = (await this.channel.messages.fetch({ limit: 50 }) || []).find((msg) => this.parseNumber(msg) > 0);
 		} catch (e) { // if you uncomment the permission checker change this line to } else {
 			lastMessage = null;
 		}
@@ -83,8 +76,8 @@ class CountingChannelManager {
 		
 	}
 
-	handleNewMessage(message) {
-		this.setDeletedBy(message, "not deleted");
+	handleNewMessage(bot, message) {
+		bot.emit('setDeletedBy', message, 'not deleted');
 		let number = this.parseNumber(message);
 		let gLastNumber = this.lastNumber + 1;
 		let debug = true;
@@ -94,48 +87,16 @@ class CountingChannelManager {
 			console.info("isNextInSequence:", this.isNextInSequence(number));
 			console.info("Users Message:", message.content);
 		}
-		if (!messups[message.channel.guild.id]) {
-			messups[message.channel.guild.id] = {}
-		}
-		if (messups[message.channel.guild.id] && !messups[message.channel.guild.id][message.author.id]) {
-			messups[message.channel.guild.id][message.author.id] = {
-				messups: 0
-			}
-		}
+		
 		if ((message.content.length != gLastNumber.toString().length && number !== gLastNumber) || RegExp(/([a-z])/gi).test(message.content.toLowerCase()) || RegExp(/^(0+)/gi).test(message.content.toLowerCase()) || (message.content.includes(" ") || message.content.includes("-") || message.content.includes("+") || message.content.includes("=") || message.content.includes("_") || message.content.includes("`") || message.content.includes("~") || message.content.includes("!") || message.content.includes("@") || message.content.includes("#") || message.content.includes("$") || message.content.includes("%") || message.content.includes("^") || message.content.includes("&") || message.content.includes("*") || message.content.includes("(") || message.content.includes(")") || message.content.includes("\\") || message.content.includes("|") || message.content.includes("]") || message.content.includes("[") || message.content.includes("{") || message.content.includes("}") || message.content.includes("'") || message.content.includes("\"") || message.content.includes(";") || message.content.includes(":") || message.content.includes("?") || message.content.includes("/") || message.content.includes(".") || message.content.includes(",") || message.content.includes("<") || message.content.includes(">") || message.content.includes("\t") || message.content.includes("\r") || message.content.includes("\n"))) {
-			//message.channel.guild.members.fetch(message.author).then(member => {
-				//member.addRole("381975847977877524");
-			//});
-			messups[message.channel.guild.id][message.author.id].messups++;
-			if (messups[message.channel.guild.id][message.author.id].messups >= numOfMessups) {
-				let role_id = message.channel.guild.roles.filter((role) => role.name === "can't count").map((role) => role.id).toString();
-				if (message.channel.guild.roles.get(`${role_id}`)) {
-					message.member.addRole(`${role_id}`);
-					if (messups[message.channel.guild.id] && messups[message.channel.guild.id][message.author.id]) {
-						messups[message.channel.guild.id][message.author.id].messups = 0;
-					}
-				}
-			}
-			this.setDeletedBy(message, "bot");
-			return message.delete();
+			bot.emit('messup', message.author.id);
+			if (bot.messups.has(message.author.id) && bot.messups.get(message.author.id) >= bot.data.allowed_messups) bot.emit('giveMemberCantCount', message);
+			return bot.emit('handleDelete', message);
 		}
-		fs.writeFile("./messups.json", JSON.stringify(messups), (err) => {
-			if (err) console.error(err);
-		});
-		if (!number) {
-			this.setDeletedBy(message, "bot");
-			return message.delete();
-		}
-		if (!this.isNextInSequence(number)) {
-			this.setDeletedBy(message, "bot");
-			return message.delete();
-		}
+		if (!number) return bot.emit('handleDelete', message);
+		if (!this.isNextInSequence(number)) return bot.emit('handleDelete', message);
 		this.lastNumber = number;
 	}
-
-	//handleDelMessage(message) {
-		//message.channel.guild.members.get(message.author.id).addRole("381975847977877524"); //.addRole({name: role});
-	//}
 
 	parseNumber(message) {
 		if (this.by % 1 !== 0)
@@ -155,46 +116,8 @@ class CountingChannelManager {
 	}
 	
 	recalculateNextNumber(message) {
-		//this.lastNumber = this.lastNumber - 1;
-		//setTimeout(() => {
-		//if (message_edited) {
-			this.lastNumber = Math.max(...message.channel.messages.filter((m) => m.id !== message.id && parseInt(m.content)).map((m) => parseInt(m.content)));
-		//} else {
-			//this.lastNumber = Math.max(...message.channel.messages.filter((m) => parseInt(m.content)).map((m) => parseInt(m.content)));
-		//}
-		//},500);
-		/*let lastMessage;
-		try { // If you uncomment the permission checker comment this line
-			lastMessage = (await message.channel.getMessages(50) || []).find((m) => this.parseNumber(m) > 0);
-		} catch (e) { // if you uncomment the permission checker change this line to } else {
-			lastMessage = null;
-		}
-		
-		if (!lastMessage) {
-			this.lastNumber = 0;
-		} else {
-			this.lastNumber = this.parseNumber(lastMessage);
-		}*/
+		this.lastNumber = Math.max(...message.channel.messages.filter((msg) => msg.id !== message.id && parseInt(msg.content)).map((msg) => parseInt(msg.content)));
 	}
-	
-	setDeletedBy(message, userType) {
-		return thisMessage.set(message.id, userType);
-	}
-	
-	getDeletedBy(message) {
-		return thisMessage.get(message.id);
-	}
-
-	/*giveRole(message) {
-		message.channel.guild.roles.map((role) => role.id).forEach((value,index) => {
-			if (message.channel.guild.roles.get(`${value}`).name === "can't count") {
-				message.member.addRole(`${value}`);
-				if (messups[message.channel.guild.id] && messups[message.channel.guild.id][message.author.id]) {
-					messups[message.channel.guild.id][message.author.id].messups = 0;
-				}
-			}
-		});
-	}*/
 }
 
 module.exports = CountingChannelManager;
