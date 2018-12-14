@@ -105,7 +105,7 @@ bot.on('messageUpdate', (newMessage, oldMessage) => {
 });
 
 bot.on('messageDelete', (message) => {
-	return bot.emit('handleMessage', message, 'delete);
+	return bot.emit('handleMessage', message, 'delete');
 });
 
 process.on("uncaughtException", (err) => {
