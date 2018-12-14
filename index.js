@@ -127,7 +127,7 @@ bot.on('message', (message) => {
 	}
 });
 
-bot.on('messageUpdate', (newMessage, oldMessage) => {
+bot.on('messageUpdate', (oldMessage, newMessage) => {
 	bot.emit('handleMessage', newMessage, 'update');
 });
 
