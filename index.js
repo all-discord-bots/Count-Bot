@@ -40,7 +40,7 @@ bot.on('giveMemberCantCount', async (message) => {
 });
 
 bot.on('messup', (id) => {
-	return bot.messups.set(id, bot.messups.get(id)++);
+	return bot.messups.set(id, bot.messups.get(id) + 1);
 });
 
 //bot.on('resetMessups', (id) => {
