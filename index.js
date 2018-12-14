@@ -63,6 +63,7 @@ bot.on('handleDelete', (message) => {
 bot.on('handleMessage', (message, action) => {
 	if (message.channel.type !== 'text') return;
 	if (message.author.bot) return;
+	if (!bot.messups.get(message.author.id)) bot.messups.set(message.author.id, 0);
 	if (countingChannels.has(message.channel.id)) {
 		if (action === 'updated') {
 			if (message === message.channel.lastMessage) {
