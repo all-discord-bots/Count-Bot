@@ -47,6 +47,7 @@ bot.once('ready', async() => {
 });
 
 bot.on('setChannelManager', (channel) => {
+	if (countingChannels.has(channel.id)) countingChannels.delete(channel.id);
 	const manager = new CountingChannelManager(channel);
 	manager.init();
 	return countingChannels.set(channel.id, manager);
@@ -107,10 +108,6 @@ bot.on('disconnected', () => {
 	console.warn('Counting bot disconnected');
 });
 
-bot.on('channelCreate', (channel) => {
-	if (channel.name.startsWith('counting')) bot.emit('setChannelManager', channel);
-});
-
 /*
 These are for editPermission. These ones have `Send Messages` denied.
 Deny: 537319505
@@ -136,6 +133,22 @@ bot.on('messageUpdate', (newMessage, oldMessage) => {
 
 bot.on('messageDelete', (message) => {
 	return bot.emit('handleMessage', message, 'delete');
+});
+
+bot.on('channelUpdate', (oldChannel, newChannel) => {
+	if (newChannel.type !== 'text') return;
+	if (oldChannel.name === newChannel.name) return;
+	if (newChannel.name.startsWith('counting')) bot.emit('setChannelManager', newChannel);
+});
+
+bot.on('channelDelete', (channel) => {
+	if (channel.type !== 'text') return;
+	if (countingChannels.has(channel.id)) countingChannels.delete(channel.id);
+});
+
+bot.on('channelCreate', (channel) => {
+	if (channel.type !== 'text') return;
+	if (channel.name.startsWith('counting')) bot.emit('setChannelManager', channel);
 });
 
 process.on("uncaughtException", (err) => {
