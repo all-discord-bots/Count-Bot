@@ -79,7 +79,7 @@ bot.on('handleMessage', (message, action) => {
 				return bot.emit('recalculateNumber', message);
 			}
 		}
-		return countingChannels.get(message.channel.id).handleNewMessage(message);
+		return countingChannels.get(message.channel.id).handleNewMessage(bot, message);
 	}
 });
 
