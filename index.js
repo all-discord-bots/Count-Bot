@@ -5,17 +5,16 @@ const config = require('./config.json');
 const { Client, Collection } = require('discord.js');
 const CountingChannelManager = require('./CountingChannelManager');
 
-const client = new Client({
+const bot = global.bot = new Client({
 	messageCacheMaxSize: 10
 });
-
-client.login(process.env.TOKEN);
 
 const countingChannels = new Map();
 bot.messups = new Collection();
 bot.deleted_messages = new Collection();
 bot.data = {
-	last_number: 0
+	last_number: 0,
+	allowed_messups: 3
 };
 
 bot.once('ready', async() => {
@@ -137,4 +136,4 @@ bot.on("error", (err) => {
 //    bot.createMessage("403757067225006101", `<@${message.author.id}>: **${message.content}**`);
 //});
 
-bot.connect();
+bot.login(process.env.TOKEN);
