@@ -116,7 +116,16 @@ Deny: 537319505
 Allow: 268510208
 */
 bot.on('message', (message) => {
-	return bot.emit('handleMessage', message, 'none');
+	if (!countingChannels.has(message.channel.id)) {
+		if (message.content.toLowerCase() === 'c!help') return message.channel.send({
+										embed: ({
+												title: 'help',
+												description: 'To start create a channel that starts with the word `counting`. You may choose what counting system you want to use by doing the following.\n`counting-in-[ternary,quaternary,quinary,senary,octal,dozenal,hexadecimal,vigesimal,sexagesimal]`\n**Example**: `counting-in-hexadecimal`.'
+										})
+									});
+	} else {
+		return bot.emit('handleMessage', message, 'none');
+	}
 });
 
 bot.on('messageUpdate', (newMessage, oldMessage) => {
@@ -139,20 +148,5 @@ process.on("unhandledRejection", (err) => {
 bot.on("error", (err) => {
 	console.warn(err.stack);
 });
-
-//bot.on("message", message => {
-//  if (message.author.bot) return;
-//if (message.content === ":num") {
-//return countingChannels.get(message.channel.id).handleGetNum(bot);
-//}
-//});
-
-//bot.on('messageDelete', message => {
-//  if (countingChannels.has(message.channel.id)) {
-//    message.channel.guild.members.get(message.author.id).addRole("381975847977877524");
-//  }
-  //return countingChannels.get(message.channel.id).handleDelMessage(message);
-//    bot.createMessage("403757067225006101", `<@${message.author.id}>: **${message.content}**`);
-//});
 
 bot.login(process.env.TOKEN);
