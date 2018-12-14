@@ -10,8 +10,8 @@ class CountingChannelManager {
 		let [, base] = this.channel.name.match(/-in-([^-]+)/i) || [];
 		if (!base)
 			this.base = 10;
-		else if (baseMap[base] !== undefined)
-			this.base = baseMap[base];
+		else if (global.bot.baseMap[base] !== undefined)
+			this.base = global.bot.baseMap[base];
 		else if (!isNaN(base))
 			this.base = parseInt(base, 10);
 		else {
@@ -62,8 +62,7 @@ class CountingChannelManager {
 		bot.emit('setDeletedBy', message, 'not deleted');
 		let number = this.parseNumber(message);
 		let gLastNumber = this.lastNumber + 1;
-		let debug = true;
-		if (debug) {
+		if (bot.data.debug) {
 			console.info("User Message to Number:", number);
 			console.info("LastNumber:", this.lastNumber);
 			console.info("isNextInSequence:", this.isNextInSequence(number));
@@ -98,7 +97,7 @@ class CountingChannelManager {
 	}
 	
 	recalculateNextNumber(message) {
-		this.lastNumber = Math.max(...message.channel.messages.filter((msg) => msg.id !== message.id && parseInt(msg.content)).map((msg) => parseInt(msg.content)));
+		this.lastNumber = Math.max(...message.channel.messages.filter((msg) => msg !== message && parseInt(msg.content)).map((msg) => parseInt(msg.content)));
 	}
 }
 
