@@ -86,7 +86,7 @@ bot.on('handleMessage', (message, action) => {
 	if (!bot.messups.get(message.author.id)) bot.messups.set(message.author.id, 0);
 	if (countingChannels.has(message.channel.id)) {
 		if (action === 'updated') {
-			if (message === message.channel.lastMessage) {
+			if (message.id === message.channel.lastMessageID) {
 				bot.emit('giveMemberCantCount', message);
 				bot.emit('handleDelete', message);
 				return bot.emit('recalculateNumber', message);
