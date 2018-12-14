@@ -61,7 +61,7 @@ class CountingChannelManager {
 	handleNewMessage(bot, message) {
 		bot.emit('setDeletedBy', message, 'not deleted');
 		let number = this.parseNumber(message);
-		let gLastNumber = this.lastNumber + 1;
+		let gLastNumber = this.lastNumber + this.by;
 		if (bot.data.debug) {
 			console.info("User Message to Number:", number);
 			console.info("LastNumber:", this.lastNumber);
