@@ -94,7 +94,7 @@ bot.on('handleMessage', (message, action) => {
 				return bot.emit('handleDelete', message);
 			}
 		} else if (action === 'delete') {
-			if (message === message.channel.lastMessage) {
+			if (message.id === message.channel.lastMessageID) {
 				if (bot.deleted_messages.get(message.id) === 'bot') return;
 				bot.emit('giveMemberCantCount', message);
 				return bot.emit('recalculateNumber', message);
@@ -128,11 +128,11 @@ bot.on('message', (message) => {
 });
 
 bot.on('messageUpdate', (newMessage, oldMessage) => {
-	return bot.emit('handleMessage', newMessage, 'update');
+	bot.emit('handleMessage', newMessage, 'update');
 });
 
 bot.on('messageDelete', (message) => {
-	return bot.emit('handleMessage', message, 'delete');
+	bot.emit('handleMessage', message, 'delete');
 });
 
 bot.on('channelUpdate', (oldChannel, newChannel) => {
