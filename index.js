@@ -114,7 +114,7 @@ Deny: 537319505
 Allow: 268510208
 */
 bot.on('message', (message) => {
-	if (message.channel.type === 'dm') return console.log(`Author: ${message.author.tag}${message.content ? `\nContent: ${message.content}` : 'N/A'}${message.attachments.size ? `\nAttachments: ${message.attachments.map((at) => at.url)}` : 'N/A'}`);
+	//if (message.channel.type === 'dm') return console.log(`Author: ${message.author.tag}${message.content ? `\nContent: ${message.content}` : 'N/A'}${message.attachments.size ? `\nAttachments: ${message.attachments.map((at) => at.url)}` : 'N/A'}`);
 	if (!countingChannels.has(message.channel.id)) {
 		if (message.author.bot) return;
 		if (message.content.toLowerCase() === 'c!help') return message.channel.send({
