@@ -7,19 +7,21 @@ class CountingChannelManager {
 	}
 
 	async init() {
-		let [, base] = this.channel.name.match(/-in-([^-]+)/i) || [];
+		let errors = "";
+		let [, base] = this.channel.name.match(/[-_]in[-_]([^-_]+)/i) || [];// /-in-([^-]+)/i
 		if (!base)
 			this.base = 10;
 		else if (global.bot.baseMap[base] !== undefined)
 			this.base = global.bot.baseMap[base];
 		else if (!isNaN(base))
-			this.base = parseInt(base, 10);
+			this.base = parseInt(base, 10)•;
 		else {
+			errors += `• The ${this.channel} channel, in \`${this.channel.guild}\` has an invalid counting base \`-in-\` option defined in the channel name.`;
 			console.error('Error: Invalid base for counting channel ', this.channel.name);
 			return false;
 		}
 
-		let [, by] = this.channel.name.match(/-by-(-?\d+(?:\.\d+)?)/i) || [];
+		let [, by] = this.channel.name.match(/[-_]by[-_](-?\d+(?:\.\d+)?)/i) || [];///-by-(-?\d+(?:\.\d+)?)/i
 		if (!by)
 			this.by = 1;
 		else if (!isNaN(by)) {
@@ -27,14 +29,25 @@ class CountingChannelManager {
 				if (this.base === 10)
 					this.by = parseFloat(by);
 				else {
+					errors += `\n• You can only count in decimals for base \`-in-\` option \`decimal\` in the ${this.channel} channel, in \`${this.channel.guild}\``;
 					console.error('Error: Can only count in decimals for base 10. Channel: ', this.channel.name);
 					return false;
 				}
 			} else
 				this.by = parseInt(by, 10);
 		} else {
+			errors += `\n• The ${this.channel} channel, in \`${this.channel.guild}\` has an invalid counting by \`-by-\` option defined in the channel name.`;
 			console.error('Error: Invalid by for counting channel ', this.channel.name);
 			return false;
+		}
+		
+		if (errors !== "") {
+			if (this.channel.guild.owner) return this.channel.guild.owner.send({
+				embed: {
+					color: 13373206,
+					description: `${errors}`
+				}
+			});
 		}
 
 		let lastMessage;
