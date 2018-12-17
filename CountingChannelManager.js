@@ -14,7 +14,7 @@ class CountingChannelManager {
 		else if (global.bot.baseMap[base] !== undefined)
 			this.base = global.bot.baseMap[base];
 		else if (!isNaN(base))
-			this.base = parseInt(base, 10)•;
+			this.base = parseInt(base, 10);
 		else {
 			errors += `• The ${this.channel} channel, in \`${this.channel.guild}\` has an invalid counting base \`-in-\` option defined in the channel name.`;
 			console.error('Error: Invalid base for counting channel ', this.channel.name);
