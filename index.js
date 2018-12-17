@@ -120,7 +120,7 @@ bot.on('message', (message) => {
 		if (message.content.toLowerCase() === 'c!help') return message.channel.send({
 										embed: ({
 												title: 'help',
-												description: 'To start create a channel that starts with the word `counting`. You may choose what counting system you want to use by doing the following.\n`counting-in-[ternary,quaternary,quinary,senary,octal,decimal,dozenal,hexadecimal,vigesimal,sexagesimal]`\n**Example**: `counting-in-hexadecimal`.\nYou may also choose how much to count by, by doing something like `count-by-10` or `count-in-hexadecimal-by-10` or `count-by--10` which you would have to count down by 10.'
+												description: 'To start create a channel that starts with the word `counting`. You may choose what counting system you want to use by doing the following.\n`counting-in-[ternary,quaternary,quinary,senary,octal,decimal,dozenal,hexadecimal,vigesimal,sexagesimal]`\n**Example**: `counting-in-hexadecimal`.\nYou may also choose how much to count by, by doing something like `counting-by-10` or `counting-in-hexadecimal-by-10` or `counting-by--10` which you would have to count down by 10.'
 										})
 									});
 	} else {
