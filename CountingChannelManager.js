@@ -51,10 +51,18 @@ class CountingChannelManager {
 		}
 
 		let lastMessage;
-		//let perms = this.channel.permissionsOf("381973716566933507").json; // bot user id
+		//let perms = this.channel.permissionsOf("381973716566933507").json; // bot user idh!eval let [, by] = msg.channel.name.match(/[-_]by[-_](-?\d+(?:\.\d+)?)/i) || [];
 		//if (perms.readMessages && perms.readMessageHistory) { // Not using this perm checker because I lock the channel sometimes during updates and keep it locked so I can test it
+		/*if (this.channel.guild.owner && !this.channel.permissionsFor(global.bot.user).has('READ_MESSAGE_HISTORY')) return this.channel.guild.owner.send({
+			embed: {
+				color: 13373206,
+				description: `Make sure to give me the permissions \`Read Message History\` in the channel ${this.channel}, in guild \`${this.channel.guild}\`!`);
+			}
+		}*/
 		try { // If you uncomment the permission checker comment this line
-			lastMessage = (await this.channel.messages.fetch({ limit: 50 }) || []).find((msg) => this.parseNumber(msg) > 0);
+			//lastMessage = (await this.channel.messages.fetch({ limit: 50 }) || []).find((msg) => this.parseNumber(msg) > 0);
+			//lastMessage = Math[this.by.startsWith('-') ? 'min' : 'max'](...(await this.channel.messages.fetch({ limit: 50 }) || []).filter((number) => this.parseNumber(number) <= 0 || this.parseNumber(number) >= 0).map((number) => this.parseNumber(number)));
+			lastMessage = (await this.channel.messages.fetch({ limit: 50 }) || []).find((number) => by.startsWith('-') ? this.parseNumber(number) <= 0 : this.parseNumber(number) >= 0);
 		} catch (e) { // if you uncomment the permission checker change this line to } else {
 			lastMessage = null;
 		}
