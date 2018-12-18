@@ -36,6 +36,8 @@ bot.baseMap = {
 	'sexagesimal': 60
 };
 
+//bot.notified_owners = [];
+
 bot.once('ready', async() => {
 	console.info('Counting bot connected');
 	bot.user.setPresence({ activity: { name: `1 2 3...`, type: 0 }, status: 'online' }).then(() => {
@@ -43,7 +45,7 @@ bot.once('ready', async() => {
 	}).catch((err) => {
 		console.error(err.toString());
 	});
-	await bot.channels.filter((channel) => channel.type === 'text' && channel.name.startsWith('counting')).map((channel) => bot.emit('setChannelManager', channel));
+	await bot.channels.filter((channel) => channel.type === 'text' && channel.name.startsWith('counting') && (channel.permissionsFor(bot.user).has('READ_MESSAGE_HISTORY') && channel.permissionsFor(bot.user).has('VIEW_CHANNEL'))).map((channel) => bot.emit('setChannelManager', channel));
 });
 
 bot.on('setChannelManager', (channel) => {
@@ -54,13 +56,14 @@ bot.on('setChannelManager', (channel) => {
 });
 
 bot.on('giveMemberCantCount', async (message) => {
-	const role = await message.guild.roles.filter((role) => role.name === "can't count").map((role) => role);
-	if (role.length) await message.member.roles.add(role[0], 'can\'t count');
-	return bot.messups.set(message.author.id, 0);
+	if (!message.channel.permissionsFor(message.guild.me).has('MANAGE_ROLES')) return;
+	const role = await message.guild.roles.filter((role) => role.name === "can't count" || role.name === "cant count");
+	if (role.length) await message.member.roles.add(role.first(), 'This user can\'t count correctly.');
+	return bot.messups.get(message.channel.id).set(message.author.id, 0);
 });
 
-bot.on('messup', (id) => {
-	return bot.messups.set(id, bot.messups.get(id) + 1);
+bot.on('messup', (message) => {
+	return bot.messups.get(message.channel.id).set(message.author.id, bot.messups.get(message.channel.id).get(message.author.id) + 1);
 });
 
 //bot.on('resetMessups', (id) => {
@@ -75,15 +78,25 @@ bot.on('setDeletedBy', (message, by) => {
 	bot.deleted_messages.set(message.id, by);
 });
 
-bot.on('handleDelete', (message) => {
+bot.on('handleDelete', async (message) => {
 	bot.emit('setDeletedBy', message, 'bot');
-	message.delete('Wrong Number!');
+	if (!message.channel.permissionsFor(message.guild.me).has('MANAGE_MESSAGES')) return;
+	/*if (!message.channel.permissionsFor(message.guild.me).has('MANAGE_MESSAGES') && message.guild.owner && !bot.notified_owners.includes(`${message.channel.id}.${message.guild.owner.id}`)) return message.guild.owner.send({
+		embed: {
+			color: 13373206,
+			description: `Make sure to give me \`Manage Messages\` for the channel ${message.channel}, in guild \`${message.guild}\`!`
+		}
+	}).then((msg) => {
+		if (!bot.notified_owners.includes(message.guild.owner.id)) return bot.notified_owners.push(`${message.channel.id}.${message.guild.owner.id}`);
+	});*/
+	await message.delete('Wrong Number!');
 });
 
 bot.on('handleMessage', (message, action) => {
 	if (message.channel.type !== 'text') return;
 	if (message.author.bot) return;
-	if (!bot.messups.get(message.author.id)) bot.messups.set(message.author.id, 0);
+	if (!bot.messups.has(message.channel.id)) bot.messups.set(message.channel.id, new Collection());
+	if (bot.messups.has(message.channel.id) && !bot.messups.get(message.channel.id).has(message.author.id)) bot.messups.get(message.channel.id).set(message.author.id, 0);
 	if (countingChannels.has(message.channel.id)) {
 		if (action === 'updated') {
 			if (message.id === message.channel.lastMessageID) {
@@ -162,7 +175,7 @@ process.on("unhandledRejection", (err) => {
 });
 
 bot.on("error", (err) => {
-	console.warn(err.stack);
+	console.error(err.stack);
 });
 
 bot.login(process.env.TOKEN);
