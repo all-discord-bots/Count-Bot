@@ -16,9 +16,10 @@ class CountingChannelManager {
 		else if (!isNaN(base))
 			this.base = parseInt(base, 10);
 		else {
-			errors += `• The ${this.channel} channel, in \`${this.channel.guild}\` has an invalid counting base \`-in-\` option defined in the channel name.`;
+			//errors += `• The ${this.channel} channel, in \`${this.channel.guild}\` has an invalid counting base \`-in-\` option defined in the channel name.`;
 			console.error('Error: Invalid base for counting channel ', this.channel.name);
-			return false;
+			this.base = 10;
+			//return false;
 		}
 
 		let [, by] = this.channel.name.match(/[-_]by[-_](-?\d+(?:\.\d+)?)/i) || [];///-by-(-?\d+(?:\.\d+)?)/i
@@ -29,26 +30,28 @@ class CountingChannelManager {
 				if (this.base === 10)
 					this.by = parseFloat(by);
 				else {
-					errors += `\n• You can only count in decimals for base \`-in-\` option \`decimal\` in the ${this.channel} channel, in \`${this.channel.guild}\``;
+					//errors += `\n• You can only count in decimals for base \`-in-\` option \`decimal\` in the ${this.channel} channel, in \`${this.channel.guild}\``;
 					console.error('Error: Can only count in decimals for base 10. Channel: ', this.channel.name);
-					return false;
+					this.by = 1;
+					//return false;
 				}
 			} else
 				this.by = parseInt(by, 10);
 		} else {
-			errors += `\n• The ${this.channel} channel, in \`${this.channel.guild}\` has an invalid counting by \`-by-\` option defined in the channel name.`;
+			//errors += `\n• The ${this.channel} channel, in \`${this.channel.guild}\` has an invalid counting by \`-by-\` option defined in the channel name.`;
 			console.error('Error: Invalid by for counting channel ', this.channel.name);
-			return false;
+			this.by = 1;
+			//return false;
 		}
 		
-		if (errors !== "") {
+		/*if (errors !== "") {
 			if (this.channel.guild.owner) return this.channel.guild.owner.send({
 				embed: {
 					color: 13373206,
 					description: `${errors}`
 				}
 			});
-		}
+		}*/
 
 		let lastMessage;
 		//let perms = this.channel.permissionsOf("381973716566933507").json; // bot user idh!eval let [, by] = msg.channel.name.match(/[-_]by[-_](-?\d+(?:\.\d+)?)/i) || [];
