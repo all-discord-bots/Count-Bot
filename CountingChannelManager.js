@@ -62,8 +62,8 @@ class CountingChannelManager {
 		try { // If you uncomment the permission checker comment this line
 			//lastMessage = (await this.channel.messages.fetch({ limit: 50 }) || []).find((msg) => this.parseNumber(msg) > 0);
 			//lastMessage = Math[this.by.startsWith('-') ? 'min' : 'max'](...(await this.channel.messages.fetch({ limit: 50 }) || []).filter((number) => this.parseNumber(number) <= 0 || this.parseNumber(number) >= 0).map((number) => this.parseNumber(number)));
-			lastMessage = (await this.channel.messages.fetch({ limit: 50 }) || []).find((number) => this.by.startsWith('-') ? this.parseNumber(number) <= 0 : this.parseNumber(number) >= 0);
-			console.log(this.by.startsWith('-'));
+			lastMessage = (await this.channel.messages.fetch({ limit: 50 }) || []).find((number) => this.by.startsWith('-') ? this.parseNumber(number) < 0 : this.parseNumber(number) > 0);
+			console.log(`by is negative: ${this.by.startsWith('-')}`);
 		} catch (e) { // if you uncomment the permission checker change this line to } else {
 			lastMessage = null;
 		}
