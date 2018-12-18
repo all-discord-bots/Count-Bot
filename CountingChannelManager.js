@@ -62,8 +62,7 @@ class CountingChannelManager {
 		try { // If you uncomment the permission checker comment this line
 			//lastMessage = (await this.channel.messages.fetch({ limit: 50 }) || []).find((msg) => this.parseNumber(msg) > 0);
 			//lastMessage = Math[this.by.startsWith('-') ? 'min' : 'max'](...(await this.channel.messages.fetch({ limit: 50 }) || []).filter((number) => this.parseNumber(number) <= 0 || this.parseNumber(number) >= 0).map((number) => this.parseNumber(number)));
-			lastMessage = (await this.channel.messages.fetch({ limit: 50 }) || []).find((number) => this.by.startsWith('-') ? this.parseNumber(number) < 0 : this.parseNumber(number) > 0);
-			console.log(`by is negative: ${this.by.startsWith('-')}`);
+			lastMessage = (await this.channel.messages.fetch({ limit: 50 }) || []).find((number) => this.by.startsWith('-') ? this.parseNumber(number) <= 0 : this.parseNumber(number) >= 0);
 		} catch (e) { // if you uncomment the permission checker change this line to } else {
 			lastMessage = null;
 		}
@@ -91,7 +90,8 @@ class CountingChannelManager {
 			console.info("Users Message:", message.content);
 		}
 		
-		if ((message.content.length != gLastNumber.toString().length && number !== gLastNumber) || RegExp(/([a-z])/gi).test(message.content.toLowerCase()) || RegExp(/^(0+)/gi).test(message.content.toLowerCase()) || (message.content.includes(" ") || message.content.includes("-") || message.content.includes("+") || message.content.includes("=") || message.content.includes("_") || message.content.includes("`") || message.content.includes("~") || message.content.includes("!") || message.content.includes("@") || message.content.includes("#") || message.content.includes("$") || message.content.includes("%") || message.content.includes("^") || message.content.includes("&") || message.content.includes("*") || message.content.includes("(") || message.content.includes(")") || message.content.includes("\\") || message.content.includes("|") || message.content.includes("]") || message.content.includes("[") || message.content.includes("{") || message.content.includes("}") || message.content.includes("'") || message.content.includes("\"") || message.content.includes(";") || message.content.includes(":") || message.content.includes("?") || message.content.includes("/") || message.content.includes(".") || message.content.includes(",") || message.content.includes("<") || message.content.includes(">") || message.content.includes("\t") || message.content.includes("\r") || message.content.includes("\n") || message.attachments.size)) {
+		//if ((message.content.length != gLastNumber.toString().length && number !== gLastNumber) || RegExp(/([a-z])/gi).test(message.content.toLowerCase()) || RegExp(/^(0+)/gi).test(message.content.toLowerCase()) || (message.content.includes(" ") || (!message.content.startsWith('-') && message.content.includes("-")) || message.content.includes("+") || message.content.includes("=") || message.content.includes("_") || message.content.includes("`") || message.content.includes("~") || message.content.includes("!") || message.content.includes("@") || message.content.includes("#") || message.content.includes("$") || message.content.includes("%") || message.content.includes("^") || message.content.includes("&") || message.content.includes("*") || message.content.includes("(") || message.content.includes(")") || message.content.includes("\\") || message.content.includes("|") || message.content.includes("]") || message.content.includes("[") || message.content.includes("{") || message.content.includes("}") || message.content.includes("'") || message.content.includes("\"") || message.content.includes(";") || message.content.includes(":") || message.content.includes("?") || message.content.includes("/") || message.content.includes(".") || message.content.includes(",") || message.content.includes("<") || message.content.includes(">") || message.content.includes("\t") || message.content.includes("\r") || message.content.includes("\n") || message.attachments.size)) {
+		if ((message.content.length != gLastNumber.toString().length && number !== gLastNumber) || message.attachments.size || message.embeds.length || RegExp(/([\s\+\=\_\`\~\!\@\#\$\%\^\&\*\(\)\\\|\]\[\{\}\'\"\;\:\?\/\,\<\>\t\r\na-z])/i).test(message.content) || (message.content.length >= 2 && RegExp(/^(0+)/i).test(message.content)) || (!this.by.startsWith('-') && message.content.includes('-')) || (!this.by.includes('.') && message.content.includes('.'))) {
 			bot.emit('messup', message.author.id);
 			if (bot.messups.has(message.author.id) && bot.messups.get(message.author.id) >= bot.data.allowed_messups) bot.emit('giveMemberCantCount', message);
 			return bot.emit('handleDelete', message);
@@ -119,7 +119,7 @@ class CountingChannelManager {
 	}
 	
 	async recalculateNextNumber(message) {
-		this.lastNumber = Math.max(...await message.channel.messages.filter((msg) => msg.id !== message.id && parseInt(msg.content)).map((msg) => parseInt(msg.content)));
+		this.lastNumber = Math[this.by.includes('-') ? 'min' : 'max'](...await message.channel.messages.filter((msg) => msg.id !== message.id && this.parseNumber(msg.content)).map((msg) => this.parseNumber(msg.content)));
 	}
 }
 
