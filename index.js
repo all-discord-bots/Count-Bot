@@ -13,7 +13,7 @@ const countingChannels = bot.countingChannels = new Map();
 bot.messups = new Collection();
 bot.deleted_messages = new Collection();
 bot.data = {
-	debug: false,
+	debug: true,
 	last_number: 0,
 	allowed_messups: 3
 };
@@ -131,10 +131,10 @@ bot.on('message', (message) => {
 	if (!countingChannels.has(message.channel.id)) {
 		if (message.author.bot) return;
 		if (message.content.toLowerCase() === 'c!help') return message.channel.send({
-										embed: ({
+										embed: {
 												title: 'help',
 												description: 'To start create a channel that starts with the word `counting`. You may choose what counting system you want to use by doing the following.\n`counting-in-[ternary,quaternary,quinary,senary,octal,decimal,dozenal,hexadecimal,vigesimal,sexagesimal]`\n**Example**: `counting-in-hexadecimal`.\nYou may also choose how much to count by, by doing something like `counting-by-10` or `counting-in-hexadecimal-by-10` or `counting-by--10` which you would have to count down by 10.'
-										})
+										}
 									});
 	} else {
 		return bot.emit('handleMessage', message, 'none');
