@@ -43,7 +43,7 @@ module.exports = class extends Event {
 				id: "clearCache",
 			});
 		}
-		for (const guild of this.client.guilds.values()) {
+		/*for (const guild of this.client.guilds.values()) {
 			for (const member of guild.members.values()) {
 				if (member.settings.words.length) {
 					for (const word of member.settings.words) guild.addCachedWord(word, member);
@@ -52,6 +52,6 @@ module.exports = class extends Event {
 					for (const regex of member.settings.regexes) guild.addCachedRegexp(regex, member);
 				}
 			}
-		}
+		}*/
 	}
 };
