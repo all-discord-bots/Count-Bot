@@ -13,12 +13,6 @@ module.exports = Structures.extend("Guild", Guild => {
 			this.words = new Collection();
 
 			/**
-			 * A map containing members mapped to certain notes
-			 * @type {Collection<string, Set<GuildMember>>}
-			 */
-			this.notes = new Collection();
-
-			/**
 			 * A map containing members mapped to certain trigger regex expression
 			 * @type {Collection<string, Set<GuildMember>>}
 			 */
@@ -30,34 +24,6 @@ module.exports = Structures.extend("Guild", Guild => {
 		get filterRegex () {
 			if (!this.regex) return this.updateRegex();
 			return this.regex;
-		}
-
-		/**
-		 * Adds a member to the guild note list
-		 * @param {string} note
-		 * @param {GuildMember} member
-		 * @returns {this}
-		 * @chainable
-		 */
-		addCachedNote (note, member) {
-			const cached = this.notes.get(note);
-			if (cached) cached.add(member);
-			else this.notes.set(note, new Set([member]));
-			return this;
-		}
-
-		/**
-		 * Removes a member from the guild note list
-		 * @param {string} note
-		 * @param {GuildMember} member
-		 * @returns {this}
-		 * @chainable
-		 */
-		removeCachedNote (note, member) {
-			const cached = this.notes.get(note);
-			if (cached) cached.delete(member);
-			else this.notes.delete(note);
-			return this;
 		}
 
 		/**
