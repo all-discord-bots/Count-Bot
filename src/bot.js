@@ -1,13 +1,6 @@
-// https://github.com/Discord-Sharders/core/tree/dev
-// https://github.com/Discord-Sharders/eris-sharder
-// https://klasa.js.org/#/docs/klasa/master/typedef/CommandOptions
-
-// this.largeGuilds = bot.guilds.filter(g => g.large).length;
-// this.exclusiveGuilds = bot.guilds.filter(g => g.members.filter(m => m.bot).length === 1).length;
-
 const { Collection, WebSocket, Permissions: { FLAGS } } = require('discord.js');
 const { constants: { MENTION_REGEX } } = require('klasa');
-const axios = require('axios');
+//const axios = require('axios');
 //const Client = require("./lib/HighlightClient");
 //require('./index.js');
 const { Managers: { Logger, Stats }, Extensions: { StructureExtender }, Client, IPC } = require('./');
@@ -159,8 +152,8 @@ const client = global.client = new Client({
 	},*/
 	presence: {
 		activity: {
-			name: starting ? '...Initializing' : 'for words',
-			type: starting ? 0 : 3,
+			name: '1 2 3...',
+			type: 0,
 		},
 	},
 	consoleEvents: { verbose: true },
@@ -233,8 +226,8 @@ ws.once('open', () => {
 
 
 // Discord bot listing stats poster
-const postDiscordStats = async(bot) => {
-	try {
+/*const postDiscordStats = async(bot) => {
+	try {*/
 		/*const discordBots = axios({
 			method: 'post',
 			url: `https://discordbots.org/api/bots/${bot.user.id}/stats`,
@@ -252,7 +245,7 @@ const postDiscordStats = async(bot) => {
 			console.log("Uploaded bot stats to discordbots.org!");
 		}).catch(console.error);*/
 
-		const discordBotList = axios({
+/*		const discordBotList = axios({
 			method: 'post',
 			url: `https://discordbotlist.com/api/bots/${bot.user.id}/stats`,
 			headers: {
@@ -267,7 +260,7 @@ const postDiscordStats = async(bot) => {
 			}
 		}).then(() => {
 			console.log("Uploaded bot stats to discordbotlist.com!");
-		}).catch(console.error);
+		}).catch(console.error);*/
 
 		/*const botsForDiscord = axios({
 			method: 'post',
@@ -330,6 +323,7 @@ const postDiscordStats = async(bot) => {
 		const [dbres, dpwres, bspaceres, dservres, listres] = await Promise.all([discordBots, discordPw, botlistSpace, discordServices, listCord])
 		console.log(dbres.res, dpwres.res, bspaceres.res, dservres.res, listres.res)
 		*/
+/*
 		const [discordbotlist] = await Promise.all([discordBotList]);
 		///console.log(dbres.toString());
 	} catch (err) {
@@ -343,11 +337,6 @@ client.setInterval(() => {
 	} catch (err) {
 		console.error(err.stack ? err.stack : err.toString());
 	}
-}, 1800000);
-
-/*client.login(config.token)
-	.then(console.log)
-	.catch(console.error);*/
-
+}, 1800000);*/
 
 if (!client.ready) client.start();
