@@ -12,7 +12,6 @@ module.exports = class HighlightClient extends Client {
 	
 	start() {
 		if (!this.config) return false;
-		//this.token = process.env.BOT_TOKEN;
 		
 		this.login(process.env.BOT_TOKEN)
 			.then(console.log)
@@ -26,7 +25,6 @@ module.exports = class HighlightClient extends Client {
 		this.logger.uninject();
 		
 		if (this.ready) {
-			//this.storage.saveAll();
 			await this.destroy();
 		}
 		
