@@ -42,9 +42,7 @@ bot.once('ready', async() => {
 	console.info('Counting bot connected');
 	bot.user.setPresence({ activity: { name: `1 2 3...`, type: 0 }, status: 'online' }).then(() => {
 		console.log(`Successfully updated the bots presence.`);
-	}).catch((err) => {
-		console.error(err.toString());
-	});
+	}).catch(console.error);
 	await bot.channels.filter((channel) => channel.type === 'text' && channel.name.startsWith('counting') && (channel.permissionsFor(bot.user).has('READ_MESSAGE_HISTORY') && channel.permissionsFor(bot.user).has('VIEW_CHANNEL'))).map((channel) => bot.emit('setChannelManager', channel));
 });
 
@@ -75,7 +73,7 @@ bot.on('recalculateNumber', (message) => {
 });
 
 bot.on('setDeletedBy', (message, by) => {
-	if (bot.deleted_messages.has(message.id) && bot.deleted_messages.get(message.id) !== 'user') bot.deleted_messages.set(message.id, by);
+	bot.deleted_messages.set(message.id, by);
 });
 
 bot.on('handleDelete', async (message) => {
@@ -108,7 +106,7 @@ bot.on('handleMessage', (message, action) => {
 			}
 		} else if (action === 'delete') {
 			if (message.id === message.channel.lastMessageID) {
-				if (bot.deleted_messages.has(message.id) && bot.deleted_messages.get(message.id) === 'bot') return;
+				if (bot.deleted_messages.has(message.id) && bot.deleted_messages.get(message.id) !== 'bot') return;
 				bot.emit('giveMemberCantCount', message);
 				return bot.emit('recalculateNumber', message);
 			}
