@@ -22,6 +22,9 @@
 	},
 	"homepage": "https://github.com/all-discord-bots/Count-Bot#readme",
 	"dependencies": {
-		"discord.js": "github:discordjs/discord.js#master"
+		"discord.js": "github:discordjs/discord.js#master",
+		"klasa": "github:dirigeants/klasa#master",
+		"klasa-member-gateway": "github:dirigeants/klasa-member-gateway#master",
+		"pg": "^7.8.0"
 	}
 }
