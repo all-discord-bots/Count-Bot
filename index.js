@@ -69,7 +69,11 @@ bot.on('messup', (message) => {
 //});
 
 bot.on('recalculateNumber', (message) => {
-	return countingChannels.get(message.channel.id).recalculateNextNumber(message);
+	try {
+		return countingChannels.get(message.channel.id).recalculateNextNumber(message);
+	} catch (e) {
+		return countingChannels.get(message.channel.id).recalculateNextNumber(message);
+	}
 });
 
 bot.on('setDeletedBy', (message, by) => {
