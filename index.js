@@ -144,7 +144,7 @@ bot.on('messageUpdate', (oldMessage, newMessage) => {
 });
 
 bot.on('messageDelete', (message) => {
-	message.channel.messages.set(message.id, message);
+	//message.channel.messages.set(message.id, message);
 	bot.emit('handleMessage', message, 'delete');
 });
 
