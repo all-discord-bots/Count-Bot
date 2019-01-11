@@ -3,11 +3,10 @@ const { constants: { MENTION_REGEX } } = require('klasa');
 //const axios = require('axios');
 //const Client = require("./lib/HighlightClient");
 //require('./index.js');
-const { Managers: { Logger, Stats }, Extensions: { StructureExtender }, Client, IPC } = require('./');
+const { Managers: { Logger, Stats }, Extensions: { StructureExtender }, Client } = require('./');
 //const Managers = require('./managers');
 const config = require("../config.json");
 //require("./StructureExtender");
-const firebaseServiceAccount = require('../firebaseDatabase.json');
 
 let starting = global.starting = true;
 
@@ -85,7 +84,6 @@ KlasaClient.defaultClientSchema = new Schema()
 */
 
 Client.defaultGuildSchema
-	.add("bannedWords", "string", { array: true })
 	.add("bot", folder => folder
 		.add("channel", "textchannel")
 		.add("redirect", "boolean"))
@@ -102,34 +100,12 @@ KlasaClient.defaultGuildSchema = new Schema()
 	});
 */
 
-Client.defaultMemberSchema
-	.add("words", "string", { array: true })
-	.add("regexes", "string", { array: true })
-	.add("notes", "string", { array: true })
-	.add("blockedUsers", "user", { array: true })
-	.add("blockedChannels", "textchannel", { array: true })
-	.add("blockedCategories", "categorychannel", { array: true })
-	.add("blockedRoles", "role", { array: true })
-	.add("clearedWords", "string", { array: true })
-	.add("clearedRegexes", "string", { array: true })
-	.add("clearedNotes", "string", { array: true })
+//Client.defaultMemberSchema
 
-Client.defaultUserSchema
-	.add("dnd", "boolean", { default: false })
-	.add("ocr_disabled", "boolean", { default: false })
-	.add("developer_mode", "boolean", { default: false })
+//Client.defaultUserSchema
 
-// https://klasa.js.org/#/docs/klasa/master/Getting%20Started/UnderstandingPermissionLevels?scrollTo=what-39-s-different-from-komada-
-Client.defaultPermissionLevels
-	.add(4, ({ guild, member }) => guild && member.permissions.has(FLAGS.BAN_MEMBERS), { fetch: true }) // VIEW_AUDIT_LOG
-/*
-KlasaClient.defaultPermissionLevels = new PermissionLevels()
-	.add(0, () => true)
-	.add(6, ({ guild, member }) => guild && member.permissions.has(FLAGS.MANAGE_GUILD), { fetch: true })
-	.add(7, ({ guild, member }) => guild && member === guild.owner, { fetch: true })
-	.add(9, ({ author, client }) => author === client.owner, { break: true })
-	.add(10, ({ author, client }) => author === client.owner);
-*/
+/*Client.defaultPermissionLevels
+	.add(4, ({ guild, member }) => guild && member.permissions.has(FLAGS.BAN_MEMBERS), { fetch: true })*/
 
 const client = global.client = new Client({
 	autoReconnect: true,
@@ -144,12 +120,6 @@ const client = global.client = new Client({
 		"CHANNEL_PINS_UPDATE",
 	],
 	pieceDefaults: { commands: { deletable: true } },
-	/*presence: {
-		activity: {
-			name: 'for words',
-			type: 3,
-		},
-	},*/
 	presence: {
 		activity: {
 			name: '1 2 3...',
@@ -157,24 +127,20 @@ const client = global.client = new Client({
 		},
 	},
 	consoleEvents: { verbose: true },
-	prefix: 'h!',
+	prefix: 'c!',
 	restTimeOffset: 0,
-	regexPrefix: /^((?:hey |hi )?highlight(?:,|!|\w)?)/i,
+	regexPrefix: /^((?:hey |hi )?counting(?:,|!|\w)?)/i,
 	providers: {
-		default: config.provider,
-		rethinkdb: config.rethinkdb,
-		firestore: { credentials: firebaseServiceAccount, databaseURL: "https://highlightbot-58399.firebaseio.com" },
+		default: process.env.PROVIDER,
 	},
 	gateways: {
-		clientStorage: { provider: "json" },
-		members: { providers: config.provider },
+		clientStorage: { provider: process.env.PROVIDER },//"json" },
+		members: { providers: process.env.PROVIDER },
 	},
 	schedule: { interval: 1000 },
 	disabledCorePieces: ["commands"],
 	console: { useColor: true },
 });
-
-client.ipc = new IPC();
 
 /*
  * Console Colors
@@ -209,8 +175,6 @@ const deleted = client.deleted = new Collection();
 client.setInterval(() => {
 	deleted.clear();
 }, 7200000);
-
-const top = client.top = [];
 
 // Uncategorized
 let shuttingDown = client.shuttingDown = false;
