@@ -1,12 +1,8 @@
 const { Collection, WebSocket, Permissions: { FLAGS } } = require('discord.js');
 const { constants: { MENTION_REGEX } } = require('klasa');
 //const axios = require('axios');
-//const Client = require("./lib/HighlightClient");
-//require('./index.js');
 const { Managers: { Logger, Stats }, Extensions: { StructureExtender }, Client } = require('./');
-//const Managers = require('./managers');
 const config = require("../config.json");
-//require("./StructureExtender");
 
 let starting = global.starting = true;
 
@@ -84,7 +80,9 @@ KlasaClient.defaultClientSchema = new Schema()
 Client.defaultGuildSchema
 	.add("bot", folder => folder
 		.add("channel", "textchannel")
-		.add("redirect", "boolean"))
+		.add("redirect", "boolean")
+	     
+	)
 /*
 KlasaClient.defaultGuildSchema = new Schema()
 	.add('prefix', 'string')
