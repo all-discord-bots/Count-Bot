@@ -74,8 +74,8 @@ bot.on('recalculateNumber', (message) => {
 	return countingChannels.get(message.channel.id).recalculateNextNumber(message);
 });
 
-bot.on('setDeletedBy', async (message, by) => {
-	bot.deleted_messages.set(message.id, by);
+bot.on('setDeletedBy', (message, by) => {
+	if (bot.deleted_messages.has(message.id) && bot.deleted_messages.get(message.id) !== 'user') bot.deleted_messages.set(message.id, by);
 });
 
 bot.on('handleDelete', async (message) => {
@@ -109,7 +109,7 @@ bot.on('handleMessage', (message, action) => {
 		} else if (action === 'delete') {
 			bot.emit('setDeletedBy', message, 'user');
 			if (message.id === message.channel.lastMessageID) {
-				if (bot.deleted_messages.get(message.id) === 'bot') return;
+				//if (bot.deleted_messages.get(message.id) === 'bot') return;
 				bot.emit('giveMemberCantCount', message);
 				return bot.emit('recalculateNumber', message);
 			}
