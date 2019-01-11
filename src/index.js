@@ -2,10 +2,10 @@ const path = require('path');
 const shard = false;
 
 module.exports = {
-  Client: require(path.resolve(__dirname, './lib/HighlightClient')),
-  Extensions: {
-    StructureExtender: require(path.resolve(__dirname, './lib/extensions/StructureExtender')),
-  },
+	Client: require(path.resolve(__dirname, './lib/HighlightClient')),
+	Extensions: {
+		StructureExtender: require(path.resolve(__dirname, './lib/extensions/StructureExtender')),
+	},
 	Managers: {
 		//CommandManager: require('./commands'),
 		Logger: require(path.resolve(__dirname, './managers/logger')),
