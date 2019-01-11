@@ -23,11 +23,15 @@ module.exports = class extends Monitor {
 	async run (message) {
 		try {
 			if (!message.guild) return;
-      if (message.guild && !message.guild.settings.countingChannels.includes(message.channel)) return;
+			if (message.guild && !message.guild.settings.countingChannels.includes(message.channel)) return;
 			if (this.client.settings.blacklist.length && (this.client.settings.blacklist.includes(message.author.id) || this.client.settings.blacklist.includes(message.guild.id))) return;
 			this._beginCounting(message);
 		} catch (e) {
 			throw e;
 		}
+	}
+	
+	async _beginCounting (message) {
+		//
 	}
 };
