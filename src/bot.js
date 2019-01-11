@@ -62,11 +62,7 @@ Client.use(require("klasa-member-gateway"));
 */
 
 Client.defaultClientSchema
-	//.remove('userBlacklist')
-	//.remove('guildBlacklist')
 	.add('blacklist', 'string', { array: true, filter: (__, value) => !MENTION_REGEX.snowflake.test(value) })
-	//.add('userBlacklist', 'user', { array: true })
-	//.add('guildBlacklist', 'string', { array: true, filter: (__, value) => !MENTION_REGEX.snowflake.test(value) })
 	.add('restart', folder => folder
 		.add('message', 'messagepromise')
 		.add('timestamp', 'bigint', { min: 0 }))
@@ -78,11 +74,13 @@ KlasaClient.defaultClientSchema = new Schema()
 */
 
 Client.defaultGuildSchema
-	.add("bot", folder => folder
-		.add("channel", "textchannel")
-		.add("redirect", "boolean")
-	     
-	)
+	.add('currentNumber', 'number', { default: 0 })
+	.add('maxMistakes', 'number', { default: Infinity, min: 0 })
+	.add("countingChannels", "textchannel", { array: true })
+	.add('cantCountRole', 'role')
+	.add('bot', folder => folder
+		.add('channel', 'textchannel')
+		.add('redirect', 'boolean'))
 /*
 KlasaClient.defaultGuildSchema = new Schema()
 	.add('prefix', 'string')
@@ -96,7 +94,8 @@ KlasaClient.defaultGuildSchema = new Schema()
 	});
 */
 
-//Client.defaultMemberSchema
+Client.defaultMemberSchema
+	.add('mistakes', 'number', { default: 0, min: 0 })
 
 //Client.defaultUserSchema
 
