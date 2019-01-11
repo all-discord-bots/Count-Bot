@@ -1,5 +1,4 @@
 const { Event, util } = require('klasa');
-//const LogMemoryUsage = require('log-memory-usage');
 
 module.exports = class extends Event {
 
@@ -33,16 +32,6 @@ module.exports = class extends Event {
 			global.starting = false;
 			this.client.ready = true;
 
-			this.client.user.setPresence({
-				activity: {
-					name: `${this.client.guilds.size.toLocaleString()} server${this.client.guilds.size === 1 ? '' : 's'}`,
-					type: 3
-				},
-				status: 'online'
-			}).then(() => {
-				console.log(`Successfully updated the bots presence.`);
-			}).catch(console.error);
-
 			if (this.client.ready && this.client.channels.has(process.env.BOT_CONNECTION_LOG)) this.client.channels.get(process.env.BOT_CONNECTION_LOG).send({
 				embed: {
 					color: 6732650,
@@ -53,16 +42,6 @@ module.exports = class extends Event {
 			}).catch(console.error);
 			if (this.client.ready) await this.client.guilds.map(async(guild) => await guild.members.fetch({ cache: true }));
 
-			//const status = ['online','idle','dnd']; // 'invisible'
-
-			/*setInterval(async() => {
-				await this.client.user.setStatus(status[Math.floor(Math.random() * Math.floor(status.length))]);
-			},2000);*/
-			//await this.client.user.setStatus('online');
-
-			/*setInterval(() => {
-				LogMemoryUsage.check();
-			}, 30 * 1000);*/
 			// Init the schedule
 			await this.client.schedule.init();
 
