@@ -14,7 +14,7 @@ module.exports = class extends Event {
 				}
 				message.deleted_by = user;
 			}
-			message.channel.messages.set(message.id, message);
+			//message.channel.messages.set(message.id, message);
 			//this.client.deleted.set(message.author.id, message);
 			this.client.deleted.set(message.id, message);
 		}
@@ -26,6 +26,3 @@ module.exports = class extends Event {
 		}
 	}
 };
-
-//u!eval client.shard.broadcastEval("this.shard.id === 40 && process.exit()");
-//u!eval client.shard.broadcastEval("this.shard.id === 40 && this.shard.respawn()");
