@@ -2,9 +2,13 @@
 	"name": "Count-Bot",
 	"version": "1.0.0",
 	"description": "",
-	"main": "index.js",
+	"main": "./src/index",
 	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1"
+		"scripts": {
+			"start": "./src/index",
+			"test": "npx eslint .",
+			"background": "screen -dmS highlight ./src/index"
+		},
 	},
 	"repository": {
 		"type": "git",
@@ -25,6 +29,9 @@
 		"discord.js": "github:discordjs/discord.js#master",
 		"klasa": "github:dirigeants/klasa#master",
 		"klasa-member-gateway": "github:dirigeants/klasa-member-gateway#master",
-		"pg": "^7.8.0"
+		"pg": "^7.8.0",
+		"re2": "^1.8.3",
+		"heapdump": "^0.3.12",
+		"chalk": "^2.4.2"
 	}
 }
