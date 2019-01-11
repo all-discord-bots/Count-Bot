@@ -110,7 +110,7 @@ bot.on('handleMessage', (message, action) => {
 			}
 		} else if (action === 'delete') {
 			if (message.id === message.channel.lastMessageID) {
-				if (bot.deleted_messages.has(message.id) && bot.deleted_messages.get(message.id) !== 'bot') return;
+				if (bot.deleted_messages.has(message.id) && bot.deleted_messages.get(message.id) === 'bot') return;
 				bot.emit('giveMemberCantCount', message);
 				return bot.emit('recalculateNumber', message);
 			}
