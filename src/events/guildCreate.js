@@ -18,15 +18,6 @@ module.exports = class extends Event {
 					description: `${guild.name} (${guild.id})\n\`${gusers} members   -   ${gbots} bots  (${Math.floor((gbots/guild.memberCount)*100)}%)\`\n\nOwner: ${guild.owner}  \`[${guild.owner.user.tag}]\``
 				}
 			}).catch(console.error);
-			this.client.user.setPresence({
-				activity: {
-					name: `${this.client.guilds.size.toLocaleString()} server${this.client.guilds.size === 1 ? '' : 's'}`,
-					type: 3
-				},
-				status: 'online'
-			}).then(() => {
-				console.log(`Successfully updated the bots presence.`);
-			}).catch(console.error);
 		} catch (error) {
 			console.error(error.stack ? error.stack : error.toString());
 		}
