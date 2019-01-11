@@ -26,7 +26,7 @@ module.exports = class extends Event {
 					}
 				]
 			}
-		}).catch((err) => console.error(err.toString()));
+		}).catch(console.error);
 		this.client.emit('error', `Uncaught Exception Error: \n${errorMsg}`);
 	}
 
