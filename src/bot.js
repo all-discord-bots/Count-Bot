@@ -10,8 +10,6 @@ const config = require("../config.json");
 
 let starting = global.starting = true;
 
-//const ws = global.ws = new WebSocket.WebSocket('wss://gateway.discord.gg/?v=6&encoding=json');
-
 /**
 	 * @typedef {AliasPieceOptions} CommandOptions
 	 * @property {boolean} [autoAliases=true] If automatic aliases should be added (adds aliases of name and aliases without dashes)
