@@ -13,7 +13,7 @@ module.exports = class extends Monitor {
 
 	async run(message) {
 		if (message.guild && !message.guild.me) await message.guild.members.fetch(this.client.user);
-		if (message.guild.settings.countingChannels.includes(message.channel)) return undefined;
+		if (message.guild && message.guild.settings.countingChannels.includes(message.channel)) return undefined;
 		if (!message.channel.postable) return undefined;
 		if (this.mentionOnly.test(message.content)) return message.send({
 				embed: {
