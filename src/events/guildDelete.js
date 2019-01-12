@@ -4,6 +4,8 @@ module.exports = class extends Event {
 	async run(guild) {
 		try {
 			if (!this.client.ready) return;
+			//const { settings: { countingChannels }, settings } = guild;
+			//guild.channels.map(async(channel) => await settings.update('countingChannels', channel, { action: 'remove' }));
 			console.log(`Left a guild: ${guild.name}`);
 			const gusers = guild.members.filter((user) => user.user ? !user.user.bot : !user.bot).size; // get only users and exclude bots
 			const gbots = guild.members.filter((user) => user.user ? user.user.bot : user.bot).size; // get all bots excluding users
