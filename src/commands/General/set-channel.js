@@ -52,7 +52,7 @@ module.exports = class extends Command {
 			});
 		}
 		channel.currentNumber = 0;
-		channel.maxMessups = 0;
+		channel.maxMessups = Infinity;
 		await settings.update('countingChannels', channel, { action: 'add' });
 		return message.send({
 			embed: {
