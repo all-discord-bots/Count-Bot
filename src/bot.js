@@ -73,7 +73,7 @@ KlasaClient.defaultClientSchema = new Schema()
 
 Client.defaultGuildSchema
 	.add('channelData', 'string', { array: true })
-	//.add('maxMistakes', 'float', { default: 1000000, min: 0 })
+	.add('maxMistakes', 'float', { default: 1000000, min: 0 })
 	.add("countingChannels", "textchannel", { array: true })
 	.add('cantCountRole', 'role')
 	.add('bot', folder => folder
