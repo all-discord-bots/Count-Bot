@@ -1,18 +1,8 @@
-const { Client, Schema , util: { sleep, mergeDefault } } = require("klasa");
+const { Client , util: { sleep } } = require("klasa");
 //const wait = ms => new Promise(_ => setTimeout(_, ms));
-const ChannelGateway = require('./extensions/ChannelGateway');
 const os = require("os");
 
-Client.defaultChannelSchema = new Schema();
-
 module.exports = class HighlightClient extends Client {
-	mergeDefault({ CLIENT: { gateways: { channels: {} } } }, this.options);
-	const { channels } = this.options.gateways;
-	const channelSchema = 'schema' in channels ? channels.schema : this.constructor.defaultChannelSchema;
-	this.gateways.members = new ChannelGateway(this.gateways, 'channels', channelSchema, channels.provider || this.options.providers.default);
-	this.gateways.keys.add('channels');
-	this.gateways._queue.push(this.gateways.channels.init.bind(this.gateways.channels));
-	
 	async getCPUUsage () {
 		const { idle: startIdle, total: startTotal } = getCPUInfo();
 		await sleep(1000);
