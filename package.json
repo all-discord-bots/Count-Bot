@@ -8,7 +8,7 @@
 			"start": "./src/index",
 			"test": "npx eslint .",
 			"background": "screen -dmS highlight ./src/index"
-		},
+		}
 	},
 	"repository": {
 		"type": "git",
