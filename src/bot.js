@@ -64,9 +64,6 @@ Client.use(require("klasa-member-gateway"));
 
 Client.defaultClientSchema
 	.add('blacklist', 'string', { array: true, filter: (__, value) => !MENTION_REGEX.snowflake.test(value) })
-	.add('restart', folder => folder
-		.add('message', 'messagepromise')
-		.add('timestamp', 'bigint', { min: 0 }))
 /*
 KlasaClient.defaultClientSchema = new Schema()
 	.add('userBlacklist', 'user', { array: true })
