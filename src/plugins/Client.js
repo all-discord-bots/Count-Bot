@@ -1,7 +1,7 @@
 const { Client, Schema, util: { mergeDefault } } = require('klasa');
 const { CLIENT } = require('./util/constants');
 
-const ChannelGateway = require('./ChannelGateway');
+const ChannelGateway = require('./TextChannelGateway');
 Client.defaultChannelSchema = new Schema();
 
 module.exports = class extends Client {
