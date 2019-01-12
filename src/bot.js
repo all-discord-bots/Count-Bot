@@ -53,6 +53,7 @@ datatypes: {
 const startTime = global.startTime = new Date(); // start recording time of boot
 
 Client.use(require("klasa-member-gateway"));
+Client.use(require("./plugins"));
 
 /*
  defaultGuildSchema
