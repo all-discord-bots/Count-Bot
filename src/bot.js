@@ -135,6 +135,7 @@ const client = global.client = new Client({
 	gateways: {
 		clientStorage: { provider: process.env.PROVIDER },//"json" },
 		members: { providers: process.env.PROVIDER },
+		channels: { providers: process.env.PROVIDER },
 	},
 	schedule: { interval: 1000 },
 	disabledCorePieces: ["commands"],
