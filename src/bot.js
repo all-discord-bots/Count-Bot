@@ -53,7 +53,7 @@ datatypes: {
 const startTime = global.startTime = new Date(); // start recording time of boot
 
 Client.use(require("klasa-member-gateway"));
-Client.use(require("./plugins"));
+//Client.use(require("./plugins"));
 
 /*
  defaultGuildSchema
@@ -98,8 +98,8 @@ KlasaClient.defaultGuildSchema = new Schema()
 Client.defaultMemberSchema
 	.add('mistakes', 'number', { default: 0, min: 0 })
 
-Client.defaultChannelSchema
-	.add('currentNumber', 'number', { default: 0 })
+/*Client.defaultChannelSchema
+	.add('currentNumber', 'number', { default: 0 })*/
 
 //Client.defaultUserSchema
 
