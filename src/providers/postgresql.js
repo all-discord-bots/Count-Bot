@@ -30,7 +30,7 @@ module.exports = class extends SQLProvider {
 				idleTimeoutMillis: 30000,
 				connectionTimeoutMillis: 2000
 			}
-		}, this.client.options.providers.postgresql); // change this.
+		}, JSON.parse(process.env.postgresql));
 		this.db = new Pool(Object.assign({
 			host: connection.host,
 			port: connection.port,
