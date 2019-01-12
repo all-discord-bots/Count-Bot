@@ -74,8 +74,8 @@ KlasaClient.defaultClientSchema = new Schema()
 */
 
 Client.defaultGuildSchema
-	.add('currentNumber', 'number', { default: 0 })
-	.add('maxMistakes', 'number', { default: Infinity, min: 0 })
+	//.add('currentNumber', 'number', { default: 0 })
+	.add('maxMistakes', 'number', { default: 3, min: 0 })
 	.add("countingChannels", "textchannel", { array: true })
 	.add('cantCountRole', 'role')
 	.add('bot', folder => folder
@@ -96,6 +96,9 @@ KlasaClient.defaultGuildSchema = new Schema()
 
 Client.defaultMemberSchema
 	.add('mistakes', 'number', { default: 0, min: 0 })
+
+Client.defaultChannelSchema
+	.add('currentNumber', 'number', { default: 0 })
 
 //Client.defaultUserSchema
 
