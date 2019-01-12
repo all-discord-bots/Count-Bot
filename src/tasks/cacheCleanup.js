@@ -7,10 +7,10 @@ const { util: { binaryToID } } = require("discord.js");
 //     - 15 minutes
 
 const clean = {
-	GuildMember: true,
-	ClientUser: true,
+	GuildMember: false,
+	ClientUser: false,
 	UserPresence: true,
-	Message: true,
+	Message: false,
 	Emoji: true,
 	VoiceState: true
 };
