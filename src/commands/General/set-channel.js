@@ -1,4 +1,4 @@
-const { Command } = require('klasa');
+const { Command, util: { mergeDefault } = require('klasa');
 const { TextChannel } = require('discord.js');
 
 module.exports = class extends Command {
@@ -43,7 +43,7 @@ module.exports = class extends Command {
 
 	async _setChannel (message, channel) {
 		const { settings: { countingChannels }, settings } = message.guild;
-		if (countingChannels.length) {
+		/*if (countingChannels.length) {
 			const check_channel = countingChannels.map((channel) => channel.includes(`"id":"${channel.id}"`));
 			if (check_channel.includes(true)) {
 				return message.send({
@@ -53,18 +53,47 @@ module.exports = class extends Command {
 					},
 				});
 			}
+		}*/
+		if (countingChannels.includes(channel.id) && this.client.countingChannels.has(channel.id)) {
+			return message.send({
+				embed: {
+					color: 0xCC0F16,
+					description: 'That channel is already set!',
+				},
+			});
+		}
+		if (channel.topic === null) {
+			channel.currentNumber = 0;
+			channel.lastNumber = 0;
+			channel.maxMessups = Infinity;
+			channel.countBy = 1;
+			channel.countBase = 'decimal';
+			channel.startAt = 0;
+		} else {
+			const count_by = channel.topic.split('\n').filter((m) => m.toLowerCase().startsWith('by: ') || m.toLowerCase().startsWith('countby: ')).toString().replace(/(countby: |by: )/i, '');
+			const count_base = channel.topic.split('\n').filter((m) => m.toLowerCase().startsWith('base: ') || m.toLowerCase().startsWith('countbase: ')).toString().replace(/(countbase: |base: )/i, '');
+			const max_messups = channel.topic.split('\n').filter((m) => m.toLowerCase().startsWith('maxmistakes: ') || m.toLowerCase().startsWith('maxmessups: ')).toString().replace(/(maxmistakes: |maxmessups: )/i, '');
+			const start_at = channel.topic.split('\n').filter((m) => m.toLowerCase().startsWith('startcountat: ') || m.toLowerCase().startsWith('startat: ')).toString().replace(/(startat: |startcountat: )/i, '');
+			channel.currentNumber = 0;
+			channel.lastNumber = 0;
+			channel.maxMessups = max_messups !== '' && !(parseFloat(max_messups) <= 0) ? parseFloat(max_messups) : Infinity;
+			channel.countBy = count_by !== '' && count_by != '0' && count_by != '-0' ? parseInt(count_by) : 1;
+			channel.countBase = count_base !== '' && !parseInt(count_base) ? String(count_base) : 'decimal';
+			channel.startAt = start_at !== '' ? parseInt(start_at) : 0;
 		}
 		//channel.currentNumber = 0;
 		//channel.maxMessups = Infinity;
-		const copied_channel = {
+		/*const copied_channel = {
 			"id": channel.id,
 			"currentNumber": 0,
 			"lastNumber": 0,
 			"maxMessups": Infinity,
 			"countBy": 1,
 			"countBase": 'decimal'
-		};
-		await settings.update('countingChannels', JSON.stringify(copied_channel), { action: 'add' });
+		};*/
+		//await settings.update('countingChannels', JSON.stringify(copied_channel), { action: 'add' });
+		await settings.update('countingChannels', channel, { action: 'add' });
+		this.client.countingChannels.set(channel.id, channel);
 		return message.send({
 			embed: {
 				color: 0x43B581,
