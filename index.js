@@ -103,7 +103,7 @@ bot.on('handleMessage', (message, action) => {
 		if (action === 'updated') {
 			if (message.id === message.channel.lastMessageID) {
 				bot.emit('giveMemberCantCount', message);
-				bot.emit('recalculateNumber', message, 1);
+				bot.emit('recalculateNumber', message);
 				return bot.emit('handleDelete', message);
 			} else {
 				return bot.emit('handleDelete', message);
