@@ -8,7 +8,7 @@ module.exports = class extends Command {
 			description: 'Set the channels that you want to count in.',
 			usage: '<TextChannel:string>',
 			permissionLevel: 7,
-			aliases: ['set-counting-channel','setcountingchannel','setchannel'],
+			aliases: ['remove-counting-channel','removecountingchannel','removechannel'],
 			guarded: true
 		});
 		this.needsMember = true;
