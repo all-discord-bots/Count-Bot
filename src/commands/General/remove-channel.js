@@ -5,7 +5,7 @@ module.exports = class extends Command {
 	constructor (...args) {
 		super(...args, {
 			runIn: ['text'],
-			description: 'Set the channels that you want to count in.',
+			description: 'Remove a currently set counting channel.',
 			usage: '<TextChannel:string>',
 			permissionLevel: 7,
 			aliases: ['remove-counting-channel','removecountingchannel','removechannel'],
