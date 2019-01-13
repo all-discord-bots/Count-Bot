@@ -11,7 +11,7 @@ module.exports = class extends Event {
 				message.channel.sync();
 			}
 			await message.member.settings.reset('messups');
-			return await message.delete({ reason: 'Updated Counting Message' });
+			return await message.delete({ reason: 'Wrong number!' });
 		}
 		if (this.client.ready && old.content !== message.content) this.client.monitors.run(message);
 	}
