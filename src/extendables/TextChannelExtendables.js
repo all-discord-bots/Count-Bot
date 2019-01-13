@@ -54,6 +54,6 @@ module.exports = class extends Extendable {
 	}
 	
 	get nextNumber() {
-		return this.currentNumber + this.countBy;
+		return this._currentNumber + this._countBy;
 	}
 }
