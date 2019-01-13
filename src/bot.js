@@ -158,6 +158,8 @@ client.baseMap = {
 	'sexagesimal': 60
 };
 
+client.countingChannels = new Collection();
+
 /*
  * Console Colors
  * shard: { background: 'cyan', text: 'black' },
