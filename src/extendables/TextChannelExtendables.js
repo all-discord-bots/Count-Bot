@@ -59,8 +59,8 @@ module.exports = class extends Extendable {
 		return this._startAt;
 	}
 	
-	sync() {
+	async sync() {
 		const { settings } = this.guild;
-		settings.update('countingChannels', this);
+		await settings.update('countingChannels', this);
 	}
 }
