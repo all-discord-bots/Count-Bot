@@ -9,9 +9,9 @@ module.exports = class extends Event {
 			if (message.channel.lastMessageID === message.id) {
 				message.channel.currentNumber = message.channel.currentNumber - 1;
 				message.channel.sync();
-				await message.member.settings.reset('messups');
 			}
-			return await message.delete();
+			await message.member.settings.reset('messups');
+			return await message.delete({ reason: 'Updated Counting Message' });
 		}
 		if (this.client.ready && old.content !== message.content) this.client.monitors.run(message);
 	}
