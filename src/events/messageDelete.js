@@ -9,11 +9,11 @@ module.exports = class extends Event {
 				let user = "";
 				if (entry.extra.channel.id === message.channel.id && (entry.target.id === message.author.id) && (entry.createdTimestamp > (Date.now() - 5000)) && (entry.extra.count >= 1)) {
 					user = entry.executor;
-				} else { 
+				} else {
 					user = message.author;
 				}
 				message.deleted_by = user;
-				if (message.guild.settings.countingChannels.length && (message.guild.settings.countingChannels.includes(message.channel) || message.guild.settings.countingChannels.includes(message.channel.id))) {
+				if (entry.reason !== 'Wrong number!' && message.guild.settings.countingChannels.length && (message.guild.settings.countingChannels.includes(message.channel) || message.guild.settings.countingChannels.includes(message.channel.id))) {
 					if (!user.bot && message.guild.settings.cantCountRole) await message.guild.members.get(user.id).roles.add(message.guild.settings.cantCountRole.id, 'Tried to delete a count message!');
 					await message.guild.members.get(user.id).settings.reset('messups');
 				}
