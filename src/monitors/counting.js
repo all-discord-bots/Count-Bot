@@ -24,7 +24,7 @@ module.exports = class extends Monitor {
 		try {
 			if (!message.guild) return;
 			const { settings: { countingChannels } } = message.guild;
-			if (!countingChannels.includes(message.channel) && !countingChannels.includes(message.channel.id)) return;
+			if (!countingChannels.includes(message.channel.id) && !this.client.countingChannels.has(message.channel.id)) return;
 			if (this.client.settings.blacklist.length && (this.client.settings.blacklist.includes(message.author.id) || this.client.settings.blacklist.includes(message.guild.id))) return;
 			this._beginCounting(message);
 		} catch (e) {
