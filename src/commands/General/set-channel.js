@@ -92,8 +92,8 @@ module.exports = class extends Command {
 			"countBase": 'decimal'
 		};*/
 		//await settings.update('countingChannels', JSON.stringify(copied_channel), { action: 'add' });
-		await settings.update('countingChannels', channel, { action: 'add' });
-		this.client.countingChannels.set(channel.id, channel);
+		if (!countingChannels.includes(channel.id)) await settings.update('countingChannels', channel, { action: 'add' });
+		if (!this.client.countingChannels.has(channel.id)) this.client.countingChannels.set(channel.id, channel);
 		return message.send({
 			embed: {
 				color: 0x43B581,
