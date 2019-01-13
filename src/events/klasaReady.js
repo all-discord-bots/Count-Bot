@@ -45,10 +45,11 @@ module.exports = class extends Event {
 		}
 		for (const guild of this.client.guilds.values()) {
 			for (const channel of guild.channels.values()) {
-				const settings = guild.settings.get('countingChannels')[guild.settings.get('countingChannels').indexOf(channel.id)];
+				const settings = guild.settings.get('countingChannels').indexOf(channel.id) >= 0 ? guild.settings.get('countingChannels')[guild.settings.get('countingChannels').indexOf(channel.id)] : undefined;
 				channel.countBy = settings.countBy || 1;
 				channel.countBase = settings.countBase || 'decimal';
 				channel.currentNumber = settings.currentNumber || 0;
+				channel.lastNumber = settings.lastNumber || 0;
 				channel.maxMessups = settings.maxMessups || Infinity;
 				channel.startAt = settings.startAt || 0;
 			}
