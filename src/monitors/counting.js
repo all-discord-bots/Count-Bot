@@ -32,6 +32,18 @@ module.exports = class extends Monitor {
 	}
 	
 	async _beginCounting (message) {
-		//
+		const { channel: { settings: { maxMessups, currentNumber, countingBase, countBy } }, guild: { settings: { cantCountRole } } } = message;
+		
 	}
+	
+	parseNumber(message) {
+		const { channel: { settings: { countBase, countBy } } = message;
+		if (countBy % 1 !== 0)
+			return parseFloat(message.content);
+
+		if (message.content.search(/^\d+\.[1-9]/) !== -1)
+			return NaN;
+		return parseInt(message.content.replace(/ .*/, ''), countBase);
+	}
+
 };
