@@ -104,7 +104,7 @@ bot.on('handleMessage', (message, action) => {
 			if (message.id === message.channel.lastMessageID) {
 				bot.emit('giveMemberCantCount', message);
 				bot.emit('handleDelete', message);
-				return bot.emit('recalculateNumber', message, 1);
+				return bot.emit('recalculateNumber', message);
 			} else {
 				return bot.emit('handleDelete', message);
 			}
@@ -150,7 +150,7 @@ bot.on('messageUpdate', (oldMessage, newMessage) => {
 bot.on('messageDelete', (message) => {
 	//message.channel.messages.set(message.id, message);
 	bot.emit('handleMessage', message, 'delete');
-	bot.emit('recalculateNumber', message)
+	//bot.emit('recalculateNumber', message)
 });
 
 bot.on('channelUpdate', (oldChannel, newChannel) => {
