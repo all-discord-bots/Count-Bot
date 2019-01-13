@@ -43,17 +43,28 @@ module.exports = class extends Command {
 
 	async _setChannel (message, channel) {
 		const { settings: { countingChannels }, settings } = message.guild;
-		if (countingChannels.includes(channel.id)) {
-			return message.send({
-				embed: {
-					color: 0xCC0F16,
-					description: 'That channel is already set!',
-				},
-			});
+		if (countingChannels.length) {
+			const check_channel = countingChannels.map((channel) => channel.includes(`"id":"${channel.id}"`));
+			if (check_channel.includes(true)) {
+				return message.send({
+					embed: {
+						color: 0xCC0F16,
+						description: 'That channel is already set!',
+					},
+				});
+			}
 		}
-		channel.currentNumber = 0;
-		channel.maxMessups = Infinity;
-		await settings.update('countingChannels', channel, { action: 'add' });
+		//channel.currentNumber = 0;
+		//channel.maxMessups = Infinity;
+		const copied_channel = {
+			"id": channel.id,
+			"currentNumber": 0,
+			"lastNumber": 0,
+			"maxMessups": Infinity,
+			"countBy": 1,
+			"countBase": 'decimal'
+		};
+		await settings.update('countingChannels', JSON.stringify(copied_channel), { action: 'add' });
 		return message.send({
 			embed: {
 				color: 0x43B581,
