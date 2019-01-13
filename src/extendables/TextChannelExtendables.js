@@ -5,11 +5,51 @@ module.exports = class extends Extendable {
 
 	constructor(...args) {
 		super(...args, { appliesTo: [TextChannel] });
-		this.cached_settings = this.guild.settings.get('countingChannels').indexOf(this.id) < 0 ? undefined : this.guild.settings.get('countingChannels')[this.guild.settings.get('countingChannels').indexOf(this.id)];
-		this.currentNumber =  this.cached_settings.currentNumber || 0;
-		this.maxMessups = this.cached_settings.maxMessups || 0;
-		this.countBase = this.cached_settings.countBase || 'decimal';
-		this.countBy = this.cached_settings.countBy || 1;
-		this.startAt = this.cached_settings.startAt || 0;
+		const settings = this.guild.settings.get('countingChannels').indexOf(this.id) >= 0 ? this.guild.settings.get('countingChannels')[this.guild.settings.get('countingChannels').indexOf(this.id)] : undefined;
+		this._currentNumber = settings.currentNumber || 0;
+		this._maxMessups = settings.maxMessups || Infinity;
+		this._countBase = settings.countBase || 'decimal';
+		this._countBy = settings.countBy || 1;
+		this._startAt = settings.startAt || 0;
+	}
+
+	set currentNumber(number) {
+		this._currentNumber = number;
+	}
+
+	get currentNumber() {
+		return this._currentNumber;
+	}
+
+	set maxMessups(number) {
+		this._maxMessups = number;
+	}
+
+	get maxMessups() {
+		return this._maxMessups;
+	}
+
+	set countBase(base) {
+		this._countBase = base;
+	}
+
+	get countBase() {
+		return this._countBase;
+	}
+
+	set countBy(by) {
+		this._countBy = by;
+	}
+
+	get countBy() {
+		return this._countBy;
+	}
+	
+	set startAt(number) {
+		this._startAt = number;
+	}
+
+	get startAt() {
+		return this._startAt;
 	}
 }
