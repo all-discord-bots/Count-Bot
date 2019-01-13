@@ -56,8 +56,7 @@ bot.on('setChannelManager', (channel) => {
 bot.on('giveMemberCantCount', async (message) => {
 	if (!message.channel.permissionsFor(message.guild.me).has('MANAGE_ROLES')) return;
 	const role = await message.guild.roles.filter((role) => role.name === "can't count" || role.name === "cant count");
-	console.log(role.name);
-	if (role.length) await message.member.roles.add(role.first(), 'This user can\'t count correctly.');
+	if (role.size) await message.member.roles.add(role.first(), 'This user can\'t count correctly.');
 	return bot.messups.get(message.channel.id).set(message.author.id, 0);
 });
 
@@ -92,7 +91,7 @@ bot.on('handleDelete', async (message) => {
 	}).then((msg) => {
 		if (!bot.notified_owners.includes(message.guild.owner.id)) return bot.notified_owners.push(`${message.channel.id}.${message.guild.owner.id}`);
 	});*/
-	await message.delete('Wrong Number!');
+	await message.delete({ reason: 'Wrong Number!'} );
 });
 
 bot.on('handleMessage', (message, action) => {
