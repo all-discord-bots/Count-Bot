@@ -72,7 +72,7 @@ module.exports = class extends Monitor {
 	
 	async deleteMessage(message) {
 		if (!message.channel.permissionsFor(message.guild.me).has('MANAGE_MESSAGES')) return;
-		await message.delete('Wrong number!');
+		await message.delete({ reason: 'Wrong number!' });
 	}
 
 };
