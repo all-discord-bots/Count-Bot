@@ -7,6 +7,7 @@ module.exports = class extends Extendable {
 		super(...args, { appliesTo: [TextChannel] });
 		const settings = this.guild.settings.get('countingChannels').indexOf(this.id) >= 0 ? this.guild.settings.get('countingChannels')[this.guild.settings.get('countingChannels').indexOf(this.id)] : undefined;
 		this._currentNumber = settings.currentNumber || 0;
+		this._lastNumber = settings.lastNumber || undefined;
 		this._maxMessups = settings.maxMessups || Infinity;
 		this._countBase = settings.countBase || 'decimal';
 		this._countBy = settings.countBy || 1;
@@ -14,11 +15,16 @@ module.exports = class extends Extendable {
 	}
 
 	set currentNumber(number) {
+		this._lastNumber = this._currentNumber;
 		this._currentNumber = number;
 	}
 
 	get currentNumber() {
 		return this._currentNumber;
+	}
+	
+	get lastNumber() {
+		return this._lastNumber;
 	}
 
 	set maxMessups(number) {
@@ -51,9 +57,5 @@ module.exports = class extends Extendable {
 
 	get startAt() {
 		return this._startAt;
-	}
-	
-	get nextNumber() {
-		return this._currentNumber + this._countBy;
 	}
 }
