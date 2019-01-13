@@ -68,11 +68,11 @@ bot.on('messup', (message) => {
 //	return bot.messups.set(id, 0);
 //});
 
-bot.on('recalculateNumber', (message) => {
+bot.on('recalculateNumber', (message, amount = 0) => {
 	try {
-		return countingChannels.get(message.channel.id).recalculateNextNumber(message);
+		return countingChannels.get(message.channel.id).recalculateNextNumber(message, amount);
 	} catch (e) {
-		return countingChannels.get(message.channel.id).recalculateNextNumber(message);
+		return countingChannels.get(message.channel.id).recalculateNextNumber(message, amount);
 	}
 });
 
@@ -104,7 +104,7 @@ bot.on('handleMessage', (message, action) => {
 			if (message.id === message.channel.lastMessageID) {
 				bot.emit('giveMemberCantCount', message);
 				bot.emit('handleDelete', message);
-				return bot.emit('recalculateNumber', message);
+				return bot.emit('recalculateNumber', message, 1);
 			} else {
 				return bot.emit('handleDelete', message);
 			}
