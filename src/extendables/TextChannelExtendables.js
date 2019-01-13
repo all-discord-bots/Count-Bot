@@ -60,6 +60,6 @@ module.exports = class extends Extendable {
 	
 	async sync() {
 		const { settings } = this.guild;
-		await settings.update('countingChannels', this);
+		await settings.update('countingChannels', JSON.stringify(this));
 	}
 }
