@@ -158,7 +158,8 @@ client.baseMap = {
 	'sexagesimal': 60
 };
 
-client.countingChannels = new Collection();
+//client.countingChannels = new Collection();
+client.countingChannels = new Map();
 
 /*
  * Console Colors
