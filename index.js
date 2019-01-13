@@ -182,4 +182,4 @@ bot.on("error", (err) => {
 	console.error(err.stack);
 });
 
-bot.login(process.env.TOKEN);
+bot.login(process.env.BOT_TOKEN);
