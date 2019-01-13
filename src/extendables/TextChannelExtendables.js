@@ -5,13 +5,13 @@ module.exports = class extends Extendable {
 
 	constructor(...args) {
 		super(...args, { appliesTo: [TextChannel] });
-		const settings = this.guild.settings.get('countingChannels').indexOf(this.id) >= 0 ? this.guild.settings.get('countingChannels')[this.guild.settings.get('countingChannels').indexOf(this.id)] : undefined;
-		this._currentNumber = settings.currentNumber || 0;
-		this._lastNumber = settings.lastNumber || undefined;
-		this._maxMessups = settings.maxMessups || Infinity;
-		this._countBase = settings.countBase || 'decimal';
-		this._countBy = settings.countBy || 1;
-		this._startAt = settings.startAt || 0;
+		this.settings = this.guild.settings.get('countingChannels').indexOf(this.id) >= 0 ? this.guild.settings.get('countingChannels')[this.guild.settings.get('countingChannels').indexOf(this.id)] : undefined;
+		this._currentNumber = this.settings.currentNumber || 0;
+		this._lastNumber = this.settings.lastNumber || undefined;
+		this._maxMessups = this.settings.maxMessups || Infinity;
+		this._countBase = this.settings.countBase || 'decimal';
+		this._countBy = this.settings.countBy || 1;
+		this._startAt = this.settings.startAt || 0;
 	}
 
 	set currentNumber(number) {
