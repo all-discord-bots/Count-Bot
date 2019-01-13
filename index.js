@@ -81,8 +81,8 @@ bot.on('setDeletedBy', (message, by) => {
 	bot.deleted_messages.set(message.id, by);
 });
 
-bot.on('handleDelete', async (message, by = 'bot') => {
-	bot.emit('setDeletedBy', message, by);
+bot.on('handleDelete', async (message) => {
+	bot.emit('setDeletedBy', message, 'bot');
 	if (!message.channel.permissionsFor(message.guild.me).has('MANAGE_MESSAGES')) return;
 	/*if (!message.channel.permissionsFor(message.guild.me).has('MANAGE_MESSAGES') && message.guild.owner && !bot.notified_owners.includes(`${message.channel.id}.${message.guild.owner.id}`)) return message.guild.owner.send({
 		embed: {
