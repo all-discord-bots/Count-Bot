@@ -44,6 +44,16 @@ module.exports = class extends Event {
 			});
 		}
 		/*for (const guild of this.client.guilds.values()) {
+			for (const channel of guild.channels.values()) {
+				
+				channel.addCachedCountBy(channel.countBy, channel);
+				channel.addCachedCountBase(channel.countBase, channel);
+				channel.addCachedCurrentNumber(channel.currentNumber, channel);
+				channel.addCachedMaxMessups(channel.maxMessups, channel);
+				channel.addCachedStartAt(channel.startAt, channel);
+			}
+		}*/
+		/*for (const guild of this.client.guilds.values()) {
 			for (const member of guild.members.values()) {
 				if (member.settings.words.length) {
 					for (const word of member.settings.words) guild.addCachedWord(word, member);
