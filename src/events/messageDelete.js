@@ -13,6 +13,9 @@ module.exports = class extends Event {
 					user = message.author;
 				}
 				message.deleted_by = user;
+				if (message.guild.settings.cantCountRole && message.guild.settings.countingChannels.length && (message.guild.settings.countingChannels.includes(message.channel) || message.guild.settings.countingChannels.includes(message.channel.id))) {
+					if (!user.bot) await message.guild.members.get(user.id).roles.add(message.guild.settings.cantCountRole.id, 'Tried to delete a count message!');
+				}
 			}
 			//message.channel.messages.set(message.id, message);
 			//this.client.deleted.set(message.author.id, message);
