@@ -43,16 +43,16 @@ module.exports = class extends Event {
 				id: "clearCache",
 			});
 		}
-		/*for (const guild of this.client.guilds.values()) {
+		for (const guild of this.client.guilds.values()) {
 			for (const channel of guild.channels.values()) {
-				
-				channel.addCachedCountBy(channel.countBy, channel);
-				channel.addCachedCountBase(channel.countBase, channel);
-				channel.addCachedCurrentNumber(channel.currentNumber, channel);
-				channel.addCachedMaxMessups(channel.maxMessups, channel);
-				channel.addCachedStartAt(channel.startAt, channel);
+				const settings = guild.settings.get('countingChannels')[guild.settings.get('countingChannels').indexOf(channel.id)];
+				channel.countBy = settings.countBy || 1;
+				channel.countBase = settings.countBase || 'decimal';
+				channel.currentNumber = settings.currentNumber || 0;
+				channel.maxMessups = settings.maxMessups || Infinity;
+				channel.startAt = settings.startAt || 0;
 			}
-		}*/
+		}
 		/*for (const guild of this.client.guilds.values()) {
 			for (const member of guild.members.values()) {
 				if (member.settings.words.length) {
