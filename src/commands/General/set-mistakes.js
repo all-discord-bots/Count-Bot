@@ -7,6 +7,7 @@ module.exports = class extends Command {
 			runIn: ['text'],
 			description: 'Sets the max amount of mistakes a user can get before getting the can\'t count role.',
 			usage: '<TextChannel:string> [Mistakes:float]',
+			aliases: ['set-max-mistakes','set-max-messups','setmistakes','setmessups','setmaxmistakes','setmaxmessups','set-messups'],
 			guarded: true
 		});
 		this.needsMember = true;
