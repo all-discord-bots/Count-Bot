@@ -45,7 +45,7 @@ module.exports = class extends Event {
 		}
 		for (const guild of this.client.guilds.values()) {
 			for (const channel of guild.channels.values()) {
-				const settings = guild.settings.get('countingChannels').indexOf(channel.id) >= 0 ? guild.settings.get('countingChannels')[guild.settings.get('countingChannels').indexOf(channel.id)] : guild.settings.get('countingChannels').indexOf(channel) >= 0 ? guild.settings.get('countingChannels')[guild.settings.get('countingChannels').indexOf(channel.id)] : undefined : undefined;
+				const settings = guild.settings.get('countingChannels').indexOf(channel.id) >= 0 ? guild.settings.get('countingChannels')[guild.settings.get('countingChannels').indexOf(channel.id)] : guild.settings.get('countingChannels').indexOf(channel) >= 0 ? guild.settings.get('countingChannels')[guild.settings.get('countingChannels').indexOf(channel)] : undefined : undefined;
 				channel.countBy = settings.countBy || 1;
 				channel.countBase = settings.countBase || 'decimal';
 				channel.currentNumber = settings.currentNumber || 0;
