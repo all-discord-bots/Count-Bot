@@ -52,4 +52,8 @@ module.exports = class extends Extendable {
 	get startAt() {
 		return this._startAt;
 	}
+	
+	get nextNumber() {
+		return this.currentNumber + this.countBy;
+	}
 }
