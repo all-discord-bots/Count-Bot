@@ -123,7 +123,7 @@ class CountingChannelManager {
 	}
 	
 	async recalculateNextNumber(message, updated = 0) {
-		this.lastNumber = Math[this.by.toString().includes('-') ? 'min' : 'max'](...await message.channel.messages.filter((msg) => msg.id !== message.id && parseFloat(msg.content)).map((msg) => parseFloat(msg.content) - updated));
+		this.lastNumber = Math[this.by.toString().includes('-') ? 'min' : 'max'](...await message.channel.messages.filter((msg) => msg.id !== message.id && parseFloat(msg.content)).map((msg) => parseFloat(msg.content))) - updated;
 	}
 }
 
