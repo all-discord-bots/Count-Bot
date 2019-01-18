@@ -97,6 +97,7 @@ bot.on('handleDelete', async (message) => {
 bot.on('handleMessage', (message, action) => {
 	if (message.channel.type !== 'text') return;
 	if (message.author.bot) return;
+	bot.emit('recalculateNumber', message)
 	if (!bot.messups.has(message.channel.id)) bot.messups.set(message.channel.id, new Collection());
 	if (bot.messups.has(message.channel.id) && !bot.messups.get(message.channel.id).has(message.author.id)) bot.messups.get(message.channel.id).set(message.author.id, 0);
 	if (countingChannels.has(message.channel.id)) {
