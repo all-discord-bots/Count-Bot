@@ -149,6 +149,7 @@ bot.on('messageUpdate', (oldMessage, newMessage) => {
 
 bot.on('messageDelete', (message) => {
 	//message.channel.messages.set(message.id, message);
+	if (parseFloat(message.content) - parseFloat(message.channel.lastMessage.content) !== 1) bot.emit('recalculateNumber', message);
 	bot.emit('handleMessage', message, 'delete');
 	//bot.emit('recalculateNumber', message)
 });
