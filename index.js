@@ -97,7 +97,7 @@ bot.on('handleDelete', async (message) => {
 bot.on('handleMessage', (message, action) => {
 	if (message.channel.type !== 'text') return;
 	if (message.author.bot) return;
-	bot.emit('recalculateNumber', message)
+	//bot.emit('recalculateNumber', message);
 	if (!bot.messups.has(message.channel.id)) bot.messups.set(message.channel.id, new Collection());
 	if (bot.messups.has(message.channel.id) && !bot.messups.get(message.channel.id).has(message.author.id)) bot.messups.get(message.channel.id).set(message.author.id, 0);
 	if (countingChannels.has(message.channel.id)) {
@@ -140,7 +140,7 @@ bot.on('message', (message) => {
 										}
 									});
 	} else {
-		if (!countingChannels.get(message.channel.id).isNextInSequence(message)) bot.emit('recalculateNumber', message);
+		//if (!countingChannels.get(message.channel.id).isNextInSequence(message)) bot.emit('recalculateNumber', message);
 		return bot.emit('handleMessage', message, 'none');
 	}
 });
@@ -151,7 +151,7 @@ bot.on('messageUpdate', (oldMessage, newMessage) => {
 
 bot.on('messageDelete', (message) => {
 	//message.channel.messages.set(message.id, message);
-	if (!countingChannels.get(message.channel.id).isNextInSequence(message)) bot.emit('recalculateNumber', message);
+	//if (!countingChannels.get(message.channel.id).isNextInSequence(message)) bot.emit('recalculateNumber', message);
 	bot.emit('handleMessage', message, 'delete');
 	//bot.emit('recalculateNumber', message)
 });
