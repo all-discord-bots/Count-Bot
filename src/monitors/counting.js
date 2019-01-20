@@ -24,7 +24,7 @@ module.exports = class extends Monitor {
 		try {
 			if (!message.guild) return;
 			const { settings: { countingChannels } } = message.guild;
-			if (!countingChannels.includes(message.channel.id) && !this.client.countingChannels.has(message.channel.id)) return;
+			if (!countingChannels.includes(message.channel.id)) return;
 			if (this.client.settings.blacklist.length && (this.client.settings.blacklist.includes(message.author.id) || this.client.settings.blacklist.includes(message.guild.id))) return;
 			this._beginCounting(message);
 		} catch (e) {
@@ -33,7 +33,7 @@ module.exports = class extends Monitor {
 	}
 	
 	async _beginCounting (message) {
-		const { channel: { maxMessups, currentNumber, countingBase, countBy, currentNumber, lastNumber }, channel, guild: { settings: { cantCountRole } }, guild, member: { settings: { messups }, settings }, member } = message;
+		const { channel: { settings: { maxMessups, currentNumber, countingBase, countBy, currentNumber, lastNumber } }, channel, guild: { settings: { cantCountRole } }, guild, member: { settings: { messups }, settings }, member } = message;
 		const number = this.parseNumber(message);
 		const last_number = lastNumber;
 		if ((message.content.length !== last_number.toString().length && number !== last_number) || !this.isNextInSequence(number) || message.attachments.size || message.embeds.length || RegExp(/([\s\+\=\_\`\~\!\@\#\$\%\^\&\*\(\)\\\|\]\[\{\}\'\"\;\:\?\/\,\<\>\t\r\na-z])/i).test(message.content) || RegExp(/(^(-0+|-{2,}))/i).test(message.content) || (message.content.length >= 2 && RegExp(/^(-?0+)/i).test(message.content)) || (!countBy.toString().startsWith('-') && message.content.includes('-')) || (countBy.toString().startsWith('-') && message.content.startsWith('-') && message.content.split('').filter((char) => char === '-').splice(1).length >= 1) || (!countBy.toString().includes('.') && message.content.includes('.')) || (countBy.toString().includes('.') && message.content.includes('.') && message.content.split('').filter((char) => char === '.').splice(1).length >= 1)) {
@@ -52,7 +52,7 @@ module.exports = class extends Monitor {
 	}
 	
 	parseNumber(message) {
-		const { channel: { countBase, countBy } } = message;
+		const { channel: { settings: { countBase, countBy } } } = message;
 		if (countBy % 1 !== 0)
 			return parseFloat(message.content);
 
@@ -66,7 +66,7 @@ module.exports = class extends Monitor {
 	}
 	
 	currentCount(message) {
-		const { channel: { currentNumber, countBy } } = message;
+		const { channel: { settings: { currentNumber, countBy } } } = message;
 		return currentNumber + countBy;
 	}
 	
