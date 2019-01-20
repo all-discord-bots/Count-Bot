@@ -33,28 +33,32 @@ module.exports = class extends Monitor {
 	}
 	
 	async _beginCounting (message) {
-		await message.channel.settings.sync(true);
-		await message.member.settings.sync(true);
-		const { channel: { settings: { maxMessups, currentNumber, countBase, countBy, lastNumber } }, channel, guild: { settings: { cantCountRole } }, guild, member: { settings: { messups }, settings }, member } = message;
-		const channel_settings = channel.settings;
-		const number = this._parseNumber(message);
-		const last_number = lastNumber;
-		if ((message.content.length !== last_number.toString().length && number !== last_number) || !this._isNextInSequence(number) || message.attachments.size || message.embeds.length || RegExp(/([\s\+\=\_\`\~\!\@\#\$\%\^\&\*\(\)\\\|\]\[\{\}\'\"\;\:\?\/\,\<\>\t\r\na-z])/i).test(message.content) || RegExp(/(^(-0+|-{2,}))/i).test(message.content) || (message.content.length >= 2 && RegExp(/^(-?0+)/i).test(message.content)) || (!countBy.toString().startsWith('-') && message.content.includes('-')) || (countBy.toString().startsWith('-') && message.content.startsWith('-') && message.content.split('').filter((char) => char === '-').splice(1).length >= 1) || (!countBy.toString().includes('.') && message.content.includes('.')) || (countBy.toString().includes('.') && message.content.includes('.') && message.content.split('').filter((char) => char === '.').splice(1).length >= 1)) {
-			if (maxMessups !== Infinity) {
-				if (messups >= maxMessups) {
-					if (cantCountRole && channel.permissionsFor(guild.me).has('MANAGE_ROLES')) await member.roles.add(cantCountRole.id, 'This user can\'t count correctly');
-					await settings.reset('messups');
-				} else {
-					await settings.update('messups', messups + 1);
+		try { 
+			await message.channel.settings.sync(true);
+			await message.member.settings.sync(true);
+			const { channel: { settings: { maxMessups, currentNumber, countBase, countBy, lastNumber } }, channel, guild: { settings: { cantCountRole } }, guild, member: { settings: { messups }, settings }, member } = message;
+			const channel_settings = channel.settings;
+			const number = this._parseNumber(message);
+			const last_number = lastNumber;
+			if ((message.content.length !== last_number.toString().length && number !== last_number) || !this._isNextInSequence(number) || message.attachments.size || message.embeds.length || RegExp(/([\s\+\=\_\`\~\!\@\#\$\%\^\&\*\(\)\\\|\]\[\{\}\'\"\;\:\?\/\,\<\>\t\r\na-z])/i).test(message.content) || RegExp(/(^(-0+|-{2,}))/i).test(message.content) || (message.content.length >= 2 && RegExp(/^(-?0+)/i).test(message.content)) || (!countBy.toString().startsWith('-') && message.content.includes('-')) || (countBy.toString().startsWith('-') && message.content.startsWith('-') && message.content.split('').filter((char) => char === '-').splice(1).length >= 1) || (!countBy.toString().includes('.') && message.content.includes('.')) || (countBy.toString().includes('.') && message.content.includes('.') && message.content.split('').filter((char) => char === '.').splice(1).length >= 1)) {
+				if (maxMessups !== Infinity) {
+					if (messups >= maxMessups) {
+						if (cantCountRole && channel.permissionsFor(guild.me).has('MANAGE_ROLES')) await member.roles.add(cantCountRole.id, 'This user can\'t count correctly');
+						await settings.reset('messups');
+					} else {
+						await settings.update('messups', messups + 1);
+					}
 				}
+				return this._deleteMessage(message);
 			}
-			return this._deleteMessage(message);
+			//currentNumber = this.currentCount(message);
+			return await channel_settings.update('currentNumber', this._currentCount(message));
+			//return channel.sync();
+		} catch (e) {
+			console.error(e.toString());
 		}
-		//currentNumber = this.currentCount(message);
-		return await channel_settings.update('currentNumber', this._currentCount(message));
-		//return channel.sync();
 	}
-	
+
 	_parseNumber(message) {
 		const { settings: { countBase, countBy } } = message.channel;
 		if (countBy % 1 !== 0)
