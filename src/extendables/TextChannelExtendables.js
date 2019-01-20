@@ -59,7 +59,7 @@ module.exports = class extends Extendable {
 	}
 	
 	async sync() {
-		const { currentNumber, lastNumber, countBy, countBase, startAt, maxMessups, settings } = this;
+		const { settings: { currentNumber, lastNumber, countBy, countBase, startAt, maxMessups }, settings } = this;
 		await settings.update('currentNumber', currentNumber);
 		await settings.update('lastNumber', lastNumber);
 		await settings.update('countBy', countBy);
