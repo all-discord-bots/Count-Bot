@@ -1,5 +1,5 @@
 const { Event } = require("klasa");
-const TABLES = ["members", "guilds"];
+const TABLES = ["members", "guilds", "channels"];
 
 module.exports = class extends Event {
 	constructor (...args) {
