@@ -41,7 +41,7 @@ module.exports = class extends Command {
 	}
 
 	async _configuration (message, channel, mistakes = 0) {
-		const { settings: { countingChannels }, settings } = message.guild;
+		const { settings: { countingChannels } } = message.guild;
 		if (!countingChannels.length || (countingChannels.length && !countingChannels.includes(channel.id))) {
 			return message.send({
 				embed: {
@@ -50,19 +50,12 @@ module.exports = class extends Command {
 				},
 			});
 		}
-		channel.currentNumber = channel.currentNumber;
-		channel.maxMessups = mistakes;
-		await settings.update('countingChannels', channel);
+		const { settings: { maxMessups }, settings } = message.channel;
+		await settings.update('maxMessups', mistakes);
 		return message.send({
 			embed: {
 				color: 0x43B581,
-				description: `Done! ${channel} \`#${channel.name}\` has been set.`,
-			},
-		});
-		return message.send({
-			embed: {
-				color: 0x43B581,
-				description: `Done! the max amount of mistakes has been set to ${mistakes}.`,
+				description: `Done! the max amount of mistakes for ${channel} has been set to \`${mistakes}\`.`,
 			},
 		});
 	}
