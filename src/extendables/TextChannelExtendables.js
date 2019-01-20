@@ -58,8 +58,13 @@ module.exports = class extends Extendable {
 		return this._startAt;
 	}
 	
-	/*async sync() {
-		const { settings } = this.guild;
-		await settings.update('countingChannels', JSON.stringify(this));
-	}*/
+	async sync() {
+		const { currentNumber, lastNumber, countBy, countBase, startAt, maxMessups, settings } = this;
+		await settings.update('currentNumber', currentNumber);
+		await settings.update('lastNumber', lastNumber);
+		await settings.update('countBy', countBy);
+		await settings.update('countBase', countBase);
+		await settings.update('startAt', startAt);
+		await settings.update('maxMessups', maxMessups);
+	}
 }
