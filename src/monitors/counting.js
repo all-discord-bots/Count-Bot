@@ -56,7 +56,7 @@ module.exports = class extends Monitor {
 	}
 	
 	parseNumber(message) {
-		const { channel: { settings: { countBase, countBy } } } = message;
+		const { settings: { countBase, countBy } } = message.channel;
 		if (countBy % 1 !== 0)
 			return parseFloat(message.content);
 
@@ -70,7 +70,7 @@ module.exports = class extends Monitor {
 	}
 	
 	currentCount(message) {
-		const { channel: { settings: { currentNumber, countBy } } } = message;
+		const { settings: { currentNumber, countBy } } = message.channel;
 		return currentNumber + countBy;
 	}
 	
