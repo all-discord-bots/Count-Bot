@@ -95,7 +95,7 @@ KlasaClient.defaultGuildSchema = new Schema()
 Client.defaultChannelSchema
 	.add('currentNumber', 'integer', { default: 0 })
 	.add('lastNumber', 'integer', { default: 0 })
-	.add('maxMessups', 'float', { default: Infinity, min: 0 })
+	.add('maxMessups', 'float', { default: 999999, min: 0 })
 	.add('countBy', 'integer', { default: 1 })
 	.add('countBase', 'string', { default: 'decimal' })
 	.add('startAt', 'integer', { default: 0 })
