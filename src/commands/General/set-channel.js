@@ -1,4 +1,4 @@
-const { Command, util: { mergeDefault } = require('klasa');
+const { Command, util: { mergeDefault } } = require('klasa');
 const { TextChannel } = require('discord.js');
 
 module.exports = class extends Command {
