@@ -55,7 +55,7 @@ module.exports = class extends Monitor {
 			return await channel_settings.update('currentNumber', this._currentCount(message));
 			//return channel.sync();
 		} catch (e) {
-			console.error(e.toString());
+			console.error(e.stack ? e.stack : e.toString());
 		}
 	}
 
