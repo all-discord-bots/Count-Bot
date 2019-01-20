@@ -97,7 +97,7 @@ module.exports = class extends Command {
 		return message.send({
 			embed: {
 				color: 0x43B581,
-				description: `Done! ${channel} \`#${channel.name}\` has been set.`,
+				description: `Done! ${channel} \`#${channel.name}\` has been set as a counting channel.`,
 			},
 		});
 	}
