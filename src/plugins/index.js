@@ -1,7 +1,8 @@
 const { Client: { plugin } } = require('klasa');
 
 module.exports = {
-	ChannelGateway: require('./GatewayTextChannel'),
+	KlasaTextChannel: require('./extensions/KlasaTextChannel'),
+	ChannelGateway: require('./settings/GatewayTextChannel'),
 	Client: require('./Client'),
 	[plugin]: require('./Client')[plugin]
 };
