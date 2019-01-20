@@ -118,7 +118,7 @@ const client = global.client = new Client({
 	commandLogging: true,
 	disableEveryone: true,
 	fetchAllMembers: true,
-	preserveSettings: false,
+	//preserveSettings: false,
 	disabledEvents: [
 		"TYPING_START",
 		"VOICE_STATE_UPDATE",
