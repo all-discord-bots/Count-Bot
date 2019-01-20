@@ -53,7 +53,7 @@ datatypes: {
 const startTime = global.startTime = new Date(); // start recording time of boot
 
 Client.use(require("klasa-member-gateway"));
-//Client.use(require("./plugins"));
+Client.use(require("./plugins"));
 
 /*
  defaultGuildSchema
@@ -91,6 +91,14 @@ KlasaClient.defaultGuildSchema = new Schema()
 		}
 	});
 */
+
+Client.defaultChannelSchema
+	.add('currentNumber', 'integer', { default: 0 })
+	.add('lastNumber', 'integer', { default: 0 })
+	.add('maxMessups', 'float', { default: Infinity, min: 0 })
+	.add('countBy', 'integer', { default: 1 })
+	.add('countBase', 'string', { default: 'decimal' })
+	.add('startAt', 'integer', { default: 0 })
 
 Client.defaultMemberSchema
 	.add('mistakes', 'integer', { default: 0, min: 0 })
@@ -159,7 +167,7 @@ client.baseMap = {
 };
 
 //client.countingChannels = new Collection();
-client.countingChannels = new Map();
+//client.countingChannels = new Map();
 
 /*
  * Console Colors
