@@ -62,7 +62,7 @@ module.exports = class extends Monitor {
 
 		if (message.content.search(/^\d+\.[1-9]/) !== -1)
 			return NaN;
-		return parseInt(message.content.replace(/ .*/, ''), countBase);
+		return parseInt(message.content.replace(/ .*/, ''), this.client.baseMap[countBase]);
 	}
 	
 	_isNextInSequence(message, number) {
