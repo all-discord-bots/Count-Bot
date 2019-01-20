@@ -37,9 +37,9 @@ module.exports = class extends Monitor {
 		await message.member.settings.sync(true);
 		const { channel: { settings: { maxMessups, currentNumber, countBase, countBy, lastNumber } }, channel, guild: { settings: { cantCountRole } }, guild, member: { settings: { messups }, settings }, member } = message;
 		const channel_settings = channel.settings;
-		const number = this.parseNumber(message);
+		const number = this._parseNumber(message);
 		const last_number = lastNumber;
-		if ((message.content.length !== last_number.toString().length && number !== last_number) || !this.isNextInSequence(number) || message.attachments.size || message.embeds.length || RegExp(/([\s\+\=\_\`\~\!\@\#\$\%\^\&\*\(\)\\\|\]\[\{\}\'\"\;\:\?\/\,\<\>\t\r\na-z])/i).test(message.content) || RegExp(/(^(-0+|-{2,}))/i).test(message.content) || (message.content.length >= 2 && RegExp(/^(-?0+)/i).test(message.content)) || (!countBy.toString().startsWith('-') && message.content.includes('-')) || (countBy.toString().startsWith('-') && message.content.startsWith('-') && message.content.split('').filter((char) => char === '-').splice(1).length >= 1) || (!countBy.toString().includes('.') && message.content.includes('.')) || (countBy.toString().includes('.') && message.content.includes('.') && message.content.split('').filter((char) => char === '.').splice(1).length >= 1)) {
+		if ((message.content.length !== last_number.toString().length && number !== last_number) || !this._isNextInSequence(number) || message.attachments.size || message.embeds.length || RegExp(/([\s\+\=\_\`\~\!\@\#\$\%\^\&\*\(\)\\\|\]\[\{\}\'\"\;\:\?\/\,\<\>\t\r\na-z])/i).test(message.content) || RegExp(/(^(-0+|-{2,}))/i).test(message.content) || (message.content.length >= 2 && RegExp(/^(-?0+)/i).test(message.content)) || (!countBy.toString().startsWith('-') && message.content.includes('-')) || (countBy.toString().startsWith('-') && message.content.startsWith('-') && message.content.split('').filter((char) => char === '-').splice(1).length >= 1) || (!countBy.toString().includes('.') && message.content.includes('.')) || (countBy.toString().includes('.') && message.content.includes('.') && message.content.split('').filter((char) => char === '.').splice(1).length >= 1)) {
 			if (maxMessups !== Infinity) {
 				if (messups >= maxMessups) {
 					if (cantCountRole && channel.permissionsFor(guild.me).has('MANAGE_ROLES')) await member.roles.add(cantCountRole.id, 'This user can\'t count correctly');
@@ -48,14 +48,14 @@ module.exports = class extends Monitor {
 					await settings.update('messups', messups + 1);
 				}
 			}
-			return this.deleteMessage(message);
+			return this._deleteMessage(message);
 		}
 		//currentNumber = this.currentCount(message);
-		return await channel_settings.update('currentNumber', this.currentCount(message));
+		return await channel_settings.update('currentNumber', this._currentCount(message));
 		//return channel.sync();
 	}
 	
-	parseNumber(message) {
+	_parseNumber(message) {
 		const { settings: { countBase, countBy } } = message.channel;
 		if (countBy % 1 !== 0)
 			return parseFloat(message.content);
@@ -65,16 +65,16 @@ module.exports = class extends Monitor {
 		return parseInt(message.content.replace(/ .*/, ''), countBase);
 	}
 	
-	isNextInSequence(message, number) {
-		return number === this.currentCount(message);
+	_isNextInSequence(message, number) {
+		return number === this._currentCount(message);
 	}
 	
-	currentCount(message) {
+	_currentCount(message) {
 		const { settings: { currentNumber, countBy } } = message.channel;
 		return currentNumber + countBy;
 	}
 	
-	async deleteMessage(message) {
+	async _deleteMessage(message) {
 		if (!message.channel.permissionsFor(message.guild.me).has('MANAGE_MESSAGES')) return;
 		await message.delete({ reason: 'Wrong number!' });
 	}
