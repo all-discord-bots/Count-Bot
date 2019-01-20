@@ -47,7 +47,7 @@ module.exports = class extends Command {
 			return message.send({
 				embed: {
 					color: 0xCC0F16,
-					description: 'That channel is not set!',
+					description: 'That channel has not been set as a counting channel!',
 				},
 			});
 		}
@@ -55,7 +55,7 @@ module.exports = class extends Command {
 		return message.send({
 			embed: {
 				color: 0x43B581,
-				description: `Done! ${channel} \`#${channel.name}\` has been set.`,
+				description: `Done! ${channel} \`#${channel.name}\` has been removed.`,
 			},
 		});
 	}
