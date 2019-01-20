@@ -43,6 +43,7 @@ module.exports = class extends Command {
 
 	async _setChannel (message, channel) {
 		const { settings: { countingChannels }, settings } = message.guild;
+		const channel_settings = message.channel.settings;
 		if (!countingChannels.length || (countingChannels.length && !countingChannels.includes(channel.id))) {
 			return message.send({
 				embed: {
@@ -52,6 +53,12 @@ module.exports = class extends Command {
 			});
 		}
 		await settings.update('countingChannels', channel, { action: 'remove' });
+		await channel_settings.update('currentNumber', channel, { action: 'remove' });
+		await channel_settings.update('lastNumber', channel, { action: 'remove' });
+		await channel_settings.update('maxMessups', channel, { action: 'remove' });
+		await channel_settings.update('countBy', channel, { action: 'remove' });
+		await channel_settings.update('countBase', channel, { action: 'remove' });
+		await channel_settings.update('startAt', channel, { action: 'remove' });
 		return message.send({
 			embed: {
 				color: 0x43B581,
