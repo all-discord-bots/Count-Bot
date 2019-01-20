@@ -29,11 +29,12 @@
 		"discord.js": "github:discordjs/discord.js#master",
 		"klasa": "github:dirigeants/klasa#master",
 		"klasa-member-gateway": "github:dirigeants/klasa-member-gateway#master",
+		"klasa-textchannel-gateway": "github:bannerbombs-klasa-plugins/klasa-textchannel-gateway#master",
 		"pg": "^7.8.0",
-		"re2": "^1.8.3",
+		"re2": "^1.8.4",
 		"heapdump": "^0.3.12",
 		"chalk": "^2.4.2",
-		"got": "^9.5.0",
+		"got": "^9.6.0",
 		"node-fetch": "^2.3.0",
 		"vm": "^0.1.0"
 	}
