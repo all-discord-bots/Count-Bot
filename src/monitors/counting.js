@@ -52,7 +52,7 @@ module.exports = class extends Monitor {
 				return this._deleteMessage(message);
 			}
 			//currentNumber = this.currentCount(message);
-			return await channel_settings.update('currentNumber', this._currentCount(message));
+			await channel_settings.update('currentNumber', this._currentCount(message));
 			//return channel.sync();
 		} catch (e) {
 			console.error(e.stack ? e.stack : e.toString());
