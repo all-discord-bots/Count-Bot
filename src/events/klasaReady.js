@@ -43,15 +43,8 @@ module.exports = class extends Event {
 				id: "clearCache",
 			});
 		}
-		for (const guild of this.client.guilds.values()) {
+		/*for (const guild of this.client.guilds.values()) {
 			for (const channel of guild.channels.values()) {
-				/*const settings = this.client.countingChannels.size && this.client.countingChannels.has(channel.id) ? this.client.countingChannels.get(channel.id) : undefined;
-				channel.countBy = settings.countBy || 1;
-				channel.countBase = settings.countBase || 'decimal';
-				channel.currentNumber = settings.currentNumber || 0;
-				channel.lastNumber = settings.lastNumber || 0;
-				channel.maxMessups = settings.maxMessups || Infinity;
-				channel.startAt = settings.startAt || 0;*/
 				if (this.client.countingChannels.has(channel.id)) {
 					channel.lastNumber = (await channel.messages.fetch({ limit: 50 }) || []).find((number) => this.parseNumber(number) >= 0 || this.parseNumber(number) <= 0);
 						
@@ -59,7 +52,7 @@ module.exports = class extends Event {
 				}
 
 			}
-		}
+		}*/
 		/*for (const guild of this.client.guilds.values()) {
 			for (const member of guild.members.values()) {
 				if (member.settings.words.length) {
