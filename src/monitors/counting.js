@@ -33,7 +33,10 @@ module.exports = class extends Monitor {
 	}
 	
 	async _beginCounting (message) {
-		const { channel: { settings: { maxMessups, currentNumber, countingBase, countBy, currentNumber, lastNumber } }, channel, guild: { settings: { cantCountRole } }, guild, member: { settings: { messups }, settings }, member } = message;
+		await message.channel.settings.sync(true);
+		await message.member.settings.sync(true);
+		const { channel: { settings: { maxMessups, currentNumber, countBase, countBy, lastNumber } }, channel, guild: { settings: { cantCountRole } }, guild, member: { settings: { messups }, settings }, member } = message;
+		const channel_settings = channel.settings;
 		const number = this.parseNumber(message);
 		const last_number = lastNumber;
 		if ((message.content.length !== last_number.toString().length && number !== last_number) || !this.isNextInSequence(number) || message.attachments.size || message.embeds.length || RegExp(/([\s\+\=\_\`\~\!\@\#\$\%\^\&\*\(\)\\\|\]\[\{\}\'\"\;\:\?\/\,\<\>\t\r\na-z])/i).test(message.content) || RegExp(/(^(-0+|-{2,}))/i).test(message.content) || (message.content.length >= 2 && RegExp(/^(-?0+)/i).test(message.content)) || (!countBy.toString().startsWith('-') && message.content.includes('-')) || (countBy.toString().startsWith('-') && message.content.startsWith('-') && message.content.split('').filter((char) => char === '-').splice(1).length >= 1) || (!countBy.toString().includes('.') && message.content.includes('.')) || (countBy.toString().includes('.') && message.content.includes('.') && message.content.split('').filter((char) => char === '.').splice(1).length >= 1)) {
@@ -47,8 +50,9 @@ module.exports = class extends Monitor {
 			}
 			return this.deleteMessage(message);
 		}
-		currentNumber = this.currentCount(message);
-		return channel.sync();
+		//currentNumber = this.currentCount(message);
+		return await channel_settings.update('currentNumber', this.currentCount(message));
+		//return channel.sync();
 	}
 	
 	parseNumber(message) {
