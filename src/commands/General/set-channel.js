@@ -54,7 +54,7 @@ module.exports = class extends Command {
 				});
 			}
 		}*/
-		if (countingChannels.includes(channel.id) && this.client.countingChannels.has(channel.id)) {
+		if (countingChannels.includes(channel.id)) {
 			return message.send({
 				embed: {
 					color: 0xCC0F16,
@@ -62,7 +62,7 @@ module.exports = class extends Command {
 				},
 			});
 		}
-		if (channel.topic === null) {
+		/*if (channel.topic === null) {
 			channel.currentNumber = 0;
 			channel.lastNumber = 0;
 			channel.maxMessups = Infinity;
@@ -80,7 +80,7 @@ module.exports = class extends Command {
 			channel.countBy = count_by !== '' && count_by != '0' && count_by != '-0' ? parseInt(count_by) : 1;
 			channel.countBase = count_base !== '' && !parseInt(count_base) ? String(count_base) : 'decimal';
 			channel.startAt = start_at !== '' ? parseInt(start_at) : 0;
-		}
+		}*/
 		//channel.currentNumber = 0;
 		//channel.maxMessups = Infinity;
 		/*const copied_channel = {
@@ -92,8 +92,8 @@ module.exports = class extends Command {
 			"countBase": 'decimal'
 		};*/
 		//await settings.update('countingChannels', JSON.stringify(copied_channel), { action: 'add' });
-		if (!countingChannels.includes(channel.id)) await settings.update('countingChannels', channel, { action: 'add' });
-		if (!this.client.countingChannels.has(channel.id)) this.client.countingChannels.set(channel.id, channel);
+		await settings.update('countingChannels', channel, { action: 'add' });
+		//if (!this.client.countingChannels.has(channel.id)) this.client.countingChannels.set(channel.id, channel);
 		return message.send({
 			embed: {
 				color: 0x43B581,
